@@ -8,7 +8,7 @@ using MyApp.Infrastructure.Data;
 
 namespace MyApp.WebApi.Controllers
 {
-    public class AccountController : ControllerBase
+    public class AccountController : BaseControllerApp
     {
         public AccountController(UserManager<IdentityUserBase> userManager, SignInManager<IdentityUserBase> signInManager,
             ILogger<AccountController> logger, AppDbContext dbContext) 

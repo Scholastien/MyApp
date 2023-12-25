@@ -7,7 +7,7 @@ using MyApp.WebApi.ViewModels;
 
 namespace MyApp.WebApi.Controllers;
 
-public class HomeController : ControllerBase
+public class HomeController : BaseControllerApp
 {
     public HomeController(UserManager<IdentityUserBase> userManager, SignInManager<IdentityUserBase> signInManager,
         ILogger<HomeController> logger, AppDbContext dbContext) 

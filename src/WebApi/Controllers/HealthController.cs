@@ -2,13 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Domain.Entities;
 using MyApp.Infrastructure.Data;
-using ControllerBase = MyApp.WebApi.Controllers.ControllerBase;
 
-namespace WebApi.Controllers;
+namespace MyApp.WebApi.Controllers;
 
-public class HealthController : ControllerBase
+public class HealthController : BaseControllerApp
 {
-    public HealthController(UserManager<IdentityUserBase> userManager, SignInManager<IdentityUserBase> signInManager, ILogger<ControllerBase> logger, AppDbContext dbContext) : base(userManager, signInManager, logger, dbContext)
+    public HealthController(UserManager<IdentityUserBase> userManager, SignInManager<IdentityUserBase> signInManager, ILogger<BaseControllerApp> logger, AppDbContext dbContext) : base(userManager, signInManager, logger, dbContext)
     {
     }
     
