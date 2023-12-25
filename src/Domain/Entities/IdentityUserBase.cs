@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using MyApp.Domain.Core.Models;
-using MyApp.Domain.Enum;
+using MyApp.Domain.Enums;
 
 namespace MyApp.Domain.Entities;
 

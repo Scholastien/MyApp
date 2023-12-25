@@ -1,4 +1,4 @@
-﻿namespace MyApp.Domain.Enum;
+﻿namespace MyApp.Domain.Enums;
 
 public enum CustomerStatus
 {

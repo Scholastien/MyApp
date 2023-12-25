@@ -1,6 +1,6 @@
 ﻿using MyApp.Domain.Core.Specifications;
 using MyApp.Domain.Entities;
-using MyApp.Domain.Enum;
+using MyApp.Domain.Enums;
 
 namespace MyApp.Domain.Specifications;
 

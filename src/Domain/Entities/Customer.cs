@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using MyApp.Domain.Core.Models;
-using MyApp.Domain.Enum;
+using MyApp.Domain.Enums;
 
 namespace MyApp.Domain.Entities;
 
