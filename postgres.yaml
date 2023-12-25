@@ -41,7 +41,7 @@ global:
     ##
     service:
       ports:
-        postgresql: "5432"
+        postgresql: ""
 
 ## @section Common parameters
 ##

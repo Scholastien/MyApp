@@ -19,6 +19,14 @@ FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
+
+# TODO: Flag development for Tilfile live_update
+#FROM build AS debug
+#ARG BUILD_CONFIGURATION=Development
+#RUN dotnet publish "WebApi.csproj" -c $BUILD_CONFIGURATION -o /app /p:UseAppHost=false
+#WORKDIR /app
+#ENTRYPOINT ["dotnet", "WebApi.dll"]
+
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
