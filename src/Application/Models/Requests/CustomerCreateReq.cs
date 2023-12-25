@@ -2,7 +2,7 @@
 
 namespace MyApp.Application.Models.Requests;
 
-public class CreateCustomerReq
+public class CustomerCreateReq
 {
     [Required]
     [MaxLength(50)]

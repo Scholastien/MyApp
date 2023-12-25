@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapi
+  labels:
+    app: webapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapi
+  template:
+    metadata:
+      name: webapp
+      labels:
+        app: webapi
+    spec:
+      containers:
+        - name: webapi
+          ports:
+            - containerPort: 80
+              name: http
+          image: webapi:dev
+          volumeMounts:
+            - mountPath: /var/temp-key/
+              name: cryptographic-keys
+          imagePullPolicy: IfNotPresent
+          readinessProbe:
+            httpGet:
+              path: /Health/IsPostgresConnected
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          env:
+            - name: "ConnectionStrings__DefaultConnection"
+              value: "User ID=postgres;Password=admin;Server=postgres-postgresql;Port=5432;Database=WebAppDb;IntegratedSecurity=true;Pooling=true;"
+      volumes:
+        - name: cryptographic-keys
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapi
+  labels:
+    app: webapi
+spec:
+  selector:
+    app: webapi
+  ports:
+    - targetPort: http
+      port: 3000

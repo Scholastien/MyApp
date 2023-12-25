@@ -1,0 +1,40 @@
+﻿version: '3.4'
+
+networks:
+  dev:
+    driver: bridge
+
+services:
+  webapi:
+    image: webapi:latest
+    depends_on:
+      - "webapp-db"
+    container_name: webapp-service
+    ports:
+      - "8088:80"
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    environment:
+      - ConnectionStrings__DefaultConnection=User ID=postgres;Password=admin;Server=webapp-db;Port=5432;Database=WebAppDb;IntegratedSecurity=true;Pooling=true;
+      - ASPNETCORE_URL=https://+:80
+    networks:
+      - dev
+
+  webapp-db:
+    image: postgres:latest
+    container_name: webapp-db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=WebAppDb
+    ports:
+      - "5433:5432"
+    restart: always
+    volumes:
+      - webapp_data:/var/lib/postgresql/data/
+    networks:
+      - dev
+
+volumes:
+  webapp_data:

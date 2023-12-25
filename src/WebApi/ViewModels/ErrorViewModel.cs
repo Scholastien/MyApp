@@ -1,6 +1,4 @@
-using System;
-
-namespace WebApp.Models
+namespace MyApp.WebApi.ViewModels
 {
     public class ErrorViewModel
     {

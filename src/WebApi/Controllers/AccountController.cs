@@ -1,19 +1,17 @@
-﻿using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Domain.Identity;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Repository;
+using MyApp.Application.Models.Requests;
+using MyApp.Domain.Entities;
+using MyApp.Infrastructure.Data;
 
-namespace WebApp.Controllers
+namespace MyApp.WebApi.Controllers
 {
     public class AccountController : ControllerBase
     {
         public AccountController(UserManager<IdentityUserBase> userManager, SignInManager<IdentityUserBase> signInManager,
-            ILogger<AccountController> logger, ApplicationDbContext dbContext) 
+            ILogger<AccountController> logger, AppDbContext dbContext) 
             : base(userManager, signInManager, logger, dbContext)
         {
         }
@@ -21,12 +19,12 @@ namespace WebApp.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            var model = new IdentityUserRegistrationDto();
+            var model = new IdentityUserRegistrationReq();
             return View(model);
         }
 
         [HttpPost, AllowAnonymous]
-        public async Task<IActionResult> Register(IdentityUserRegistrationDto request)
+        public async Task<IActionResult> Register(IdentityUserRegistrationReq request)
         {
             if (!ModelState.IsValid)
             {
@@ -64,13 +62,13 @@ namespace WebApp.Controllers
         [AllowAnonymous]
         public IActionResult Login()
         {
-            var model = new IdentityUserLoginDto();
+            var model = new IdentityUserLoginReq();
             return View(model);
         }
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(IdentityUserLoginDto model)
+        public async Task<IActionResult> Login(IdentityUserLoginReq model)
         {
             if (!ModelState.IsValid)
             {

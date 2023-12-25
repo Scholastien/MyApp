@@ -1,6 +1,13 @@
-﻿namespace MyApp.Domain.Entities;
+﻿using Microsoft.AspNetCore.Identity;
+using MyApp.Domain.Core.Models;
+using MyApp.Domain.Enum;
 
-public class IdentityUserBase
+namespace MyApp.Domain.Entities;
+
+public sealed class IdentityUserBase : IdentityUser, ISoftDeleteEntity
 {
-    
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public RoleEnum Role { get; set; }
+    public bool IsDeleted { get; set; }
 }

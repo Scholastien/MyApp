@@ -1,11 +1,11 @@
 ﻿Pour faire tourner le backend:
 
 ```properties
-dotnet run src/MyApp.WebApi/MyApp.WebApi.csproj
+dotnet run src/WebApi/WebApi.csproj
 
-dotnet build src/MyApp.WebApi/MyApp.WebApi.csproj
+dotnet build src/WebApi/WebApi.csproj
 
-dotnet publish src/MyApp.WebApi/MyApp.WebApi.csproj
+dotnet publish src/WebApi/WebApi.csproj
 
 dotnet clean
 

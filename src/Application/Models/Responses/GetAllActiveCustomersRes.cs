@@ -2,7 +2,7 @@
 
 namespace MyApp.Application.Models.Responses;
 
-public class GetAllActiveUsersRes
+public class GetAllActiveCustomersRes
 {
     public IList<CustomerDTO> Data { get; set; }
 }

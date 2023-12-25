@@ -2,7 +2,7 @@
 using MyApp.Domain.Entities;
 using MyApp.Domain.Enum;
 
-namespace MyApp.Infrastructure.Specifications;
+namespace MyApp.Domain.Specifications;
 
 public static class CustomerSpecifications
 {

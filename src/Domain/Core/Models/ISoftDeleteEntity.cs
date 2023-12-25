@@ -1,6 +1,6 @@
 ﻿namespace MyApp.Domain.Core.Models;
 
-public class ISoftDeleteEntity
+public interface ISoftDeleteEntity
 {
-    
+    public bool IsDeleted { get; set; }
 }
