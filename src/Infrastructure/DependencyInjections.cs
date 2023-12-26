@@ -16,8 +16,8 @@ public static class DependencyInjections
     public static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<AppDbContext>(options =>
-            options.UseNpgsql("name=ConnectionStrings:DefaultConnection", _ => 
-                _.MigrationsAssembly("Infrastructure")));
+            options.UseNpgsql("name=ConnectionStrings:DefaultConnection", b => 
+                b.MigrationsAssembly("Infrastructure")));
         
         services.AddDefaultIdentity<IdentityUserBase>(options => options.SignIn.RequireConfirmedAccount = true)
             .AddEntityFrameworkStores<AppDbContext>();
