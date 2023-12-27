@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using MyApp.Domain.Core.Models;
 using MyApp.Domain.Enums;
 
@@ -6,7 +7,10 @@ namespace MyApp.Domain.Entities;
 
 public class Customer : BaseEntity, IAuditableEntity, ISoftDeleteEntity
 {
-    [Key] public Guid Id { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [Key]
+    public Guid Id { get; set; }
+
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string EmailId { get; set; }

@@ -1,0 +1,58 @@
+﻿@model MyApp.Application.Models.Requests.CustomerCreateReq
+
+@{
+    ViewData["Title"] = "Add Customer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <h1>Add Customer</h1>
+    @Html.ValidationSummary()
+    <form asp-action="Add" asp-controller="Customer" method="post">
+
+        <div class="registerdiv">
+            
+            <div class="form-group col-sm-12">
+                <label asp-for="@Model.FirstName" class="col-lg-3 control-label"></label>
+                <br>
+                <div class="col-lg-9">
+                    @Html.TextBoxFor(m => m.FirstName, new { placeholder = "Name", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.FirstName)
+                </div>
+            </div>
+
+            <div class="form-group col-sm-12">
+                <label asp-for="@Model.LastName" class="col-lg-3 control-label"></label>
+                <br>
+                <div class="col-lg-9">
+                    @Html.TextBoxFor(m => m.LastName, new { placeholder = "Last Name", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.LastName)
+                </div>
+            </div>
+
+            <div class="form-group col-sm-12">
+                <label asp-for="@Model.EmailId" class="col-lg-3 control-label"></label>
+                <br>
+                <div class="col-lg-9">
+                    @Html.TextBoxFor(m => m.EmailId, new { placeholder = "e-mail", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.EmailId)
+                </div>
+            </div>
+
+
+            <div class="form-group col-sm-12">
+                <label asp-for="@Model.Address" class="col-lg-3 control-label"></label>
+                <br>
+                <div class="col-lg-9">
+                    @Html.TextBoxFor(m => m.Address, new { Address = "Password", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Address)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-12 btn-submit">
+                    <button type="submit" class="btn btn-success">Add Customer</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>  
