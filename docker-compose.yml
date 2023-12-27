@@ -13,7 +13,7 @@ services:
     ports:
       - "8088:80"
     build:
-      context: ../
+      context: .
       dockerfile: Dockerfile
     environment:
       - ConnectionStrings__DefaultConnection=User ID=postgres;Password=admin;Server=webapp-db;Port=5432;Database=WebAppDb;IntegratedSecurity=true;Pooling=true;
@@ -29,7 +29,7 @@ services:
       - POSTGRES_PASSWORD=admin
       - POSTGRES_DB=WebAppDb
     ports:
-      - "5433:5432"
+      - "5432"
     restart: always
     volumes:
       - webapp_data:/var/lib/postgresql/data/
