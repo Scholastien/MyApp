@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.DataProtection;
+
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -11,17 +13,21 @@ MyApp.Application.DependencyInjections.ConfigureServices(builder.Services);
 
 MyApp.Infrastructure.DependencyInjections.ConfigureServices(builder.Services, appSettings);
 
-// builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddControllersWithViews(); // n
-builder.Services.AddRazorPages(); // n
+builder.Services.AddControllersWithViews();
+
+builder.Services.AddDataProtection()
+    .SetApplicationName("WebApi")
+    .PersistKeysToFileSystem(new DirectoryInfo("/var/dpkeys/"));
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
+    app.UseMigrationsEndPoint();
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -33,7 +39,7 @@ else
     app.UseHsts();
 }
 
-// app.UseHttpsRedirection();
+// app.UseHttpsRedirection(); // TODO: configure HTTPS endpoint + specify server certificate
 
 app.UseStaticFiles();
 
