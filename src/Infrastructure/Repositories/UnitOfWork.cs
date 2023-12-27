@@ -38,13 +38,28 @@ public class UnitOfWork : IUnitOfWork
         return (IBaseRepositoryAsync<T>)repository;
     }
 
-    public async Task<int> SaveChangesAsync()
+    public async Task<int> SaveChangesAsync(CancellationToken ctk = default)
     {
-        return await _dbContext.SaveChangesAsync();
+        try
+        {
+            return await _dbContext.SaveChangesAsync(ctk);
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
     }
 
-    public async Task RollBackChangesAsync()
+
+    public async Task RollBackChangesAsync(CancellationToken ctk = default)
     {
-        await _dbContext.Database.RollbackTransactionAsync();
+        try
+        {
+            await _dbContext.Database.RollbackTransactionAsync(ctk);
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
     }
 }
