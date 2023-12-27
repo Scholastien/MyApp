@@ -15,7 +15,7 @@ public class BaseRepositoryAsync<T> : IBaseRepositoryAsync<T> where T : BaseEnti
         _dbContext = dbContext;
     }
 
-    public virtual async Task<T?> GetByIdAsync(Guid id)
+    public virtual async Task<T?> GetByIdAsync(Guid id, CancellationToken ctk)
     {
         return await _dbContext.Set<T>().FindAsync(id);
     }
@@ -25,7 +25,7 @@ public class BaseRepositoryAsync<T> : IBaseRepositoryAsync<T> where T : BaseEnti
         return await _dbContext.Set<T>().ToListAsync();
     }
 
-    public async Task<IList<T?>> ListAsync(ISpecification<T> spec)
+    public async Task<IList<T?>> ListAsync(ISpecification<T> spec, CancellationToken ctk)
     {
         return await ApplySpecification(spec).ToListAsync();
     }
@@ -40,7 +40,7 @@ public class BaseRepositoryAsync<T> : IBaseRepositoryAsync<T> where T : BaseEnti
         return await ApplySpecification(spec).CountAsync();
     }
 
-    public async Task<T> AddAsync(T entity)
+    public async Task<T> AddAsync(T entity, CancellationToken ctk)
     {
         await _dbContext.Set<T>().AddAsync(entity);
         return entity;

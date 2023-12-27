@@ -29,15 +29,7 @@
     @foreach (var (data, index) in Model.Data.WithIndex())
     {
         <tr>
-            <th scope="row">
-                @Html.ActionLink(
-                    index.ToString(),
-                    "Edit",
-                    "Customer",
-                    new { id = data.Id },
-                    null
-                )
-            </th>
+            <th scope="row">@index</th>
             <td>@data.FirstName</td>
             <td>@data.LastName</td>
             <td>@data.EmailId</td>
@@ -50,7 +42,7 @@
                         </a>
                     </button>
                     <button type="button" class="btn btn-danger">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Customer" asp-action="Delete" asp-route-id="@data.Id">
+                        <a class="nav-link text-dark" href="@Url.Action("Delete", "Customer", new {id = data.Id})">
                             <i class="fas fa-trash"></i>
                         </a>
                     </button>

@@ -21,7 +21,7 @@ public class CustomerService : ICustomerService
         _loggerService = loggerService;
     }
 
-    public async Task<CreateCustomerRes> CreateCustomer(CustomerCreateReq req)
+    public async Task<CreateCustomerRes> CreateCustomer(CustomerCreateReq req, CancellationToken ctk = default)
     {
         var customer = await _unitOfWork.Repository<Customer>().AddAsync(new Customer
         {
@@ -33,23 +33,23 @@ public class CustomerService : ICustomerService
             CreatedBy = Guid.NewGuid(),
             CreatedOn = DateTimeOffset.Now,
             IsDeleted = false
-        });
+        }, ctk);
 
-        await _unitOfWork.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync(ctk);
 
         _loggerService.LogInfo("New customer created");
 
         return new CreateCustomerRes() { Data = new CustomerDTO(customer) };
     }
 
-    public async Task UpdateCustomer(CustomerEditReq req)
+    public async Task UpdateCustomer(CustomerEditReq req, CancellationToken ctk = default)
     {
         try
         {
-            var customer = await _unitOfWork.Repository<Customer>().GetByIdAsync(req.Id);
+            var customer = await _unitOfWork.Repository<Customer>().GetByIdAsync(req.Id, ctk);
             req.WriteTo(customer);
             _unitOfWork.Repository<Customer>().Update(customer);
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync(ctk);
         }
         catch (Exception e)
         {
@@ -58,11 +58,11 @@ public class CustomerService : ICustomerService
         }
     }
 
-    public async Task<GetAllActiveCustomersRes> GetAllActiveCustomers()
+    public async Task<GetAllActiveCustomersRes> GetAllActiveCustomers(CancellationToken ctk = default)
     {
         var activeUsersSpec = CustomerSpecifications.GetAllActiveUsersSpec();
 
-        var customers = await _unitOfWork.Repository<Customer>().ListAsync(activeUsersSpec);
+        var customers = await _unitOfWork.Repository<Customer>().ListAsync(activeUsersSpec, ctk);
 
         return new GetAllActiveCustomersRes
         {
@@ -70,11 +70,11 @@ public class CustomerService : ICustomerService
         };
     }
 
-    public async Task<CustomerDTO> GetCustomerDtoById(Guid id)
+    public async Task<CustomerDTO> GetCustomerDtoById(Guid id, CancellationToken ctk = default)
     {
         try
         {
-            var customer = await _unitOfWork.Repository<Customer>().GetByIdAsync(id);
+            var customer = await _unitOfWork.Repository<Customer>().GetByIdAsync(id, ctk);
 
             return new CustomerDTO(customer);
         }
@@ -89,7 +89,7 @@ public class CustomerService : ICustomerService
     {
         try
         {
-            var user = await _unitOfWork.Repository<Customer>().GetByIdAsync(id);
+            var user = await _unitOfWork.Repository<Customer>().GetByIdAsync(id, ctk);
             _unitOfWork.Repository<Customer>().Delete(user);
             await _unitOfWork.SaveChangesAsync(ctk);
         }

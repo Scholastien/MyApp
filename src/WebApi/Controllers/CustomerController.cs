@@ -22,9 +22,9 @@ public class CustomerController : BaseControllerApp
     }
     
     [HttpGet]
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(CancellationToken ctk = default)
     {
-        var activeUsers = await _customerService.GetAllActiveCustomers();
+        var activeUsers = await _customerService.GetAllActiveCustomers(ctk);
 
         return View(activeUsers);
     }
@@ -37,17 +37,17 @@ public class CustomerController : BaseControllerApp
     
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Add(CustomerCreateReq req)
+    public async Task<IActionResult> Add(CustomerCreateReq req, CancellationToken ctk = default)
     {
-        await _customerService.CreateCustomer(req);
+        await _customerService.CreateCustomer(req, ctk);
         
         return RedirectToAction("Index");
     }
     
     [HttpGet]
-    public async Task<IActionResult> Edit(Guid id)
+    public async Task<IActionResult> Edit(Guid id, CancellationToken ctk = default)
     { 
-        var dto = await _customerService.GetCustomerDtoById(id);
+        var dto = await _customerService.GetCustomerDtoById(id, ctk);
 
         var editReq = new CustomerEditReq(dto);
         
@@ -55,17 +55,17 @@ public class CustomerController : BaseControllerApp
     }
     
     [HttpPost]
-    public async Task<IActionResult> Edit([FromForm] CustomerEditReq req)
+    public async Task<IActionResult> Edit([FromForm] CustomerEditReq req, CancellationToken ctk = default)
     { 
-        await _customerService.UpdateCustomer(req);
+        await _customerService.UpdateCustomer(req, ctk);
         
         return RedirectToAction("Index");
     }
 
     [HttpGet]
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<IActionResult> Delete(Guid id, CancellationToken ctk = default)
     {
-        await _customerService.DeleteCustomerWithId(id);
+        await _customerService.DeleteCustomerWithId(id, ctk);
         
         return RedirectToAction("Index");
     }
