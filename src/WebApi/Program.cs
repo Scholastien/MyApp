@@ -1,4 +1,8 @@
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
+using Microsoft.Extensions.Hosting.Internal;
+using MyApp.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,15 +17,26 @@ MyApp.Application.DependencyInjections.ConfigureServices(builder.Services);
 
 MyApp.Infrastructure.DependencyInjections.ConfigureServices(builder.Services, appSettings);
 
-builder.Services.AddEndpointsApiExplorer();
+var services = builder.Services;
 
-builder.Services.AddSwaggerGen();
+services.AddEndpointsApiExplorer();
 
-builder.Services.AddControllersWithViews();
+services.AddSwaggerGen();
 
-builder.Services.AddDataProtection()
+services.AddControllersWithViews();
+
+// builder.Services.AddDataProtection()
+//     .SetApplicationName("WebApi")
+//     .PersistKeysToFileSystem(new DirectoryInfo("/var/dpkeys/"));
+
+services.AddDataProtection()
     .SetApplicationName("WebApi")
-    .PersistKeysToFileSystem(new DirectoryInfo("/var/dpkeys/"));
+    .PersistKeysToFileSystem(new DirectoryInfo("/var/temp-key/"))
+    .UseCryptographicAlgorithms(new AuthenticatedEncryptorConfiguration
+    {
+        EncryptionAlgorithm = EncryptionAlgorithm.AES_256_CBC,
+        ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
+    });
 
 var app = builder.Build();
 

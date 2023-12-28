@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyApp.Application.Core.Services;
@@ -17,7 +16,8 @@ public static class DependencyInjections
     {
         services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql("name=ConnectionStrings:DefaultConnection", b => 
-                b.MigrationsAssembly("Infrastructure")));
+                b.MigrationsAssembly("Infrastructure"))
+                .UseValidationCheckConstraints());
         
         services.AddDefaultIdentity<IdentityUserBase>(options => options.SignIn.RequireConfirmedAccount = true)
             .AddEntityFrameworkStores<AppDbContext>();

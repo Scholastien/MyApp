@@ -158,7 +158,90 @@ namespace MyApp.Infrastructure.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("MyApp.Domain.Core.Models.DiscountPolicy", b =>
+            modelBuilder.Entity("MyApp.Domain.Entities.Billing", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Billing");
+                });
+
+            modelBuilder.Entity("MyApp.Domain.Entities.Customers.Customer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int?>("BillingDetailsId")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("CustomerType")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset?>("LastModifiedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int?>("ShippingDetailsId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StatusEnum")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Customers");
+
+                    b.HasDiscriminator<int>("CustomerType");
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("MyApp.Domain.Entities.Customers.CustomerDetails", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<Guid?>("BillingDetailsId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ShippingDetailsId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BillingDetailsId")
+                        .IsUnique();
+
+                    b.HasIndex("ShippingDetailsId")
+                        .IsUnique();
+
+                    b.ToTable("CustomersDetails");
+                });
+
+            modelBuilder.Entity("MyApp.Domain.Entities.Discounts.DiscountPolicy", b =>
                 {
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uuid");
@@ -175,9 +258,8 @@ namespace MyApp.Infrastructure.Data.Migrations
                     b.Property<DateTimeOffset>("CreatedOn")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("DiscountType")
+                        .HasColumnType("integer");
 
                     b.Property<Guid?>("LastModifiedBy")
                         .HasColumnType("uuid");
@@ -191,70 +273,9 @@ namespace MyApp.Infrastructure.Data.Migrations
 
                     b.ToTable("DiscountPolicies");
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("DiscountPolicy");
+                    b.HasDiscriminator<int>("DiscountType");
 
                     b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("MyApp.Domain.Entities.Billing", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("SubscriptionId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SubscriptionId");
-
-                    b.ToTable("Billing");
-                });
-
-            modelBuilder.Entity("MyApp.Domain.Entities.Customer", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("EmailId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTimeOffset?>("LastModifiedOn")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("MyApp.Domain.Entities.IdentityUserBase", b =>
@@ -278,14 +299,16 @@ namespace MyApp.Infrastructure.Data.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
@@ -340,7 +363,7 @@ namespace MyApp.Infrastructure.Data.Migrations
                     b.Property<Guid>("CustomerId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("SubscriptionId")
+                    b.Property<Guid>("BillingId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("CreatedBy")
@@ -358,59 +381,57 @@ namespace MyApp.Infrastructure.Data.Migrations
                     b.Property<int>("PaymentType")
                         .HasColumnType("integer");
 
-                    b.HasKey("CustomerId", "SubscriptionId");
+                    b.HasKey("CustomerId", "BillingId");
 
-                    b.HasIndex("SubscriptionId");
+                    b.HasIndex("BillingId");
 
                     b.ToTable("Payments");
                 });
 
-            modelBuilder.Entity("MyApp.Domain.Entities.Subscription", b =>
+            modelBuilder.Entity("MyApp.Domain.Entities.Customers.Company", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                    b.HasBaseType("MyApp.Domain.Entities.Customers.Customer");
 
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uuid");
+                    b.Property<string>("Kbis")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                    b.Property<DateTimeOffset>("CreatedOn")
-                        .HasColumnType("timestamp with time zone");
+                    b.HasDiscriminator().HasValue(2);
+                });
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
+            modelBuilder.Entity("MyApp.Domain.Entities.Customers.Individual", b =>
+                {
+                    b.HasBaseType("MyApp.Domain.Entities.Customers.Customer");
 
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("uuid");
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                    b.Property<DateTimeOffset?>("LastModifiedOn")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("Subscription");
+                    b.HasDiscriminator().HasValue(1);
                 });
 
             modelBuilder.Entity("MyApp.Domain.Entities.Discounts.BulkDiscount", b =>
                 {
-                    b.HasBaseType("MyApp.Domain.Core.Models.DiscountPolicy");
+                    b.HasBaseType("MyApp.Domain.Entities.Discounts.DiscountPolicy");
 
                     b.Property<int>("EntrepriseId")
-                        .HasColumnType("integer")
-                        .HasColumnName("EntrepriseId");
+                        .HasColumnType("integer");
 
-                    b.HasDiscriminator().HasValue("BulkDiscount");
+                    b.HasDiscriminator().HasValue(1);
                 });
 
             modelBuilder.Entity("MyApp.Domain.Entities.Discounts.PunctualDiscount", b =>
                 {
-                    b.HasBaseType("MyApp.Domain.Core.Models.DiscountPolicy");
+                    b.HasBaseType("MyApp.Domain.Entities.Discounts.DiscountPolicy");
 
-                    b.Property<int>("DiscountType")
-                        .HasColumnType("integer")
-                        .HasColumnName("DiscountType");
-
-                    b.HasDiscriminator().HasValue("PunctualDiscount");
+                    b.HasDiscriminator().HasValue(2);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -464,15 +485,28 @@ namespace MyApp.Infrastructure.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MyApp.Domain.Core.Models.DiscountPolicy", b =>
+            modelBuilder.Entity("MyApp.Domain.Entities.Customers.CustomerDetails", b =>
+                {
+                    b.HasOne("MyApp.Domain.Entities.Customers.Customer", null)
+                        .WithOne("BillingDetails")
+                        .HasForeignKey("MyApp.Domain.Entities.Customers.CustomerDetails", "BillingDetailsId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyApp.Domain.Entities.Customers.Customer", null)
+                        .WithOne("ShippingDetails")
+                        .HasForeignKey("MyApp.Domain.Entities.Customers.CustomerDetails", "ShippingDetailsId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MyApp.Domain.Entities.Discounts.DiscountPolicy", b =>
                 {
                     b.HasOne("MyApp.Domain.Entities.Billing", "Billing")
-                        .WithMany("DiscountPolicies")
+                        .WithMany()
                         .HasForeignKey("BillingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MyApp.Domain.Entities.Customer", "Customer")
+                    b.HasOne("MyApp.Domain.Entities.Customers.Customer", "Customer")
                         .WithMany()
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -483,51 +517,34 @@ namespace MyApp.Infrastructure.Data.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("MyApp.Domain.Entities.Billing", b =>
+            modelBuilder.Entity("MyApp.Domain.Entities.Payment", b =>
                 {
-                    b.HasOne("MyApp.Domain.Entities.Subscription", "Subscription")
-                        .WithMany("Billings")
-                        .HasForeignKey("SubscriptionId")
+                    b.HasOne("MyApp.Domain.Entities.Billing", "Billing")
+                        .WithMany()
+                        .HasForeignKey("BillingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Subscription");
-                });
-
-            modelBuilder.Entity("MyApp.Domain.Entities.Payment", b =>
-                {
-                    b.HasOne("MyApp.Domain.Entities.Customer", "Customer")
+                    b.HasOne("MyApp.Domain.Entities.Customers.Customer", "Customer")
                         .WithMany("Payments")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MyApp.Domain.Entities.Subscription", "Subscription")
-                        .WithMany("Payments")
-                        .HasForeignKey("SubscriptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Billing");
 
                     b.Navigation("Customer");
-
-                    b.Navigation("Subscription");
                 });
 
-            modelBuilder.Entity("MyApp.Domain.Entities.Billing", b =>
+            modelBuilder.Entity("MyApp.Domain.Entities.Customers.Customer", b =>
                 {
-                    b.Navigation("DiscountPolicies");
-                });
-
-            modelBuilder.Entity("MyApp.Domain.Entities.Customer", b =>
-                {
-                    b.Navigation("Payments");
-                });
-
-            modelBuilder.Entity("MyApp.Domain.Entities.Subscription", b =>
-                {
-                    b.Navigation("Billings");
+                    b.Navigation("BillingDetails")
+                        .IsRequired();
 
                     b.Navigation("Payments");
+
+                    b.Navigation("ShippingDetails")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

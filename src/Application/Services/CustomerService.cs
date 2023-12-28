@@ -1,102 +1,70 @@
-﻿using MyApp.Application.Core.Services;
-using MyApp.Application.Interfaces;
-using MyApp.Application.Models.DTOs;
-using MyApp.Application.Models.Requests;
-using MyApp.Application.Models.Responses;
+﻿using MyApp.Application.Models.Requests.Customers;
 using MyApp.Domain.Core.Repositories;
-using MyApp.Domain.Entities;
-using MyApp.Domain.Enums;
-using MyApp.Domain.Specifications;
+using MyApp.Domain.Entities.Customers;
 
 namespace MyApp.Application.Services;
 
-public class CustomerService : ICustomerService
+public abstract class CustomerService
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ILoggerService _loggerService;
 
-    public CustomerService(IUnitOfWork unitOfWork, ILoggerService loggerService)
+    protected CustomerService(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
-        _loggerService = loggerService;
     }
 
-    public async Task<CreateCustomerRes> CreateCustomer(CustomerCreateReq req, CancellationToken ctk = default)
+    protected async Task AddDetailsToCustomer(CustomerCreateReq req, Customer customer, CancellationToken ctk = default)
     {
-        var customer = await _unitOfWork.Repository<Customer>().AddAsync(new Customer
-        {
-            FirstName = req.FirstName,
-            LastName = req.LastName,
-            EmailId = req.EmailId,
-            Address = req.Address,
-            Status = CustomerStatus.Active,
-            CreatedBy = Guid.NewGuid(),
-            CreatedOn = DateTimeOffset.Now,
-            IsDeleted = false
-        }, ctk);
-
-        await _unitOfWork.SaveChangesAsync(ctk);
-
-        _loggerService.LogInfo("New customer created");
-
-        return new CreateCustomerRes() { Data = new CustomerDTO(customer) };
+        customer.BillingDetails = await _unitOfWork.Repository<CustomerDetails>()
+            .AddAsync(BillingCustomerDetails(req, customer), ctk);
+        
+        customer.ShippingDetails = await _unitOfWork.Repository<CustomerDetails>()
+            .AddAsync(ShippingCustomerDetails(req, customer), ctk);
     }
 
-    public async Task UpdateCustomer(CustomerEditReq req, CancellationToken ctk = default)
+    private static CustomerDetails BillingCustomerDetails(CustomerCreateReq req, Customer customer)
     {
-        try
+        return new CustomerDetails
         {
-            var customer = await _unitOfWork.Repository<Customer>().GetByIdAsync(req.Id, ctk);
-            req.WriteTo(customer);
-            _unitOfWork.Repository<Customer>().Update(customer);
-            await _unitOfWork.SaveChangesAsync(ctk);
-        }
-        catch (Exception e)
-        {
-            _loggerService.LogError(e.Message);
-            throw;
-        }
-    }
-
-    public async Task<GetAllActiveCustomersRes> GetAllActiveCustomers(CancellationToken ctk = default)
-    {
-        var activeUsersSpec = CustomerSpecifications.GetAllActiveUsersSpec();
-
-        var customers = await _unitOfWork.Repository<Customer>().ListAsync(activeUsersSpec, ctk);
-
-        return new GetAllActiveCustomersRes
-        {
-            Data = customers.Select(x => new CustomerDTO(x)).ToList()
+            BillingDetailsId = customer.Id,
+            //Customer = customer,
+            //CustomerBillingId = customer.Id,
+            //CustomerBilling = customer,
+            // City = req.BCity,
+            // Street = req.BStreet,
+            // PostalCode = req.BPostalCode,
+            // State = req.BState,
+            // Country = req.BCountry
         };
     }
 
-    public async Task<CustomerDTO> GetCustomerDtoById(Guid id, CancellationToken ctk = default)
+    private static CustomerDetails ShippingCustomerDetails(CustomerCreateReq req, Customer customer)
     {
-        try
-        {
-            var customer = await _unitOfWork.Repository<Customer>().GetByIdAsync(id, ctk);
+        if (!req.DifferentBillingAndShipping)
+            return new CustomerDetails
+            {
+                ShippingDetailsId = customer.Id,
+                //Customer = customer,
+                //CustomerShippingId = customer.Id,
+                //CustomerShipping = customer,
+                // City = req.BCity,
+                // Street = req.BStreet,
+                // PostalCode = req.BPostalCode,
+                // State = req.BState,
+                // Country = req.BCountry
+            };
 
-            return new CustomerDTO(customer);
-        }
-        catch (Exception e)
+        return new CustomerDetails
         {
-            _loggerService.LogError(e.Message);
-            throw;
-        }
-    }
-
-    public async Task DeleteCustomerWithId(Guid id, CancellationToken ctk = default)
-    {
-        try
-        {
-            var user = await _unitOfWork.Repository<Customer>().GetByIdAsync(id, ctk);
-            _unitOfWork.Repository<Customer>().Delete(user);
-            await _unitOfWork.SaveChangesAsync(ctk);
-        }
-        catch (Exception e)
-        {
-            _loggerService.LogError(e.Message);
-            throw;
-        }
+            ShippingDetailsId = customer.Id,
+            //Customer = customer,
+            //CustomerShippingId = customer.Id,
+            //CustomerShipping = customer,
+            // City = req.SCity,
+            // Street = req.SStreet,
+            // PostalCode = req.SPostalCode,
+            // State = req.SState,
+            // Country = req.SCountry
+        };
     }
 }

@@ -5,13 +5,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ExpressiveAnnotations" Version="2.9.6" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Responses\Customers\Companies\" />
+    <Folder Include="Models\Responses\Customers\Individuals\" />
   </ItemGroup>
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <RootNamespace>MyApp.Application</RootNamespace>
   </PropertyGroup>
 

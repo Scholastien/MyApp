@@ -1,4 +1,5 @@
-﻿using MyApp.Domain.Core.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using MyApp.Domain.Core.Models;
 
 namespace MyApp.Domain.Core.Repositories;
 

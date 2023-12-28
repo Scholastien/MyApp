@@ -29,7 +29,7 @@ services:
       - POSTGRES_PASSWORD=admin
       - POSTGRES_DB=WebAppDb
     ports:
-      - "5432"
+      - "5432:5432"
     restart: always
     volumes:
       - webapp_data:/var/lib/postgresql/data/

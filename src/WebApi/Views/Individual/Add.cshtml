@@ -1,0 +1,48 @@
+﻿@model MyApp.Application.Models.Requests.Customers.Individuals.IndividualCreateReq
+
+@{
+    ViewData["Title"] = "Add Individual";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <h1>Add Individual Customer</h1>
+    @Html.ValidationSummary()
+    <form asp-action="Add" asp-controller="Individual" method="post" enctype="application/x-www-form-urlencoded">
+
+        <div class="register-div">
+
+            <div class="form-group col-sm-12">
+                <label asp-for="@Model.FirstName" class="col-lg-3 control-label"></label>
+                <br>
+                <div class="col-lg-9">
+                    @Html.TextBoxFor(m => m.FirstName, new { placeholder = "Name", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.FirstName)
+                </div>
+            </div>
+
+            <div class="form-group col-sm-12">
+                <label asp-for="@Model.LastName" class="col-lg-3 control-label"></label>
+                <br>
+                <div class="col-lg-9">
+                    @Html.TextBoxFor(m => m.LastName, new { placeholder = "Last Name", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.LastName)
+                </div>
+            </div>
+
+            <div class="form-group col-sm-12">
+                <label asp-for="@Model.Email" class="col-lg-3 control-label"></label>
+                <br>
+                <div class="col-lg-9">
+                    @Html.TextBoxFor(m => m.Email, new { placeholder = "e-mail", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Email)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-12 btn-submit">
+                    <button type="submit" class="btn btn-success">Add Customer</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

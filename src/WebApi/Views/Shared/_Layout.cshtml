@@ -28,7 +28,10 @@
                     @if (SignInManager.IsSignedIn(User))
                     {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Customer" asp-action="Index"><i class="fas fa-user"></i> Customer</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Individual" asp-action="Index"><i class="fas fa-user"></i> Individuals</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Company" asp-action="Index"><i class="fas fa-building"></i> Companies</a>
                         </li>
                     }
                 </ul>

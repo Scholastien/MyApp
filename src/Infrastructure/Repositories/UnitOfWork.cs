@@ -40,26 +40,12 @@ public class UnitOfWork : IUnitOfWork
 
     public async Task<int> SaveChangesAsync(CancellationToken ctk = default)
     {
-        try
-        {
-            return await _dbContext.SaveChangesAsync(ctk);
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
+        return await _dbContext.SaveChangesAsync(ctk);
     }
 
 
     public async Task RollBackChangesAsync(CancellationToken ctk = default)
     {
-        try
-        {
-            await _dbContext.Database.RollbackTransactionAsync(ctk);
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
+        await _dbContext.Database.RollbackTransactionAsync(ctk);
     }
 }
