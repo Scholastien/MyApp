@@ -5,21 +5,19 @@ using MyApp.Domain.Enums;
 
 namespace MyApp.Domain.Entities.Customers;
 
-public abstract class Customer : BaseEntity, IAuditableEntity, ISoftDeleteEntity
+public abstract class Customer : BaseEntity, IIdentifiableByIdEntity, IAuditableEntity, ISoftDeleteEntity
 {
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    [Key]
-    public Guid Id { get; set; }
+    [Key] public Guid Id { get; set; }
 
     public CustomerTypeEnum CustomerType { get; set; }
     public ICollection<Payment> Payments { get; } = new List<Payment>();
     public CustomerStatusEnum StatusEnum { get; set; }
     [MaxLength(100)] public required string Email { get; set; }
     [MaxLength(15)] public required string PhoneNumber { get; set; }
-    
-    public int? BillingDetailsId { get; set; }
+
+    public Guid? BillingDetailsId { get; set; }
     public CustomerDetails BillingDetails { get; set; } = null!; // Reference navigation to dependent
-    public int? ShippingDetailsId { get; set; }
+    public Guid? ShippingDetailsId { get; set; }
     public CustomerDetails ShippingDetails { get; set; } = null!; // Reference navigation to dependent
 
     public Guid CreatedBy { get; set; }

@@ -21,7 +21,7 @@ public abstract class CustomerService
         customer.ShippingDetails = await _unitOfWork.Repository<CustomerDetails>()
             .AddAsync(ShippingCustomerDetails(req, customer), ctk);
     }
-
+    
     private static CustomerDetails BillingCustomerDetails(CustomerCreateReq req, Customer customer)
     {
         return new CustomerDetails
@@ -37,7 +37,7 @@ public abstract class CustomerService
             // Country = req.BCountry
         };
     }
-
+    
     private static CustomerDetails ShippingCustomerDetails(CustomerCreateReq req, Customer customer)
     {
         if (!req.DifferentBillingAndShipping)
@@ -53,7 +53,7 @@ public abstract class CustomerService
                 // State = req.BState,
                 // Country = req.BCountry
             };
-
+    
         return new CustomerDetails
         {
             ShippingDetailsId = customer.Id,

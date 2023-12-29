@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyApp.Infrastructure.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyApp.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231229215622_DropCustomerDetails")]
+    partial class DropCustomerDetails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -228,9 +231,6 @@ namespace MyApp.Infrastructure.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("BillingDetailsId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
 
@@ -259,9 +259,6 @@ namespace MyApp.Infrastructure.Data.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("character varying(15)");
 
-                    b.Property<Guid?>("ShippingDetailsId")
-                        .HasColumnType("uuid");
-
                     b.Property<int>("StatusEnum")
                         .HasColumnType("integer");
 
@@ -272,29 +269,6 @@ namespace MyApp.Infrastructure.Data.Migrations
                     b.HasDiscriminator<int>("CustomerType");
 
                     b.UseTphMappingStrategy();
-                });
-
-            modelBuilder.Entity("MyApp.Domain.Entities.Customers.CustomerDetails", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("BillingDetailsId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("ShippingDetailsId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BillingDetailsId")
-                        .IsUnique();
-
-                    b.HasIndex("ShippingDetailsId")
-                        .IsUnique();
-
-                    b.ToTable("CustomersDetails");
                 });
 
             modelBuilder.Entity("MyApp.Domain.Entities.Discounts.DiscountPolicy", b =>
@@ -607,19 +581,6 @@ namespace MyApp.Infrastructure.Data.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("MyApp.Domain.Entities.Customers.CustomerDetails", b =>
-                {
-                    b.HasOne("MyApp.Domain.Entities.Customers.Customer", null)
-                        .WithOne("BillingDetails")
-                        .HasForeignKey("MyApp.Domain.Entities.Customers.CustomerDetails", "BillingDetailsId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MyApp.Domain.Entities.Customers.Customer", null)
-                        .WithOne("ShippingDetails")
-                        .HasForeignKey("MyApp.Domain.Entities.Customers.CustomerDetails", "ShippingDetailsId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("MyApp.Domain.Entities.Discounts.DiscountPolicy", b =>
                 {
                     b.HasOne("MyApp.Domain.Entities.Product", "Product")
@@ -649,13 +610,7 @@ namespace MyApp.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("MyApp.Domain.Entities.Customers.Customer", b =>
                 {
-                    b.Navigation("BillingDetails")
-                        .IsRequired();
-
                     b.Navigation("Payments");
-
-                    b.Navigation("ShippingDetails")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("MyApp.Domain.Entities.Payment", b =>

@@ -3,7 +3,7 @@ using MyApp.Domain.Core.Models;
 
 namespace MyApp.Domain.Entities.Billings;
 
-public class Billing : BaseEntity, IAuditableEntity
+public class Billing : BaseEntity, IIdentifiableByIdEntity, IAuditableEntity
 {
     [Key] public Guid Id { get; set; }
 

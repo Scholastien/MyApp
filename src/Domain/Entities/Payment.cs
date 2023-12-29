@@ -7,11 +7,9 @@ using MyApp.Domain.Enums;
 
 namespace MyApp.Domain.Entities;
 
-public class Payment : BaseEntity, IAuditableEntity
+public class Payment : BaseEntity, IAuditableEntity, IIdentifiableByIdEntity
 {
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    [Key]
-    public Guid Id { get; set; }
+    [Key] public Guid Id { get; set; }
 
     public Guid CustomerId { get; set; }
     public required Customer Customer { get; set; }

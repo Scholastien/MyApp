@@ -6,9 +6,7 @@ namespace MyApp.Domain.Entities.Customers;
 
 public class CustomerDetails : BaseEntity
 {
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    [Key]
-    public int Id { get; init; }
+    [Key] public Guid Id { get; init; }
 
     public Guid? BillingDetailsId { get; set; }
     public Guid? ShippingDetailsId { get; set; }
