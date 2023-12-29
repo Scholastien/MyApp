@@ -1,4 +1,4 @@
-﻿version: '3.4'
+version: '3.4'
 
 networks:
   dev:
@@ -28,6 +28,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=admin
       - POSTGRES_DB=WebAppDb
+      - POSTGRES_HOST_AUTH_METHOD=trust # TODO: A enlever car ça by-pass l'auth (mis pour debugger)
     ports:
       - "5432:5432"
     restart: always
