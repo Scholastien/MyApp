@@ -4,9 +4,9 @@ using MyApp.Domain.Core.Specifications;
 
 namespace MyApp.Infrastructure.Repositories;
 
-public static class SpecificationEvaluator<T> where T : BaseEntity
+public static class SpecificationEvaluator<TEntity> where TEntity : BaseEntity
 {
-    public static IQueryable<T> GetQuery(IQueryable<T> inputQuery, ISpecification<T> specification)
+    public static IQueryable<TEntity> GetQuery(IQueryable<TEntity> inputQuery, ISpecification<TEntity> specification)
     {
         var query = inputQuery;
 

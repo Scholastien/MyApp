@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyApp.Infrastructure.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyApp.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231228172735_AddBillingPerimeter")]
+    partial class AddBillingPerimeter
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -296,8 +299,10 @@ namespace MyApp.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("MyApp.Domain.Entities.Discounts.DiscountPolicy", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BillingId")
                         .HasColumnType("uuid");
 
                     b.Property<int>("Amount")
@@ -318,12 +323,9 @@ namespace MyApp.Infrastructure.Data.Migrations
                     b.Property<DateTimeOffset?>("LastModifiedOn")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uuid");
+                    b.HasKey("CustomerId", "BillingId");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
+                    b.HasIndex("BillingId");
 
                     b.ToTable("DiscountPolicies");
 
@@ -618,13 +620,21 @@ namespace MyApp.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("MyApp.Domain.Entities.Discounts.DiscountPolicy", b =>
                 {
-                    b.HasOne("MyApp.Domain.Entities.Product", "Product")
+                    b.HasOne("MyApp.Domain.Entities.Billing", "Billing")
                         .WithMany()
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("BillingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Product");
+                    b.HasOne("MyApp.Domain.Entities.Customers.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Billing");
+
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("MyApp.Domain.Entities.Payment", b =>

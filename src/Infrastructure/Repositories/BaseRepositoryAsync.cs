@@ -6,7 +6,7 @@ using MyApp.Infrastructure.Data;
 
 namespace MyApp.Infrastructure.Repositories;
 
-public class BaseRepositoryAsync<T> : IBaseRepositoryAsync<T> where T : BaseEntity
+public class BaseRepositoryAsync<TEntity> : IBaseRepositoryAsync<TEntity> where TEntity : BaseEntity
 {
     private readonly AppDbContext _dbContext;
 
@@ -14,50 +14,50 @@ public class BaseRepositoryAsync<T> : IBaseRepositoryAsync<T> where T : BaseEnti
     {
         _dbContext = dbContext;
     }
-
-    public virtual async Task<T?> GetByIdAsync(Guid id, CancellationToken ctk)
+    
+    public async Task<TEntity?> GetByIdAsync(Guid id, CancellationToken ctk = default)
     {
-        return await _dbContext.Set<T>().FindAsync(id);
+        return await _dbContext.Set<TEntity>().FindAsync(new object[] { id }, cancellationToken: ctk);
     }
 
-    public async Task<IList<T>> ListAllAsync()
+    public async Task<IList<TEntity>> ListAllAsync()
     {
-        return await _dbContext.Set<T>().ToListAsync();
+        return await _dbContext.Set<TEntity>().ToListAsync();
     }
 
-    public async Task<IList<T?>> ListAsync(ISpecification<T> spec, CancellationToken ctk)
+    public async Task<List<TEntity?>> ListAsync(ISpecification<TEntity> spec, CancellationToken ctk = default)
     {
-        return await ApplySpecification(spec).ToListAsync();
+        return await ApplySpecification(spec).ToListAsync(ctk);
     }
 
-    public async Task<T?> FirstOrDefaultAsync(ISpecification<T> spec)
+    public async Task<TEntity?> FirstOrDefaultAsync(ISpecification<TEntity> spec, CancellationToken ctk = default)
     {
-        return await ApplySpecification(spec).FirstOrDefaultAsync();
+        return await ApplySpecification(spec).FirstOrDefaultAsync(ctk);
     }
 
-    public async Task<int> CountAsync(ISpecification<T> spec)
+    public async Task<int> CountAsync(ISpecification<TEntity> spec)
     {
         return await ApplySpecification(spec).CountAsync();
     }
 
-    public async Task<T> AddAsync(T entity, CancellationToken ctk)
+    public async Task<TEntity> AddAsync(TEntity entity, CancellationToken ctk = default)
     {
-        await _dbContext.Set<T>().AddAsync(entity);
+        await _dbContext.Set<TEntity>().AddAsync(entity, ctk);
         return entity;
     }
 
-    public void Update(T entity)
+    public void Update(TEntity entity)
     {
-        _dbContext.Set<T>().Update(entity);
+        _dbContext.Set<TEntity>().Update(entity);
     }
 
-    public void Delete(T entity)
+    public void Delete(TEntity entity)
     {
-        _dbContext.Set<T>().Remove(entity);
+        _dbContext.Set<TEntity>().Remove(entity);
     }
 
-    private IQueryable<T?> ApplySpecification(ISpecification<T> spec)
+    private IQueryable<TEntity?> ApplySpecification(ISpecification<TEntity> spec)
     {
-        return SpecificationEvaluator<T>.GetQuery(_dbContext.Set<T>().AsQueryable(), spec);
+        return SpecificationEvaluator<TEntity>.GetQuery(_dbContext.Set<TEntity>().AsQueryable(), spec);
     }
 }
