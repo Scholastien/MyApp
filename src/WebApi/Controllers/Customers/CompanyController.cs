@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Application.Interfaces;
-using MyApp.Application.Models.DTOs.Customers;
+using MyApp.Application.Interfaces.Services;
 using MyApp.Application.Models.Requests.Customers.Companies;
 using MyApp.Domain.Entities;
 using MyApp.Infrastructure.Data;
@@ -14,10 +14,10 @@ namespace MyApp.WebApi.Controllers.Customers;
 [Route("[controller]/[action]")]
 public class CompanyController : BaseControllerApp
 {
-    private readonly ICompanyService<CompanyDto> _companyService;
+    private readonly ICompanyService _companyService;
 
     public CompanyController(UserManager<IdentityUserBase> userManager, SignInManager<IdentityUserBase> signInManager,
-        ILogger<CompanyController> logger, AppDbContext dbContext, ICompanyService<CompanyDto> companyService) 
+        ILogger<CompanyController> logger, AppDbContext dbContext, ICompanyService companyService) 
         : base(userManager, signInManager, logger, dbContext)
     {
         _companyService = companyService;
@@ -28,7 +28,7 @@ public class CompanyController : BaseControllerApp
     {
         var activeUsers = await _companyService.GetAllActiveCompanies();
 
-        return View(activeUsers);
+        return View(activeUsers.Data);
     }
     
     [HttpGet]

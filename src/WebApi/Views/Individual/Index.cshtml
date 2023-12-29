@@ -1,6 +1,7 @@
-﻿@using MyApp.WebApi.Extensions
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-@model MyApp.Application.Models.Responses.Customers.GetAllActiveCustomersRes<MyApp.Application.Models.DTOs.Customers.IndividualDto>
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using MyApp.Infrastructure.Extensions
+@using MyApp.Application.Models.Responses.Customers.Individuals
+@model MultipleIndividualsRes
 
 @{
     ViewData["Title"] = "Individual";
@@ -40,7 +41,7 @@
                         </a>
                     </button>
                     <button type="button" class="btn btn-danger">
-                        <a class="nav-link text-dark" href="@Url.Action("Delete", "Individual", new {id = data.Id})">
+                        <a class="nav-link text-dark" href="@Url.Action("Delete", "Individual", new { id = data.Id })">
                             <i class="fas fa-trash"></i>
                         </a>
                     </button>

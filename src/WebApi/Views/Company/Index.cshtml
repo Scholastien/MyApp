@@ -1,6 +1,7 @@
-﻿@using MyApp.WebApi.Extensions
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-@model MyApp.Application.Models.Responses.Customers.GetAllActiveCustomersRes<MyApp.Application.Models.DTOs.Customers.CompanyDto>
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using MyApp.Infrastructure.Extensions
+@using MyApp.Application.Models.DTOs.Customers
+@model IList<CompanyDto>
 
 @{
     ViewData["Title"] = "Company";
@@ -26,7 +27,7 @@
     </tr>
     </thead>
     <tbody>
-    @foreach (var (data, index) in Model.Data.WithIndex())
+    @foreach (var (data, index) in Model.WithIndex())
     {
         <tr>
             <th scope="row">@index</th>

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Application.Interfaces;
-using MyApp.Application.Models.DTOs.Customers;
+using MyApp.Application.Interfaces.Services;
 using MyApp.Application.Models.Requests.Customers.Individuals;
 using MyApp.Domain.Entities;
 using MyApp.Infrastructure.Data;
@@ -14,11 +14,11 @@ namespace MyApp.WebApi.Controllers.Customers;
 [Route("[controller]/[action]")]
 public class IndividualController : BaseControllerApp
 {
-    private readonly IIndividualService<IndividualDto> _individualService;
+    private readonly IIndividualService _individualService;
 
     public IndividualController(UserManager<IdentityUserBase> userManager,
         SignInManager<IdentityUserBase> signInManager, ILogger<IndividualController> logger, AppDbContext dbContext,
-        IIndividualService<IndividualDto> individualService)
+        IIndividualService individualService)
         : base(userManager, signInManager, logger, dbContext)
     {
         _individualService = individualService;
