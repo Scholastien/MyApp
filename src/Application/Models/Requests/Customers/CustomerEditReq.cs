@@ -14,6 +14,10 @@ public abstract class CustomerEditReq<TCustomerDto,TCustomer> : BaseEditRequest<
     [Required]
     [MaxLength(50)]
     public string Email { get; set; }
+    
+    [Required]
+    [MaxLength(15)]
+    public string PhoneNumber { get; set; }
 
     protected CustomerEditReq()
     {
@@ -23,6 +27,7 @@ public abstract class CustomerEditReq<TCustomerDto,TCustomer> : BaseEditRequest<
     {
         Id = data.Id;
         Email = data.Email;
+        PhoneNumber = data.PhoneNumber;
         
         // TODO : shipping address
     }
@@ -30,6 +35,7 @@ public abstract class CustomerEditReq<TCustomerDto,TCustomer> : BaseEditRequest<
     public override void WriteTo(TCustomer customer)
     {
         customer.Email = Email;
+        customer.PhoneNumber = PhoneNumber;
         
         // TODO : shipping address
     }

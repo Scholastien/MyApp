@@ -29,6 +29,7 @@ public class CompanyService : CustomerService, ICompanyService
         var company = await _unitOfWork.Repository<Company>().AddAsync(new Company
         {
             Email = req.Email,
+            PhoneNumber = req.PhoneNumber,
             StatusEnum = CustomerStatusEnum.Active,
             CreatedBy = Guid.NewGuid(),
             CreatedOn = DateTimeOffset.Now,

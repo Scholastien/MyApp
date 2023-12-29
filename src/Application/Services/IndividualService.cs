@@ -30,6 +30,7 @@ public class IndividualService : CustomerService, IIndividualService
             FirstName = createReq.FirstName,
             LastName = createReq.LastName,
             Email = createReq.Email,
+            PhoneNumber = createReq.PhoneNumber,
             StatusEnum = CustomerStatusEnum.Active,
             CreatedBy = Guid.NewGuid(),
             CreatedOn = DateTimeOffset.Now,

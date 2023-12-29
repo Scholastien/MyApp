@@ -8,6 +8,8 @@ public abstract class CustomerCreateReq
     public bool DifferentBillingAndShipping { get; set; } = false;
 
     [Required] [MaxLength(50)] public string Email { get; set; }
+    
+    [Required] [MaxLength(50)] public string PhoneNumber { get; set; }
 
     // [Required] [MaxLength(100)] public string BStreet { get; set; }
     // [Required] [MaxLength(100)] public string BCity { get; set; }

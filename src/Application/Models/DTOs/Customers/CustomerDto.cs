@@ -7,6 +7,7 @@ public abstract class CustomerDto<T>: BaseDto<T> where T : Customer
 {
     public Guid Id { get; set; }
     public string Email { get; set; }
+    public string PhoneNumber { get; set; }
     public int Status { get; set; }
     public string StatusText { get; set; }
 
@@ -18,6 +19,7 @@ public abstract class CustomerDto<T>: BaseDto<T> where T : Customer
     {
         Id = customer.Id;
         Email = customer.Email;
+        PhoneNumber = customer.PhoneNumber;
         Status = (int) customer.StatusEnum;
         StatusText = customer.StatusEnum.ToString();
         // TODO : shipping address
@@ -26,6 +28,7 @@ public abstract class CustomerDto<T>: BaseDto<T> where T : Customer
     public override void WriteTo(T customer)
     {
         customer.Email = Email;
+        customer.PhoneNumber = PhoneNumber;
         customer.StatusEnum = (CustomerStatusEnum)Status;
         
         customer.LastModifiedOn = DateTimeOffset.Now;

@@ -22,8 +22,6 @@ public class IdentityUserRegistrationReq
     [Required(ErrorMessage = "Confirm Password is required")]
     [Compare("Password", ErrorMessage = "The Password and Confirm Password do not match")]
     public string ConfirmPassword { get; set; }
-        
-    public string PhoneNumber { get; set; }
 
     public IdentityUserBase ToNewIdentityUser()
     {
