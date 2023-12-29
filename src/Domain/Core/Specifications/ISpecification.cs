@@ -2,14 +2,14 @@
 
 namespace MyApp.Domain.Core.Specifications;
 
-public interface ISpecification<T>
+public interface ISpecification<TEntity>
 {
-    Expression<Func<T, bool>> Criteria { get; }
-    List<Expression<Func<T, object>>> Includes { get; }
+    Expression<Func<TEntity, bool>> Criteria { get; }
+    List<Expression<Func<TEntity, object>>> Includes { get; }
     List<string> IncludeStrings { get; }
-    Expression<Func<T, object>>? OrderBy { get; }
-    Expression<Func<T, object>>? OrderByDescending { get; }
-    Expression<Func<T, object>>? GroupBy { get; }
+    Expression<Func<TEntity, object>>? OrderBy { get; }
+    Expression<Func<TEntity, object>>? OrderByDescending { get; }
+    Expression<Func<TEntity, object>>? GroupBy { get; }
     int Take { get; }
     int Skip { get; }
     bool IsPagingEnabled { get; }

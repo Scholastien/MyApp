@@ -1,23 +1,20 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using MyApp.Domain.Core.Models;
-using MyApp.Domain.Enums;
 
-namespace MyApp.Domain.Entities.Discounts;
+namespace MyApp.Domain.Entities.Billings;
 
-
-public abstract class DiscountPolicy: IAuditableEntity
+public class BillingLine: BaseEntity, IAuditableEntity
 {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Key]
     public Guid Id { get; set; }
     
-    public Guid ProductId { get; set; }
-    public Product Product { get; set; }
+    public Guid BillingId { get; set; }
+    public Billing Billing { get; set; }
     
-    public DiscountTypeEnum DiscountType { get; set; }
-    
-    public int Amount { get; set; }
+    public required Product Product { get; set; }
+    public int Quantity { get; set; }
     
     public Guid CreatedBy { get; set; }
     public DateTimeOffset CreatedOn { get; set; }

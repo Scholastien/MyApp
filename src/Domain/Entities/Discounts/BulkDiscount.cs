@@ -1,6 +1,4 @@
-﻿using MyApp.Domain.Core.Models;
-
-namespace MyApp.Domain.Entities.Discounts;
+﻿namespace MyApp.Domain.Entities.Discounts;
 
 public class BulkDiscount : DiscountPolicy
 {

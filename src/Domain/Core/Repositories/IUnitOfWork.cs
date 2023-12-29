@@ -28,9 +28,9 @@ public interface IUnitOfWork
     /// <summary>
     /// Create an instance of Repository for a given type T.
     /// </summary>
-    /// <typeparam name="T"> A generic type representing a BaseEntity. </typeparam>
+    /// <typeparam name="TBaseEntity"> A generic type representing a BaseEntity. </typeparam>
     /// <returns> A Repository base on type T. </returns>
     /// <exception cref="NullReferenceException"> If the Repository is null.
     /// </exception>
-    IBaseRepositoryAsync<T> Repository<T>() where T : BaseEntity;
+    IBaseRepositoryAsync<TBaseEntity> Repository<TBaseEntity>() where TBaseEntity : BaseEntity;
 }
