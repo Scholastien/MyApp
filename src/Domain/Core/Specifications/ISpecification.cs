@@ -4,7 +4,7 @@ namespace MyApp.Domain.Core.Specifications;
 
 public interface ISpecification<TEntity>
 {
-    Expression<Func<TEntity, bool>> Criteria { get; }
+    Expression<Func<TEntity, bool>>? Criteria { get; }
     List<Expression<Func<TEntity, object>>> Includes { get; }
     List<string> IncludeStrings { get; }
     Expression<Func<TEntity, object>>? OrderBy { get; }

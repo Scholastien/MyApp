@@ -4,5 +4,5 @@ namespace MyApp.Domain.Entities.Customers;
 
 public class Company : Customer
 {
-    [MaxLength(100)] public string Kbis { get; set; }
+    [MaxLength(100)] public required string Kbis { get; set; }
 }

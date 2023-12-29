@@ -8,7 +8,7 @@ public class Billing : BaseEntity, IAuditableEntity
     [Key] public Guid Id { get; set; }
 
     public Guid PaymentId { get; set; }
-    public Payment Payment { get; set; }
+    public Payment Payment { get; set; } = null!;
 
     public ICollection<BillingLine> BillingLines { get; set; } = new List<BillingLine>();
 

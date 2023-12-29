@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
-using Microsoft.Extensions.Hosting.Internal;
-using MyApp.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -66,6 +64,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+#pragma warning disable ASP0014
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
@@ -73,6 +72,7 @@ app.UseEndpoints(endpoints =>
         pattern: "{controller=Home}/{action=Index}/{id?}");
     endpoints.MapRazorPages();
 });
+#pragma warning restore ASP0014
 
 using (var scope = app.Services.CreateScope())
 {

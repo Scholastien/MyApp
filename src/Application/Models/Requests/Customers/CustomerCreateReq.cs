@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using ExpressiveAnnotations.Attributes;
 
 namespace MyApp.Application.Models.Requests.Customers;
 

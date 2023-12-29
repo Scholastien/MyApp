@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MyApp.Application.Interfaces;
 using MyApp.Application.Interfaces.Services;
 using MyApp.Application.Models.Requests.Customers.Companies;
 using MyApp.Domain.Entities;

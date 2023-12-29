@@ -14,13 +14,13 @@ public abstract class Customer : BaseEntity, IAuditableEntity, ISoftDeleteEntity
     public CustomerTypeEnum CustomerType { get; set; }
     public ICollection<Payment> Payments { get; } = new List<Payment>();
     public CustomerStatusEnum StatusEnum { get; set; }
-    [MaxLength(100)] public string Email { get; set; }
-    [MaxLength(15)] public string PhoneNumber { get; set; }
+    [MaxLength(100)] public required string Email { get; set; }
+    [MaxLength(15)] public required string PhoneNumber { get; set; }
     
     public int? BillingDetailsId { get; set; }
-    public CustomerDetails BillingDetails { get; set; } // Reference navigation to dependent
+    public CustomerDetails BillingDetails { get; set; } = null!; // Reference navigation to dependent
     public int? ShippingDetailsId { get; set; }
-    public CustomerDetails ShippingDetails { get; set; } // Reference navigation to dependent
+    public CustomerDetails ShippingDetails { get; set; } = null!; // Reference navigation to dependent
 
     public Guid CreatedBy { get; set; }
     public DateTimeOffset CreatedOn { get; set; }

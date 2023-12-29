@@ -5,8 +5,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ExpressiveAnnotations" Version="2.9.6" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="jQuery" Version="3.7.1" />
+    <PackageReference Include="jQuery.Validation" Version="1.19.5" />
+    <PackageReference Include="Microsoft.jQuery.Unobtrusive.Validation" Version="4.0.0" />
+    <PackageReference Include="ExpressiveAnnotations" Version="2.9.6">
+      <NoWarn>$(NoWarn);NU1701</NoWarn>   
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

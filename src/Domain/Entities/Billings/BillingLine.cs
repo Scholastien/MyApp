@@ -13,7 +13,7 @@ public class BillingLine: BaseEntity, IAuditableEntity
     public Guid BillingId { get; set; }
     public Billing Billing { get; set; }
     
-    public required Product Product { get; set; }
+    public Product Product { get; set; }
     public int Quantity { get; set; }
     
     public Guid CreatedBy { get; set; }
