@@ -3,7 +3,7 @@ using MyApp.Domain.Enums;
 
 namespace MyApp.Application.Models.DTOs.Customers;
 
-public abstract class CustomerDto
+public abstract class CustomerDto<T>: BaseDto<T> where T : Customer 
 {
     public Guid Id { get; set; }
     public string Email { get; set; }
@@ -14,7 +14,7 @@ public abstract class CustomerDto
     {
     }
 
-    protected CustomerDto(Customer customer)
+    protected CustomerDto(T customer) : base(customer)
     {
         Id = customer.Id;
         Email = customer.Email;
@@ -23,10 +23,12 @@ public abstract class CustomerDto
         // TODO : shipping address
     }
 
-    protected void WriteTo(Customer customer)
+    public override void WriteTo(T customer)
     {
         customer.Email = Email;
         customer.StatusEnum = (CustomerStatusEnum)Status;
+        
+        customer.LastModifiedOn = DateTimeOffset.Now;
         // TODO : shipping address
     }
 }

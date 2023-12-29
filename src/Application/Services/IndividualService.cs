@@ -1,8 +1,8 @@
 ﻿using MyApp.Application.Core.Services;
-using MyApp.Application.Interfaces;
+using MyApp.Application.Interfaces.Services;
 using MyApp.Application.Models.DTOs.Customers;
 using MyApp.Application.Models.Requests.Customers.Individuals;
-using MyApp.Application.Models.Responses.Customers;
+using MyApp.Application.Models.Responses.Customers.Individuals;
 using MyApp.Domain.Core.Repositories;
 using MyApp.Domain.Entities.Customers;
 using MyApp.Domain.Enums;
@@ -10,7 +10,7 @@ using MyApp.Domain.Specifications.Customers;
 
 namespace MyApp.Application.Services;
 
-public class IndividualService : CustomerService, IIndividualService<IndividualDto>
+public class IndividualService : CustomerService, IIndividualService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILoggerService _loggerService;
@@ -22,7 +22,7 @@ public class IndividualService : CustomerService, IIndividualService<IndividualD
         _loggerService = loggerService;
     }
 
-    public async Task<CreateCustomerRes<IndividualDto>> CreateIndividual(IndividualCreateReq createReq,
+    public async Task<IndividualRes> CreateIndividual(IndividualCreateReq createReq,
         CancellationToken ctk = default)
     {
         var customer = await _unitOfWork.Repository<Individual>().AddAsync(new Individual
@@ -44,7 +44,7 @@ public class IndividualService : CustomerService, IIndividualService<IndividualD
 
         _loggerService.LogInfo("New individual created");
 
-        return new CreateCustomerRes<IndividualDto> { Data = new IndividualDto(customer) };
+        return new IndividualRes { Data = new IndividualDto(customer) };
     }
 
     public async Task UpdateIndividual(IndividualEditReq editReq, CancellationToken ctk = default)
@@ -64,13 +64,13 @@ public class IndividualService : CustomerService, IIndividualService<IndividualD
         _loggerService.LogInfo($"individual {editReq.Id} updated");
     }
 
-    public async Task<GetAllActiveCustomersRes<IndividualDto>> GetAllActiveIndividuals(CancellationToken ctk = default)
+    public async Task<MultipleIndividualsRes> GetAllActiveIndividuals(CancellationToken ctk = default)
     {
         var activeIndividualsSpec = CustomerSpecifications<Individual>.GetAllActiveCustomersSpec();
 
         var individuals = await _unitOfWork.Repository<Individual>().ListAsync(activeIndividualsSpec, ctk);
 
-        return new GetAllActiveCustomersRes<IndividualDto>
+        return new MultipleIndividualsRes
         {
             Data = individuals.Select(x => new IndividualDto(x)).ToList()
         };

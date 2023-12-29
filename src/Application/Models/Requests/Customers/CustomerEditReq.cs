@@ -4,7 +4,9 @@ using MyApp.Domain.Entities.Customers;
 
 namespace MyApp.Application.Models.Requests.Customers;
 
-public class CustomerEditReq
+public abstract class CustomerEditReq<TCustomerDto,TCustomer> : BaseEditRequest<TCustomerDto, TCustomer>
+    where TCustomerDto : CustomerDto<TCustomer> 
+    where TCustomer : Customer
 {
     [Required]
     public Guid Id { get; set; }
@@ -13,11 +15,11 @@ public class CustomerEditReq
     [MaxLength(50)]
     public string Email { get; set; }
 
-    public CustomerEditReq()
+    protected CustomerEditReq()
     {
     }
 
-    public CustomerEditReq(CustomerDto data)
+    protected CustomerEditReq(TCustomerDto data)
     {
         Id = data.Id;
         Email = data.Email;
@@ -25,10 +27,9 @@ public class CustomerEditReq
         // TODO : shipping address
     }
 
-    public void WriteTo(Customer customer)
+    public override void WriteTo(TCustomer customer)
     {
         customer.Email = Email;
-        customer.LastModifiedOn = DateTimeOffset.Now;
         
         // TODO : shipping address
     }

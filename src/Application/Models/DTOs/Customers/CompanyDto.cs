@@ -2,7 +2,7 @@
 
 namespace MyApp.Application.Models.DTOs.Customers;
 
-public class CompanyDto : CustomerDto
+public class CompanyDto : CustomerDto<Company>
 {
     public string Kbis { get; set; }
     
@@ -13,7 +13,7 @@ public class CompanyDto : CustomerDto
         Kbis = customer.Kbis;
     }
 
-    public void WriteTo(Company customer)
+    public override void WriteTo(Company customer)
     {
         base.WriteTo(customer);
         customer.Kbis = Kbis;

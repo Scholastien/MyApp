@@ -2,7 +2,7 @@
 
 namespace MyApp.Application.Models.DTOs.Customers;
 
-public class IndividualDto : CustomerDto
+public class IndividualDto : CustomerDto<Individual>
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }
@@ -15,7 +15,7 @@ public class IndividualDto : CustomerDto
         LastName = customer.LastName;
     }
 
-    public void WriteTo(Individual customer)
+    public override void WriteTo(Individual customer)
     {
         base.WriteTo(customer);
         customer.FirstName = FirstName;

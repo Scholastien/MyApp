@@ -10,8 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Responses\Customers\Companies\" />
-    <Folder Include="Models\Responses\Customers\Individuals\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
 
   <PropertyGroup>

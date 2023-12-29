@@ -4,7 +4,7 @@ using MyApp.Domain.Entities.Customers;
 
 namespace MyApp.Application.Models.Requests.Customers.Companies;
 
-public class CompanyEditReq : CustomerEditReq
+public class CompanyEditReq : CustomerEditReq<CompanyDto, Company>
 {
     [Required] [MaxLength(50)] public string Kbis { get; set; }
 
@@ -17,7 +17,7 @@ public class CompanyEditReq : CustomerEditReq
         Kbis = data.Kbis;
     }
 
-    public void WriteTo(Company customer)
+    public override void WriteTo(Company customer)
     {
         base.WriteTo(customer);
         customer.Kbis = Kbis;

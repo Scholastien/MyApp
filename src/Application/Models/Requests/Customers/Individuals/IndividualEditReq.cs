@@ -4,7 +4,7 @@ using MyApp.Domain.Entities.Customers;
 
 namespace MyApp.Application.Models.Requests.Customers.Individuals;
 
-public class IndividualEditReq : CustomerEditReq
+public class IndividualEditReq : CustomerEditReq<IndividualDto, Individual>
 {
     [Required] [MaxLength(50)] public string FirstName { get; set; }
 
@@ -20,7 +20,7 @@ public class IndividualEditReq : CustomerEditReq
         LastName = data.LastName;
     }
 
-    public void WriteTo(Individual customer)
+    public override void WriteTo(Individual customer)
     {
         base.WriteTo(customer);
         customer.FirstName = FirstName;
