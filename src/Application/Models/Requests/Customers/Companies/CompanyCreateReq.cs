@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using MyApp.Application.Interfaces.Models.Customers;
 
 namespace MyApp.Application.Models.Requests.Customers.Companies;
 
-public class CompanyCreateReq : CustomerCreateReq
+public class CompanyCreateReq : CustomerCreateReq, ICompanyReq
 {
-    [Required]
     [MaxLength(50)]
+    [Required(ErrorMessage = "Kbis is required")]
     public string Kbis { get; set; }
 }

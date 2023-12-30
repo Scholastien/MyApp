@@ -35,8 +35,6 @@ public class IndividualService : CustomerService, IIndividualService
             CreatedBy = Guid.NewGuid(),
             CreatedOn = DateTimeOffset.Now,
             IsDeleted = false,
-            BillingDetails = new CustomerDetails(),
-            ShippingDetails = new CustomerDetails()
         }, ctk);
 
 
@@ -79,7 +77,9 @@ public class IndividualService : CustomerService, IIndividualService
 
     public async Task<IndividualDto> GetIndividualDtoById(Guid id, CancellationToken ctk = default)
     {
-        var individual = await _unitOfWork.Repository<Individual>().GetByIdAsync(id, ctk);
+        var individualSpec = CustomerSpecifications<Individual>.GetCustomerWithDetails(id);
+        
+        var individual = await _unitOfWork.Repository<Individual>().FirstOrDefaultAsync(individualSpec, ctk);
 
         // Return if not null
         if (individual != null) return new IndividualDto(individual);

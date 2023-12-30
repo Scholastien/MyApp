@@ -78,7 +78,6 @@ public class CompanyService : CustomerService, ICompanyService
     public async Task<CompanyDto> GetCompanyDtoById(Guid id, CancellationToken ctk = default)
     {
         var companySpec = CustomerSpecifications<Company>.GetCustomerWithDetails(id);
-
         
         var company = await _unitOfWork.Repository<Company>().FirstOrDefaultAsync(companySpec, ctk);
         

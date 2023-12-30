@@ -1,4 +1,5 @@
 ﻿using MyApp.Application.Models.Requests.Customers;
+using MyApp.Domain.Core.Models;
 using MyApp.Domain.Core.Repositories;
 using MyApp.Domain.Entities.Customers;
 
@@ -22,49 +23,29 @@ public abstract class CustomerService
             .AddAsync(ShippingCustomerDetails(req, customer), ctk);
     }
     
-    private static CustomerDetails BillingCustomerDetails(CustomerCreateReq req, Customer customer)
+    private static CustomerDetails BillingCustomerDetails(CustomerCreateReq req, IIdentifiableByIdEntity customer)
     {
         return new CustomerDetails
         {
             BillingDetailsId = customer.Id,
-            //Customer = customer,
-            //CustomerBillingId = customer.Id,
-            //CustomerBilling = customer,
-            // City = req.BCity,
-            // Street = req.BStreet,
-            // PostalCode = req.BPostalCode,
-            // State = req.BState,
-            // Country = req.BCountry
+            City = req.BCity,
+            Street = req.BStreet,
+            PostalCode = req.BPostalCode,
+            State = req.BState,
+            Country = req.BCountry
         };
     }
     
-    private static CustomerDetails ShippingCustomerDetails(CustomerCreateReq req, Customer customer)
+    private static CustomerDetails ShippingCustomerDetails(CustomerCreateReq req, IIdentifiableByIdEntity customer)
     {
-        if (!req.DifferentBillingAndShipping)
-            return new CustomerDetails
-            {
-                ShippingDetailsId = customer.Id,
-                //Customer = customer,
-                //CustomerShippingId = customer.Id,
-                //CustomerShipping = customer,
-                // City = req.BCity,
-                // Street = req.BStreet,
-                // PostalCode = req.BPostalCode,
-                // State = req.BState,
-                // Country = req.BCountry
-            };
-    
         return new CustomerDetails
         {
             ShippingDetailsId = customer.Id,
-            //Customer = customer,
-            //CustomerShippingId = customer.Id,
-            //CustomerShipping = customer,
-            // City = req.SCity,
-            // Street = req.SStreet,
-            // PostalCode = req.SPostalCode,
-            // State = req.SState,
-            // Country = req.SCountry
+            City = req.SCity,
+            Street = req.SStreet,
+            PostalCode = req.SPostalCode,
+            State = req.SState,
+            Country = req.SCountry
         };
     }
 }

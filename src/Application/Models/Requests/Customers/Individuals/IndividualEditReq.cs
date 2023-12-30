@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using MyApp.Application.Interfaces.Models.Customers;
 using MyApp.Application.Models.DTOs.Customers;
 using MyApp.Domain.Entities.Customers;
 
 namespace MyApp.Application.Models.Requests.Customers.Individuals;
 
-public class IndividualEditReq : CustomerEditReq<IndividualDto, Individual>
+public class IndividualEditReq : CustomerEditReq<IndividualDto, Individual>, IIndividualReq
 {
     [Required] [MaxLength(50)] public string FirstName { get; set; }
 

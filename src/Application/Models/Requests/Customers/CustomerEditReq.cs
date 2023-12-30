@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using MyApp.Application.Interfaces.Models.Customers;
 using MyApp.Application.Models.DTOs.Customers;
 using MyApp.Domain.Entities.Customers;
 
 namespace MyApp.Application.Models.Requests.Customers;
 
-public abstract class CustomerEditReq<TCustomerDto,TCustomer> : BaseEditRequest<TCustomerDto, TCustomer>
+public abstract class CustomerEditReq<TCustomerDto,TCustomer> : BaseEditRequest<TCustomerDto, TCustomer>, ICustomerReq
     where TCustomerDto : CustomerDto<TCustomer> 
     where TCustomer : Customer
 {

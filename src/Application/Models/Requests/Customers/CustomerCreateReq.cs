@@ -1,39 +1,56 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using MyApp.Application.Interfaces.Models.Customers;
 
 namespace MyApp.Application.Models.Requests.Customers;
 
-public abstract class CustomerCreateReq
+public abstract class CustomerCreateReq : ICustomerReq
 {
-    public bool DifferentBillingAndShipping { get; set; } = false;
+    [MaxLength(50)]
+    [Required(ErrorMessage = "Email is required")]
+    public string Email { get; set; }
 
-    [Required] [MaxLength(50)] public string Email { get; set; }
-    
-    [Required] [MaxLength(50)] public string PhoneNumber { get; set; }
+    [MaxLength(15)]
+    [Required(ErrorMessage = "PhoneNumber is required")]
+    public string PhoneNumber { get; set; }
 
-    // [Required] [MaxLength(100)] public string BStreet { get; set; }
-    // [Required] [MaxLength(100)] public string BCity { get; set; }
-    // [Required] [MaxLength(100)] public string BPostalCode { get; set; }
-    // [Required] [MaxLength(100)] public string BState { get; set; }
-    // [Required] [MaxLength(100)] public string BCountry { get; set; }
-    //
-    // [RequiredIf("DifferentBillingAndShipping == true")]
-    // [MaxLength(100)]
-    // public string SCity { get; set; }
-    //
-    //
-    // [RequiredIf("DifferentBillingAndShipping == true")]
-    // [MaxLength(100)]
-    // public string SStreet { get; set; }
-    //
-    // [RequiredIf("DifferentBillingAndShipping == true")]
-    // [MaxLength(100)]
-    // public string SPostalCode { get; set; }
-    //
-    // [RequiredIf("DifferentBillingAndShipping == true")]
-    // [MaxLength(100)]
-    // public string SState { get; set; }
-    //
-    // [RequiredIf("DifferentBillingAndShipping == true")]
-    // [MaxLength(100)]
-    // public string SCountry { get; set; }
+    [MaxLength(100)]
+    [Required(ErrorMessage = "Billing Street is required")]
+    public string BStreet { get; set; }
+
+    [MaxLength(100)]
+    [Required(ErrorMessage = "Billing City is required")]
+    public string BCity { get; set; }
+
+    [MaxLength(100)]
+    [Required(ErrorMessage = "Billing PostalCode is required")]
+    public string BPostalCode { get; set; }
+
+    [MaxLength(100)]
+    [Required(ErrorMessage = "Billing State is required")]
+    public string BState { get; set; }
+
+    [MaxLength(100)]
+    [Required(ErrorMessage = "Billing Country is required")]
+    public string BCountry { get; set; }
+
+    [MaxLength(100)]
+    [Required(ErrorMessage = "Shipping City is required")]
+    public string SCity { get; set; }
+
+
+    [MaxLength(100)]
+    [Required(ErrorMessage = "Shipping Street is required")]
+    public string SStreet { get; set; }
+
+    [MaxLength(100)]
+    [Required(ErrorMessage = "Shipping Postal Code is required")]
+    public string SPostalCode { get; set; }
+
+    [MaxLength(100)]
+    [Required(ErrorMessage = "Shipping State is required")]
+    public string SState { get; set; }
+
+    [MaxLength(100)]
+    [Required(ErrorMessage = "Shipping Country is required")]
+    public string SCountry { get; set; }
 }
