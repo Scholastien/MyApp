@@ -1,0 +1,63 @@
+﻿@using  MyApp.Application.Models.Requests.Customers
+@model CustomerCreateReq
+
+<hr/>
+<h2>Shipping details</h2>
+
+<div class="form-row">
+    <div class="col-6 col-md-4">
+        <div class="form-group col">
+            <label asp-for="@Model.SStreet" class="col control-label"></label>
+            <br>
+            <div class="col">
+                @Html.TextBoxFor(m => m.SStreet, new { placeholder = "Street", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SStreet)
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6 col-md-4">
+        <div class="form-group col">
+            <label asp-for="@Model.SCity" class="col control-label"></label>
+            <br>
+            <div class="col">
+                @Html.TextBoxFor(m => m.SCity, new { placeholder = "City", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SCity)
+            </div>
+        </div>
+    </div>
+
+    <div class="col-6 col-md-4">
+        <div class="form-group col">
+            <label asp-for="@Model.SPostalCode" class="col control-label"></label>
+            <br>
+            <div class="col">
+                @Html.TextBoxFor(m => m.SPostalCode, new { placeholder = "Postal code", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SPostalCode)
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="col-6 col-md-6">
+        <div class="form-group col">
+            <label asp-for="@Model.SState" class="col control-label"></label>
+            <br>
+            <div class="col">
+                @Html.TextBoxFor(m => m.SState, new { placeholder = "State", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SState)
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-6">
+        <div class="form-group col">
+            <label asp-for="@Model.SCountry" class="col control-label"></label>
+            <br>
+            <div class="col">
+                @Html.TextBoxFor(m => m.SCountry, new { placeholder = "Country", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.SCountry)
+            </div>
+        </div>
+    </div>
+</div>

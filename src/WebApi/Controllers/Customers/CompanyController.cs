@@ -16,12 +16,12 @@ public class CompanyController : BaseControllerApp
     private readonly ICompanyService _companyService;
 
     public CompanyController(UserManager<IdentityUserBase> userManager, SignInManager<IdentityUserBase> signInManager,
-        ILogger<CompanyController> logger, AppDbContext dbContext, ICompanyService companyService) 
+        ILogger<CompanyController> logger, AppDbContext dbContext, ICompanyService companyService)
         : base(userManager, signInManager, logger, dbContext)
     {
         _companyService = companyService;
     }
-    
+
     [HttpGet]
     public async Task<IActionResult> Index()
     {
@@ -29,36 +29,47 @@ public class CompanyController : BaseControllerApp
 
         return View(activeUsers.Data);
     }
-    
+
     [HttpGet]
     public IActionResult Add()
     {
-        return View();
+        var req = new CompanyCreateReq();
+        return View(req);
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> Add([FromForm] CompanyCreateReq req)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(req);
+        }
+
         await _companyService.CreateCompany(req);
-        
+
         return RedirectToAction("Index");
     }
-    
+
     [HttpGet]
     public async Task<IActionResult> Edit(Guid id)
-    { 
+    {
         var dto = await _companyService.GetCompanyDtoById(id);
 
         var editReq = new CompanyEditReq(dto);
-        
+
         return View(editReq);
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> Edit([FromForm] CompanyEditReq req)
-    { 
-        await _companyService.UpdateCompany(req);
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(req);
+        }
         
+        await _companyService.UpdateCompany(req);
+
         return RedirectToAction("Index");
     }
 
@@ -66,7 +77,7 @@ public class CompanyController : BaseControllerApp
     public async Task<IActionResult> Delete(Guid id)
     {
         await _companyService.DeleteCompanyWithId(id);
-        
+
         return RedirectToAction("Index");
     }
 }

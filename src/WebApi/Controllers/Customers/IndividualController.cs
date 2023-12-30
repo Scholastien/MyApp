@@ -34,12 +34,18 @@ public class IndividualController : BaseControllerApp
     [HttpGet]
     public IActionResult Add()
     {
-        return View();
+        var req = new IndividualCreateReq();
+        return View(req);
     }
     
     [HttpPost]
     public async Task<IActionResult> Add([FromForm] IndividualCreateReq req)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(req);
+        }
+        
         await _individualService.CreateIndividual(req);
         
         return RedirectToAction("Index");
@@ -58,6 +64,11 @@ public class IndividualController : BaseControllerApp
     [HttpPost]
     public async Task<IActionResult> Edit([FromForm] IndividualEditReq req)
     { 
+        if (!ModelState.IsValid)
+        {
+            return View(req);
+        }
+        
         await _individualService.UpdateIndividual(req);
         
         return RedirectToAction("Index");

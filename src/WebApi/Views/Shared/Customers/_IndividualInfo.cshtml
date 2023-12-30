@@ -1,0 +1,25 @@
+﻿@using MyApp.Application.Interfaces.Models.Customers
+@model IIndividualReq
+
+<div class="form-row">
+    <div class="col-6 col-md-6">
+        <div class="form-group col">
+            <label asp-for="@Model.FirstName" class="col control-label"></label>
+            <br>
+            <div class="col">
+                @Html.TextBoxFor(m => m.FirstName, new { placeholder = "First name", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.FirstName)
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-6">
+        <div class="form-group col">
+            <label asp-for="@Model.LastName" class="col control-label"></label>
+            <br>
+            <div class="col">
+                @Html.TextBoxFor(m => m.LastName, new { placeholder = "Last name", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.LastName)
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+﻿@using MyApp.Application.Interfaces.Models.Customers
+@model ICompanyReq
+
+<div class="form-group col">
+    <label asp-for="@Model.Kbis" class="col control-label"></label>
+    <br>
+    <div class="col">
+        @Html.TextBoxFor(m => m.Kbis, new { placeholder = "Kbis", @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Kbis)
+    </div>
+</div>

@@ -1,0 +1,26 @@
+﻿@using MyApp.Application.Interfaces.Models.Customers
+@model ICustomerReq
+
+
+<div class="form-row">
+    <div class="col-6 col-md-6">
+        <div class="form-group col">
+            <label asp-for="@Model.Email" class="col control-label"></label>
+            <br>
+            <div class="col">
+                @Html.TextBoxFor(m => m.Email, new { placeholder = "e-mail", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Email)
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-6">
+        <div class="form-group col">
+            <label asp-for="@Model.PhoneNumber" class="col control-label"></label>
+            <br>
+            <div class="col">
+                @Html.TextBoxFor(m => m.PhoneNumber, new { placeholder = "Phone number", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.PhoneNumber)
+            </div>
+        </div>
+    </div>
+</div>
