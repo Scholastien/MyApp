@@ -7,10 +7,13 @@ namespace MyApp.Domain.Entities;
 
 public sealed class IdentityUserBase : IdentityUser, ISoftDeleteEntity
 {
-    [MaxLength(100)]
-    public required string FirstName { get; set; }
-    [MaxLength(100)]
-    public required string LastName { get; set; }
+    [MaxLength(100)] public required string FirstName { get; set; }
+    [MaxLength(100)] public required string LastName { get; set; }
     public RoleEnum Role { get; set; }
+
+    #region ISoftDeleteEntity
+
     public bool IsDeleted { get; set; }
+
+    #endregion
 }
