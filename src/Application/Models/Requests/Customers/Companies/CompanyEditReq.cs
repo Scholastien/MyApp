@@ -2,12 +2,14 @@
 using MyApp.Application.Interfaces.Models.Requests.Customers;
 using MyApp.Application.Models.DTOs.Customers;
 using MyApp.Domain.Entities.Customers;
+using MyApp.Domain.Enums;
 
 namespace MyApp.Application.Models.Requests.Customers.Companies;
 
 public class CompanyEditReq : CustomerEditReq<CompanyWithDetailsDto, Company>, ICompanyReq
 {
     [Required] [MaxLength(50)] public string Kbis { get; set; }
+    public CompanySizeEnum CompanySize { get; set; }
 
     public CompanyEditReq()
     {
@@ -16,11 +18,13 @@ public class CompanyEditReq : CustomerEditReq<CompanyWithDetailsDto, Company>, I
     public CompanyEditReq(CompanyWithDetailsDto data) : base(data)
     {
         Kbis = data.Kbis;
+        CompanySize = data.CompanySize;
     }
 
     public override void WriteTo(Company customer)
     {
         base.WriteTo(customer);
         customer.Kbis = Kbis;
+        customer.CompanySize = CompanySize;
     }
 }

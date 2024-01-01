@@ -7,46 +7,38 @@
     ViewData["Title"] = "Company";
 }
 
-<div class="text-right">
-    <button type="button" class="btn btn-primary">
-        <a class="nav-link text-dark" asp-area="" asp-controller="Company" asp-action="Add">
-            <i class="fas fa-user-plus"></i> Add Company
-        </a>
-    </button>
-</div>
-
-<hr/>
-
-<table class="table">
+<table class="table table-hover">
     <thead>
     <tr>
-        <th scope="col">#</th>
-        <th scope="col">Email</th>
-        <th scope="col">Phone number</th>
-        <th scope="col">Kbis</th>
-        <th scope="col"></th>
+        <th class="align-middle" scope="col">#</th>
+        <th class="align-middle" scope="col">Email</th>
+        <th class="align-middle" scope="col">Phone number</th>
+        <th class="align-middle" scope="col">Kbis</th>
+        <th class="align-middle" scope="col">Size</th>
+        <th class="align-middle" scope="col">
+            <a class="btn btn-secondary" asp-area="" asp-controller="Company" asp-action="Add">
+                <i class="fas fa-user-plus"></i> Add Company
+            </a>
+        </th>
     </tr>
     </thead>
     <tbody>
     @foreach (var (data, index) in Model.WithIndex())
     {
         <tr>
-            <th scope="row">@index</th>
-            <td>@data.Email</td>
-            <td>@data.PhoneNumber</td>
-            <td>@data.Kbis</td>
-            <td>
+            <th class="col-1" scope="row">@index</th>
+            <td class="col-2">@data.Email</td>
+            <td class="col-2">@data.PhoneNumber</td>
+            <td class="col-2">@data.Kbis</td>
+            <td class="col-2">@data.CompanySize.ToString()</td>
+            <td class="col-2">
                 <div class="btn-group" role="group" aria-label="customer-edit-group">
-                    <button type="button" class="btn btn-warning">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Company" asp-action="Edit" asp-route-id="@data.Id">
-                            <i class="fas fa-user-edit"></i>
-                        </a>
-                    </button>
-                    <button type="button" class="btn btn-danger">
-                        <a class="nav-link text-dark" href="@Url.Action("Delete", "Company", new {id = data.Id})">
-                            <i class="fas fa-trash"></i>
-                        </a>
-                    </button>
+                    <a class="btn btn-primary" asp-area="" asp-controller="Company" asp-action="Edit" asp-route-id="@data.Id">
+                        <i class="fas fa-user-edit"></i>
+                    </a>
+                    <a class="btn btn-danger" href="@Url.Action("Delete", "Company", new { id = data.Id })">
+                        <i class="fas fa-trash"></i>
+                    </a>
                 </div>
             </td>
         </tr>

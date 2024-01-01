@@ -1,10 +1,29 @@
-﻿@model MyApp.Application.Interfaces.Models.Requests.Customers.ICompanyReq
+﻿@using MyApp.Application.Interfaces.Models.Requests.Customers
+@using MyApp.Domain.Enums
+@model ICompanyReq
 
-<div class="form-group col">
-    <label asp-for="@Model.Kbis" class="col control-label"></label>
-    <br>
-    <div class="col">
-        @Html.TextBoxFor(m => m.Kbis, new { placeholder = "Kbis", @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.Kbis)
+<div class="form-row">
+    <div class="col-6 col-md-6">
+        <div class="form-group col">
+            <label asp-for="@Model.Kbis" class="col control-label"></label>
+            <br>
+            <div class="col">
+                @Html.TextBoxFor(m => m.Kbis, new { placeholder = "First name", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Kbis)
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-6">
+        <div class="form-group col">
+            <label asp-for="@Model.CompanySize" class="col control-label"></label>
+            <br>
+            <div class="col">
+                <select asp-for="@Model.CompanySize"
+                        class="custom-select form-control"
+                        asp-items="@Html.GetEnumSelectList<CompanySizeEnum>()">
+                </select>
+                @Html.ValidationMessageFor(m => m.CompanySize)
+            </div>
+        </div>
     </div>
 </div>

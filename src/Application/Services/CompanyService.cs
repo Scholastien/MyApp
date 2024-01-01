@@ -1,5 +1,4 @@
 ﻿using MyApp.Application.Core.Services;
-using MyApp.Application.Interfaces.Models;
 using MyApp.Application.Interfaces.Models.Requests;
 using MyApp.Application.Interfaces.Services;
 using MyApp.Application.Models.DTOs.Customers;
@@ -35,7 +34,8 @@ public class CompanyService : CustomerBaseService, ICompanyService
             CreatedBy = Guid.NewGuid(),
             CreatedOn = DateTimeOffset.Now,
             IsDeleted = false,
-            Kbis = req.Kbis
+            Kbis = req.Kbis,
+            CompanySize = req.CompanySize
         }, ctk);
 
         await AddDetailsToCustomer(req, company, ctk);

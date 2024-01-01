@@ -9,6 +9,7 @@ public class CompanyWithDetailsDto : CustomerWithDetailsDto<Company>, ICompanyDt
     #region ICompanyDto
 
     public string Kbis { get; set; }
+    public CompanySizeEnum CompanySize { get; set; }
 
     #endregion
     
@@ -18,11 +19,13 @@ public class CompanyWithDetailsDto : CustomerWithDetailsDto<Company>, ICompanyDt
     {
         CustomerType = CustomerTypeEnum.Company;
         Kbis = customer.Kbis;
+        CompanySize = customer.CompanySize;
     }
 
     public override void WriteTo(Company customer)
     {
         base.WriteTo(customer);
         customer.Kbis = Kbis;
+        customer.CompanySize = CompanySize;
     }
 }
