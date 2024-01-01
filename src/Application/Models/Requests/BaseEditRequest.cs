@@ -7,6 +7,7 @@ public abstract class BaseEditRequest<TDto, TEntity>
     where TDto : BaseDto<TEntity> 
     where TEntity : BaseEntity
 {
+    public string Controller { get; set; }
     protected BaseEditRequest()
     {
     }
@@ -15,7 +16,7 @@ public abstract class BaseEditRequest<TDto, TEntity>
     {
     }
 
-    public virtual void WriteTo(TEntity entity)
+    public virtual void WriteTo(TEntity customer)
     {
         
     }

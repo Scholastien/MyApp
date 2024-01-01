@@ -1,10 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using MyApp.Application.Interfaces.Models.Customers;
+using MyApp.Application.Interfaces.Models.Requests.Customers;
+using MyApp.Application.Interfaces.Models.Requests.CustomersDetails;
 
 namespace MyApp.Application.Models.Requests.Customers;
 
-public abstract class CustomerCreateReq : ICustomerReq
+public abstract class CustomerCreateReq : ICustomerReq, IBothCustomerDetailsReq
 {
+    #region ICustomerReq
+
     [MaxLength(50)]
     [Required(ErrorMessage = "Email is required")]
     public string Email { get; set; }
@@ -12,6 +15,10 @@ public abstract class CustomerCreateReq : ICustomerReq
     [MaxLength(15)]
     [Required(ErrorMessage = "PhoneNumber is required")]
     public string PhoneNumber { get; set; }
+
+    #endregion
+
+    #region ICustomerDetailsReq
 
     [MaxLength(100)]
     [Required(ErrorMessage = "Billing Street is required")]
@@ -53,4 +60,6 @@ public abstract class CustomerCreateReq : ICustomerReq
     [MaxLength(100)]
     [Required(ErrorMessage = "Shipping Country is required")]
     public string SCountry { get; set; }
+
+    #endregion
 }

@@ -13,18 +13,18 @@
         <div class="update-customer-div">
 
             @Html.Hidden("Id", Model.Id)
-            
+            @Html.Hidden("BillingId", Model.BillingId)
+            @Html.Hidden("ShippinId", Model.ShippinId)
+
             @await Html.PartialAsync("Customers/_CompanyInfo", Model)
 
             @await Html.PartialAsync("Customers/_GlobalInfo", Model)
+            
+            @await Html.PartialAsync("Customers/Edit/_DetailsReadOnlyForm", Model)
+            
+            @await Html.PartialAsync("Customers/Edit/_FromFooter", Model.Controller)
 
-            <div class="form-group">
-                <div class="col-sm-12 btn-submit">
-                    <button type="submit" class="btn btn-success">
-                        <i class="fas fa-save"></i> Save
-                    </button>
-                </div>
-            </div>
+            
         </div>
     </form>
 </div>

@@ -4,9 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using MyApp.Application.Interfaces.Services;
 using MyApp.Application.Models.Requests.Customers.Individuals;
 using MyApp.Domain.Entities;
+using MyApp.Domain.Enums;
 using MyApp.Infrastructure.Data;
 
-namespace MyApp.WebApi.Controllers.Customers;
+namespace MyApp.WebApi.Controllers.Customer;
 
 [Authorize]
 [ApiController]
@@ -56,7 +57,10 @@ public class IndividualController : BaseControllerApp
     { 
         var dto = await _individualService.GetIndividualDtoById(id);
 
-        var editReq = new IndividualEditReq(dto);
+        var editReq = new IndividualEditReq(dto)
+        {
+            CustomerType = CustomerTypeEnum.Individual
+        };
         
         return View(editReq);
     }

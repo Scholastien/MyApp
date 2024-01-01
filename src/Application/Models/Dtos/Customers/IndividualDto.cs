@@ -1,11 +1,16 @@
-﻿using MyApp.Domain.Entities.Customers;
+﻿using MyApp.Application.Interfaces.Models.Dtos;
+using MyApp.Domain.Entities.Customers;
 
 namespace MyApp.Application.Models.DTOs.Customers;
 
-public class IndividualDto : CustomerDto<Individual>
+public class IndividualDto : CustomerDto<Individual>, IIndividualDto
 {
+    #region IIndividualDto
+
     public string FirstName { get; set; }
     public string LastName { get; set; }
+
+    #endregion
     
     public IndividualDto(){}
 

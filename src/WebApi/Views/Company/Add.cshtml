@@ -14,12 +14,12 @@
         <div class="register-div">
 
             @await Html.PartialAsync("Customers/_CompanyInfo", Model)
-            
+
             @await Html.PartialAsync("Customers/_GlobalInfo", Model)
-
-            @await Html.PartialAsync("Customers/Create/_BillingDetails", Model)
-
-            @await Html.PartialAsync("Customers/Create/_ShippingDetails", Model)
+            <hr/>
+            @await Html.PartialAsync("Customers/Create/_CreateBillingDetailsFrom", Model)
+            <hr/>
+            @await Html.PartialAsync("Customers/Create/_CreateShippingDetailsFrom", Model)
 
 
             <div class="form-group">

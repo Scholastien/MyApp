@@ -1,17 +1,24 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using MyApp.Application.Interfaces.Models.Customers;
+using MyApp.Application.Interfaces.Models.Requests.Customers;
 using MyApp.Application.Models.DTOs.Customers;
 using MyApp.Domain.Entities.Customers;
+using MyApp.Domain.Enums;
 
 namespace MyApp.Application.Models.Requests.Customers;
 
-public abstract class CustomerEditReq<TCustomerDto,TCustomer> : BaseEditRequest<TCustomerDto, TCustomer>, ICustomerReq
-    where TCustomerDto : CustomerDto<TCustomer> 
+public abstract class CustomerEditReq<TCustomerDto,TCustomer> : BaseEditRequest<TCustomerDto, TCustomer>, ICustomerWithDetailsReq
+    where TCustomerDto : CustomerWithDetailsDto<TCustomer> 
     where TCustomer : Customer
 {
     [Required]
     public Guid Id { get; set; }
+    public required CustomerTypeEnum CustomerType { get; set; }
 
+    #region ICustomerWithDetailsReq
+    
+    public Guid BillingId { get; set; }
+    public Guid ShippinId { get; set; }
+    
     [Required]
     [MaxLength(50)]
     public string Email { get; set; }
@@ -19,6 +26,20 @@ public abstract class CustomerEditReq<TCustomerDto,TCustomer> : BaseEditRequest<
     [Required]
     [MaxLength(15)]
     public string PhoneNumber { get; set; }
+    
+    #endregion
+
+    public string BStreet { get; set; }
+    public string BCity { get; set; }
+    public string BPostalCode { get; set; }
+    public string BState { get; set; }
+    public string BCountry { get; set; }
+    public string SStreet { get; set; }
+    public string SCity { get; set; }
+    public string SPostalCode { get; set; }
+    public string SState { get; set; }
+    public string SCountry { get; set; }
+
 
     protected CustomerEditReq()
     {
@@ -30,14 +51,28 @@ public abstract class CustomerEditReq<TCustomerDto,TCustomer> : BaseEditRequest<
         Email = data.Email;
         PhoneNumber = data.PhoneNumber;
         
-        // TODO : shipping address
+        CustomerType = data.CustomerType;
+        Controller = data.CustomerType.ToString();
+
+        BillingId = data.BillingDetails.Id;
+        ShippinId = data.ShippingDetails.Id;
+        
+        BStreet = data.BillingDetails.Street;
+        BCity = data.BillingDetails.City;
+        BPostalCode = data.BillingDetails.PostalCode;
+        BState = data.BillingDetails.State;
+        BCountry = data.BillingDetails.Country;
+        
+        SStreet = data.ShippingDetails.Street;
+        SCity = data.ShippingDetails.City;
+        SPostalCode = data.ShippingDetails.PostalCode;
+        SState = data.ShippingDetails.State;
+        SCountry = data.ShippingDetails.Country;
     }
 
     public override void WriteTo(TCustomer customer)
     {
         customer.Email = Email;
         customer.PhoneNumber = PhoneNumber;
-        
-        // TODO : shipping address
     }
 }

@@ -1,0 +1,25 @@
+﻿@using MyApp.Application.Interfaces.Models.Requests.Customers
+@model ICustomerWithDetailsReq
+
+<div class="form-row border">
+    <div class="col-6 col-md-6 border">
+        <fieldset disabled>
+            @await Html.PartialAsync("Customers/Create/_CreateBillingDetailsFrom", Model)
+        </fieldset>
+        <div class="form-group col justify-content-end">
+            <a href="@Url.Action("Edit", "CustomerDetails", new { id = Model.BillingId })" class="btn btn-primary">
+                <i class="fas fa-edit"></i> Edit Billing
+            </a>
+        </div>
+    </div>
+    <div class="col-6 col-md-6 border">
+        <fieldset disabled>
+            @await Html.PartialAsync("Customers/Create/_CreateShippingDetailsFrom", Model)
+        </fieldset>
+        <div class="form-group col justify-content-end">
+            <a href="@Url.Action("Edit", "CustomerDetails", new { id = Model.ShippinId })" class="btn btn-primary">
+                <i class="fas fa-edit"></i> Edit Shipping
+            </a>
+        </div>
+    </div>
+</div>

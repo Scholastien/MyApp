@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using MyApp.Application.Interfaces.Models.Customers;
+using MyApp.Application.Interfaces.Models.Requests.Customers;
 
 namespace MyApp.Application.Models.Requests.Customers.Companies;
 

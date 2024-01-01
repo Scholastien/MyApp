@@ -12,14 +12,14 @@
     <form asp-action="Add" asp-controller="Individual" method="post" enctype="application/x-www-form-urlencoded">
 
         <div class="register-div">
-            
+
             @await Html.PartialAsync("Customers/_IndividualInfo", Model)
 
             @await Html.PartialAsync("Customers/_GlobalInfo", Model)
-
-            @await Html.PartialAsync("Customers/Create/_BillingDetails", Model)
-
-            @await Html.PartialAsync("Customers/Create/_ShippingDetails", Model)
+            <hr/>
+            @await Html.PartialAsync("Customers/Create/_CreateBillingDetailsFrom", Model)
+            <hr/>
+            @await Html.PartialAsync("Customers/Create/_CreateShippingDetailsFrom", Model)
 
             <div class="form-group">
                 <div class="col-sm-12 btn-submit">

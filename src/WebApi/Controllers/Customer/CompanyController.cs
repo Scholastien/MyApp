@@ -4,9 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using MyApp.Application.Interfaces.Services;
 using MyApp.Application.Models.Requests.Customers.Companies;
 using MyApp.Domain.Entities;
+using MyApp.Domain.Enums;
 using MyApp.Infrastructure.Data;
 
-namespace MyApp.WebApi.Controllers.Customers;
+namespace MyApp.WebApi.Controllers.Customer;
 
 [Authorize]
 [ApiController]
@@ -55,7 +56,10 @@ public class CompanyController : BaseControllerApp
     {
         var dto = await _companyService.GetCompanyDtoById(id);
 
-        var editReq = new CompanyEditReq(dto);
+        var editReq = new CompanyEditReq(dto)
+        {
+            CustomerType = CustomerTypeEnum.Company
+        };
 
         return View(editReq);
     }

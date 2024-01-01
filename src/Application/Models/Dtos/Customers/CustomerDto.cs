@@ -1,15 +1,22 @@
-﻿using MyApp.Domain.Entities.Customers;
+﻿using MyApp.Application.Interfaces.Models.Dtos;
+using MyApp.Application.Models.DTOs.CustumersDetails;
+using MyApp.Domain.Entities.Customers;
 using MyApp.Domain.Enums;
 
 namespace MyApp.Application.Models.DTOs.Customers;
 
-public abstract class CustomerDto<T>: BaseDto<T> where T : Customer 
+public abstract class CustomerDto<T>: BaseDto<T>, ICustomerDto
+    where T : Customer 
 {
+    #region ICustomerDto
+
     public Guid Id { get; set; }
     public string Email { get; set; }
     public string PhoneNumber { get; set; }
     public int Status { get; set; }
     public string StatusText { get; set; }
+
+    #endregion
 
     protected CustomerDto()
     {
@@ -22,7 +29,6 @@ public abstract class CustomerDto<T>: BaseDto<T> where T : Customer
         PhoneNumber = customer.PhoneNumber;
         Status = (int) customer.StatusEnum;
         StatusText = customer.StatusEnum.ToString();
-        // TODO : shipping address
     }
 
     public override void WriteTo(T customer)
@@ -32,6 +38,5 @@ public abstract class CustomerDto<T>: BaseDto<T> where T : Customer
         customer.StatusEnum = (CustomerStatusEnum)Status;
         
         customer.LastModifiedOn = DateTimeOffset.Now;
-        // TODO : shipping address
     }
 }

@@ -1,10 +1,15 @@
-﻿using MyApp.Domain.Entities.Customers;
+﻿using MyApp.Application.Interfaces.Models.Dtos;
+using MyApp.Domain.Entities.Customers;
 
 namespace MyApp.Application.Models.DTOs.Customers;
 
-public class CompanyDto : CustomerDto<Company>
+public class CompanyDto : CustomerDto<Company>, ICompanyDto
 {
+    #region ICompanyDto
+
     public string Kbis { get; set; }
+
+    #endregion
     
     public CompanyDto(){}
 

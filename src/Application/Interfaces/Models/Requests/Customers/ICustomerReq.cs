@@ -1,4 +1,4 @@
-﻿namespace MyApp.Application.Interfaces.Models.Customers;
+﻿namespace MyApp.Application.Interfaces.Models.Requests.Customers;
 
 public interface ICustomerReq
 {

@@ -1,4 +1,4 @@
-﻿namespace MyApp.Application.Interfaces.Models;
+﻿namespace MyApp.Application.Interfaces.Models.Requests;
 
 public interface IBaseResponse<TDto>
 {
