@@ -1,4 +1,4 @@
-﻿using MyApp.Application.Models.DTOs;
+﻿using MyApp.Application.Models.Dtos;
 using MyApp.Domain.Core.Models;
 
 namespace MyApp.Application.Models.Requests;

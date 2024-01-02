@@ -2,7 +2,7 @@
 using MyApp.Domain.Entities.Customers;
 using MyApp.Domain.Enums;
 
-namespace MyApp.Application.Models.DTOs.Customers;
+namespace MyApp.Application.Models.Dtos.Customers;
 
 public class IndividualWithDetailsDto : CustomerWithDetailsDto<Individual>, IIndividualDto
 {

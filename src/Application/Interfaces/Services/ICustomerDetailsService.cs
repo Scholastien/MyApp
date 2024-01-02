@@ -1,4 +1,4 @@
-﻿using MyApp.Application.Models.DTOs.CustumersDetails;
+﻿using MyApp.Application.Models.Dtos.CustumersDetails;
 using MyApp.Application.Models.Requests.Customers;
 
 namespace MyApp.Application.Interfaces.Services;

@@ -1,7 +1,7 @@
 ﻿using MyApp.Domain.Entities.Customers;
 using MyApp.Domain.Enums;
 
-namespace MyApp.Application.Models.DTOs.CustumersDetails;
+namespace MyApp.Application.Models.Dtos.CustumersDetails;
 
 public class CustomerDetailsDto : BaseDto<CustomerDetails>
 {

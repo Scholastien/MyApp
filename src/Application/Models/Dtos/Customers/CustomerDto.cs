@@ -1,9 +1,8 @@
 ﻿using MyApp.Application.Interfaces.Models.Dtos;
-using MyApp.Application.Models.DTOs.CustumersDetails;
 using MyApp.Domain.Entities.Customers;
 using MyApp.Domain.Enums;
 
-namespace MyApp.Application.Models.DTOs.Customers;
+namespace MyApp.Application.Models.Dtos.Customers;
 
 public abstract class CustomerDto<T>: BaseDto<T>, ICustomerDto
     where T : Customer 

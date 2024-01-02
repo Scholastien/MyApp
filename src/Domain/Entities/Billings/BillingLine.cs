@@ -11,10 +11,15 @@ public class BillingLine : BaseEntity, IIdentifiableByIdEntity, IAuditableEntity
     
     #endregion
 
+    #region Fks
+    
     public Guid BillingId { get; set; }
     public Billing Billing { get; set; }
 
+    public Guid ProductId { get; set; }
     public Product Product { get; set; }
+    
+    #endregion
     public int Quantity { get; set; }
 
     #region IAuditableEntity

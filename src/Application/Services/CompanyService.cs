@@ -1,7 +1,7 @@
 ﻿using MyApp.Application.Core.Services;
 using MyApp.Application.Interfaces.Models.Requests;
 using MyApp.Application.Interfaces.Services;
-using MyApp.Application.Models.DTOs.Customers;
+using MyApp.Application.Models.Dtos.Customers;
 using MyApp.Application.Models.Requests.Customers.Companies;
 using MyApp.Application.Models.Responses.Customers.Companies;
 using MyApp.Domain.Core.Repositories;

@@ -1,7 +1,7 @@
 ﻿using MyApp.Application.Interfaces.Models.Dtos;
 using MyApp.Domain.Entities.Customers;
 
-namespace MyApp.Application.Models.DTOs.Customers;
+namespace MyApp.Application.Models.Dtos.Customers;
 
 public class IndividualDto : CustomerDto<Individual>, IIndividualDto
 {

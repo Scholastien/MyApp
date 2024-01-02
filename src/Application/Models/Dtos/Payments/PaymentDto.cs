@@ -2,7 +2,7 @@
 using MyApp.Domain.Entities;
 using MyApp.Domain.Enums;
 
-namespace MyApp.Application.Models.DTOs.Payments;
+namespace MyApp.Application.Models.Dtos.Payments;
 
 public class PaymentDto: BaseDto<Payment>, IPaymentDto
 {
@@ -22,6 +22,7 @@ public class PaymentDto: BaseDto<Payment>, IPaymentDto
 
     public override void WriteTo(Payment entity)
     {
+        base.WriteTo(entity);
         entity.PaymentType = PaymentType;
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using MyApp.Domain.Core.Models;
+using MyApp.Domain.Entities.BillingsDiscounts;
 using MyApp.Domain.Entities.Customers;
+using MyApp.Domain.Entities.Discounts;
 
 namespace MyApp.Domain.Entities.Billings;
 
@@ -21,7 +23,9 @@ public class Billing : BaseEntity, IIdentifiableByIdEntity, IAuditableEntity
 
     #region Navigation
 
-    public ICollection<BillingLine> BillingLines { get; set; } = new List<BillingLine>();
+    public ICollection<BillingLine> BillingLines { get; } = new List<BillingLine>();
+    public ICollection<Discount> Discounts { get; } = new List<Discount>();
+    public ICollection<BillingDiscount> BillingsDiscounts { get; } = new List<BillingDiscount>();
 
     #endregion
 

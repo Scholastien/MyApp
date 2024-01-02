@@ -1,4 +1,4 @@
-﻿using MyApp.Application.Models.DTOs.Payments;
+﻿using MyApp.Application.Models.Dtos.Payments;
 
 namespace MyApp.Application.Models.Responses.Payment;
 

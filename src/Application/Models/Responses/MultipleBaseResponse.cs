@@ -1,6 +1,6 @@
 ﻿using MyApp.Application.Interfaces.Models;
 using MyApp.Application.Interfaces.Models.Requests;
-using MyApp.Application.Models.DTOs;
+using MyApp.Application.Models.Dtos;
 using MyApp.Domain.Core.Models;
 
 namespace MyApp.Application.Models.Responses;

@@ -1,6 +1,6 @@
 ﻿using MyApp.Domain.Core.Models;
 
-namespace MyApp.Application.Models.DTOs;
+namespace MyApp.Application.Models.Dtos;
 
 public abstract class BaseDto<T> where T : BaseEntity
 {

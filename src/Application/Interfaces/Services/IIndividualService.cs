@@ -1,5 +1,5 @@
 ﻿using MyApp.Application.Interfaces.Models.Requests;
-using MyApp.Application.Models.DTOs.Customers;
+using MyApp.Application.Models.Dtos.Customers;
 using MyApp.Application.Models.Requests.Customers.Individuals;
 using MyApp.Application.Models.Responses.Customers.Individuals;
 

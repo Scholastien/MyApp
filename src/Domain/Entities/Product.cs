@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using MyApp.Domain.Core.Models;
+using MyApp.Domain.Entities.Billings;
 
 namespace MyApp.Domain.Entities;
 
@@ -15,6 +16,11 @@ public class Product : BaseEntity, IIdentifiableByIdEntity, IAuditableEntity, IS
 
     [Required] public required float Price { get; set; }
 
+    #region Navigation
+
+    public ICollection<BillingLine> BillingLines { get; } = new List<BillingLine>();
+
+    #endregion
 
     #region IAuditableEntity
     

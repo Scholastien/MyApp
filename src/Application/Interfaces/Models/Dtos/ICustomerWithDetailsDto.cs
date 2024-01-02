@@ -1,5 +1,5 @@
-﻿using MyApp.Application.Models.DTOs.CustumersDetails;
-using MyApp.Application.Models.DTOs.Payments;
+﻿using MyApp.Application.Models.Dtos.CustumersDetails;
+using MyApp.Application.Models.Dtos.Payments;
 using MyApp.Domain.Enums;
 
 namespace MyApp.Application.Interfaces.Models.Dtos;

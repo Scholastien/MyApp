@@ -1,7 +1,7 @@
 ﻿using MyApp.Application.Core.Services;
 using MyApp.Application.Interfaces.Models.Requests;
 using MyApp.Application.Interfaces.Services;
-using MyApp.Application.Models.DTOs.Payments;
+using MyApp.Application.Models.Dtos.Payments;
 using MyApp.Application.Models.Requests.Payment;
 using MyApp.Application.Models.Responses.Payment;
 using MyApp.Domain.Core.Repositories;

@@ -1,4 +1,4 @@
-﻿using MyApp.Application.Models.DTOs.Payments;
+﻿using MyApp.Application.Models.Dtos.Payments;
 using MyApp.Domain.Enums;
 
 namespace MyApp.Application.Models.Requests.Payment;

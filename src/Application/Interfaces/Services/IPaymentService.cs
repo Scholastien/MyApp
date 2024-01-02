@@ -1,5 +1,5 @@
 ﻿using MyApp.Application.Interfaces.Models.Requests;
-using MyApp.Application.Models.DTOs.Payments;
+using MyApp.Application.Models.Dtos.Payments;
 using MyApp.Application.Models.Requests.Payment;
 using MyApp.Domain.Enums;
 

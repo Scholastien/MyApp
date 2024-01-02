@@ -1,6 +1,6 @@
 ﻿using MyApp.Application.Core.Services;
 using MyApp.Application.Interfaces.Services;
-using MyApp.Application.Models.DTOs.CustumersDetails;
+using MyApp.Application.Models.Dtos.CustumersDetails;
 using MyApp.Application.Models.Requests.Customers;
 using MyApp.Domain.Core.Repositories;
 using MyApp.Domain.Entities.Customers;

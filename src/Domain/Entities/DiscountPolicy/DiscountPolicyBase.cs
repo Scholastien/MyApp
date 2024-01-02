@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using MyApp.Domain.Core.Models;
+using MyApp.Domain.Entities.Discounts;
 using MyApp.Domain.Enums;
 
-namespace MyApp.Domain.Entities.Discounts;
+namespace MyApp.Domain.Entities.DiscountPolicy;
 
-public abstract class DiscountPolicy : IAuditableEntity, IIdentifiableByIdEntity
+public abstract class DiscountPolicyBase : IAuditableEntity, IIdentifiableByIdEntity
 {
     #region IIdentifiableByIdEntity
 
@@ -12,10 +13,15 @@ public abstract class DiscountPolicy : IAuditableEntity, IIdentifiableByIdEntity
 
     #endregion
 
-    public Guid ProductId { get; set; }
-    public Product Product { get; set; } = null!;
+    public required CustomerTypeEnum CustomerType { get; set; }
     public DiscountTypeEnum DiscountType { get; set; }
     public int Amount { get; set; }
+
+    #region Navigation
+
+    public ICollection<Discount> Discounts { get; } = new List<Discount>();
+
+    #endregion
 
     #region IAuditableEntity
 

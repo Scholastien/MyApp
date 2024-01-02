@@ -1,6 +1,6 @@
 ﻿using MyApp.Application.Interfaces.Models;
 using MyApp.Application.Interfaces.Models.Requests;
-using MyApp.Application.Models.DTOs.Customers;
+using MyApp.Application.Models.Dtos.Customers;
 
 namespace MyApp.Application.Models.Responses.Customers.Companies;
 
