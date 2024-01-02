@@ -14,16 +14,16 @@ public class IndividualDto : CustomerDto<Individual>, IIndividualDto
     
     public IndividualDto(){}
 
-    public IndividualDto(Individual customer) : base(customer)
+    public IndividualDto(Individual entity) : base(entity)
     {
-        FirstName = customer.FirstName;
-        LastName = customer.LastName;
+        FirstName = entity.FirstName;
+        LastName = entity.LastName;
     }
 
-    public override void WriteTo(Individual customer)
+    public override void WriteTo(Individual entity)
     {
-        base.WriteTo(customer);
-        customer.FirstName = FirstName;
-        customer.LastName = LastName;
+        base.WriteTo(entity);
+        entity.FirstName = FirstName;
+        entity.LastName = LastName;
     }
 }

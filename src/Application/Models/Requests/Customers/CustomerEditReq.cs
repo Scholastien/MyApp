@@ -1,34 +1,29 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using MyApp.Application.Interfaces.Models.Dtos;
 using MyApp.Application.Interfaces.Models.Requests.Customers;
+using MyApp.Application.Interfaces.Models.Requests.CustomersDetails;
 using MyApp.Application.Models.DTOs.Customers;
+using MyApp.Application.Models.DTOs.Payments;
 using MyApp.Domain.Entities.Customers;
 using MyApp.Domain.Enums;
 
 namespace MyApp.Application.Models.Requests.Customers;
 
-public abstract class CustomerEditReq<TCustomerDto,TCustomer> : BaseEditRequest<TCustomerDto, TCustomer>, ICustomerWithDetailsReq
-    where TCustomerDto : CustomerWithDetailsDto<TCustomer> 
+public abstract class CustomerEditReq<TCustomerDto, TCustomer> : BaseEditRequest<TCustomerDto, TCustomer>,
+    ICustomerWithDetailsReq
+    where TCustomerDto : CustomerWithDetailsDto<TCustomer>
     where TCustomer : Customer
 {
-    [Required]
-    public Guid Id { get; set; }
+    [Required] public Guid Id { get; set; }
     public required CustomerTypeEnum CustomerType { get; set; }
 
     #region ICustomerWithDetailsReq
-    
+
+    [Required] [MaxLength(50)] public string Email { get; set; }
+    [Required] [MaxLength(15)] public string PhoneNumber { get; set; }
+    public IEnumerable<IPaymentDto> Payments { get; set; }
     public Guid BillingId { get; set; }
     public Guid ShippinId { get; set; }
-    
-    [Required]
-    [MaxLength(50)]
-    public string Email { get; set; }
-    
-    [Required]
-    [MaxLength(15)]
-    public string PhoneNumber { get; set; }
-    
-    #endregion
-
     public string BStreet { get; set; }
     public string BCity { get; set; }
     public string BPostalCode { get; set; }
@@ -40,6 +35,8 @@ public abstract class CustomerEditReq<TCustomerDto,TCustomer> : BaseEditRequest<
     public string SState { get; set; }
     public string SCountry { get; set; }
 
+    #endregion
+
 
     protected CustomerEditReq()
     {
@@ -50,19 +47,21 @@ public abstract class CustomerEditReq<TCustomerDto,TCustomer> : BaseEditRequest<
         Id = data.Id;
         Email = data.Email;
         PhoneNumber = data.PhoneNumber;
-        
+
         CustomerType = data.CustomerType;
         Controller = data.CustomerType.ToString();
 
+        Payments = data.Payments;
+
         BillingId = data.BillingDetails.Id;
         ShippinId = data.ShippingDetails.Id;
-        
+
         BStreet = data.BillingDetails.Street;
         BCity = data.BillingDetails.City;
         BPostalCode = data.BillingDetails.PostalCode;
         BState = data.BillingDetails.State;
         BCountry = data.BillingDetails.Country;
-        
+
         SStreet = data.ShippingDetails.Street;
         SCity = data.ShippingDetails.City;
         SPostalCode = data.ShippingDetails.PostalCode;
@@ -70,9 +69,9 @@ public abstract class CustomerEditReq<TCustomerDto,TCustomer> : BaseEditRequest<
         SCountry = data.ShippingDetails.Country;
     }
 
-    public override void WriteTo(TCustomer customer)
+    public override void WriteTo(TCustomer entity)
     {
-        customer.Email = Email;
-        customer.PhoneNumber = PhoneNumber;
+        entity.Email = Email;
+        entity.PhoneNumber = PhoneNumber;
     }
 }

@@ -12,7 +12,7 @@ public static class CustomerSpecifications<T>
         return new BaseSpecification<T>(c => c.Id == id);
     }
     
-    public static BaseSpecification<T> GetCustomerWithDetailsMatchingId(Guid id)
+    public static BaseSpecification<T> GetCustomerWithBillingOrShippingId(Guid id)
     {
         var spec = new BaseSpecification<T>(customer => customer.BillingDetails.Id == id || customer.ShippingDetails.Id == id);
         spec.AddInclude(c => c.BillingDetails);
@@ -25,11 +25,12 @@ public static class CustomerSpecifications<T>
         return new BaseSpecification<T>(c => c.StatusEnum == CustomerStatusEnum.Active && c.IsDeleted == false);
     }
 
-    public static BaseSpecification<T> IncludeDetailsToCustomerWithId(Guid id)
+    public static BaseSpecification<T> AllIncludesToCustomerWithId(Guid id)
     {
         var spec = new BaseSpecification<T>(c => c.Id == id);
         spec.AddInclude(c => c.BillingDetails);
         spec.AddInclude(c => c.ShippingDetails);
+        spec.AddInclude(c => c.Payments);
         return spec;
     }
 }

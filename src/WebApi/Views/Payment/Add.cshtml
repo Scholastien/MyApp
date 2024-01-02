@@ -1,0 +1,54 @@
+﻿@using MyApp.Application.Models.Requests.Payment
+@using MyApp.Domain.Enums
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model PaymentCreateReq
+
+@{
+    ViewData["Title"] = "Edit Company";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <h1>Edit Company</h1>
+    @Html.ValidationSummary()
+    <form asp-action="Add" asp-controller="Payment" method="post" enctype="application/x-www-form-urlencoded">
+
+        <div class="update-customer-div">
+
+            @Html.Hidden("Id", Model.Id)
+            @Html.Hidden("CustomerId", Model.CustomerId)
+            @Html.Hidden("EntityController", Model.EntityController)
+            
+            <div class="form-row">
+                <div class="col-6 col-md-6">
+                    <div class="form-group col">
+                        <label asp-for="@Model.PaymentType" class="col control-label"></label>
+                        <br>
+                        <div class="col">
+                            <select asp-for="@Model.PaymentType"
+                                    class="custom-select form-control"
+                                    asp-items="@Html.GetEnumSelectList<PaymentTypeEnum>()">
+                            </select>
+                            @Html.ValidationMessageFor(m => m.PaymentType)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-12 btn-submit">
+                    <button type="submit" class="btn btn-success">Add Payment</button>
+                </div>
+            </div>
+
+            
+        </div>
+    </form>
+</div>
+
+@section Scripts{
+
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+    }
+
+}

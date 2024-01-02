@@ -11,7 +11,7 @@ using MyApp.Domain.Specifications.Customers;
 
 namespace MyApp.Application.Services;
 
-public class CompanyService : CustomerBaseService, ICompanyService
+public class CompanyService : CustomerService, ICompanyService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILoggerService _loggerService;
@@ -82,7 +82,7 @@ public class CompanyService : CustomerBaseService, ICompanyService
 
     public async Task<CompanyWithDetailsDto> GetCompanyDtoById(Guid id, CancellationToken ctk = default)
     {
-        var companySpec = CustomerSpecifications<Company>.IncludeDetailsToCustomerWithId(id);
+        var companySpec = CustomerSpecifications<Company>.AllIncludesToCustomerWithId(id);
 
         var company = await _unitOfWork.Repository<Company>().FirstOrDefaultAsync(companySpec, ctk);
         
@@ -111,7 +111,7 @@ public class CompanyService : CustomerBaseService, ICompanyService
 
     public async Task<CompanyWithDetailsDto> GetCompanyWithDetailsDtoById(Guid id, CancellationToken ctk = default)
     {
-        var customerSpec = CustomerSpecifications<Company>.GetCustomerWithDetailsMatchingId(id);
+        var customerSpec = CustomerSpecifications<Company>.GetCustomerWithBillingOrShippingId(id);
         var customer = await _unitOfWork.Repository<Company>().FirstOrDefaultAsync(customerSpec, ctk);
         
         var details = await _unitOfWork.Repository<CustomerDetails>().GetByIdAsync(id, ctk);

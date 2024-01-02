@@ -15,17 +15,17 @@ public class IndividualWithDetailsDto : CustomerWithDetailsDto<Individual>, IInd
     
     public IndividualWithDetailsDto(){}
 
-    public IndividualWithDetailsDto(Individual customer) : base(customer)
+    public IndividualWithDetailsDto(Individual entity) : base(entity)
     {
         CustomerType = CustomerTypeEnum.Individual;
-        FirstName = customer.FirstName;
-        LastName = customer.LastName;
+        FirstName = entity.FirstName;
+        LastName = entity.LastName;
     }
 
-    public override void WriteTo(Individual customer)
+    public override void WriteTo(Individual entity)
     {
-        base.WriteTo(customer);
-        customer.FirstName = FirstName;
-        customer.LastName = LastName;
+        base.WriteTo(entity);
+        entity.FirstName = FirstName;
+        entity.LastName = LastName;
     }
 }

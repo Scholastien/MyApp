@@ -31,12 +31,12 @@ public class CustomerDetailsDto : BaseDto<CustomerDetails>
         Country = details.Country;
     }
 
-    public override void WriteTo(CustomerDetails details)
+    public override void WriteTo(CustomerDetails entity)
     {
-        details.Street = Street;
-        details.City = City;
-        details.PostalCode = PostalCode;
-        details.State = State;
-        details.Country = Country;
+        entity.Street = Street;
+        entity.City = City;
+        entity.PostalCode = PostalCode;
+        entity.State = State;
+        entity.Country = Country;
     }
 }

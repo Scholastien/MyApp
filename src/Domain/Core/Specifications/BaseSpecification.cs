@@ -50,5 +50,4 @@ public class BaseSpecification<TEntity> : ISpecification<TEntity>
     {
         GroupBy = groupByExpression;
     }
-
 }

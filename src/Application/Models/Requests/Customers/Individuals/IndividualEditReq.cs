@@ -21,10 +21,10 @@ public class IndividualEditReq : CustomerEditReq<IndividualWithDetailsDto, Indiv
         LastName = data.LastName;
     }
 
-    public override void WriteTo(Individual customer)
+    public override void WriteTo(Individual entity)
     {
-        base.WriteTo(customer);
-        customer.FirstName = FirstName;
-        customer.LastName = LastName;
+        base.WriteTo(entity);
+        entity.FirstName = FirstName;
+        entity.LastName = LastName;
     }
 }

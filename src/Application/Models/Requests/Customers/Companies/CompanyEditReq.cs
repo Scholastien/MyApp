@@ -21,10 +21,10 @@ public class CompanyEditReq : CustomerEditReq<CompanyWithDetailsDto, Company>, I
         CompanySize = data.CompanySize;
     }
 
-    public override void WriteTo(Company customer)
+    public override void WriteTo(Company entity)
     {
-        base.WriteTo(customer);
-        customer.Kbis = Kbis;
-        customer.CompanySize = CompanySize;
+        base.WriteTo(entity);
+        entity.Kbis = Kbis;
+        entity.CompanySize = CompanySize;
     }
 }

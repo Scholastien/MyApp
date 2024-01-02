@@ -1,41 +1,59 @@
-﻿using MyApp.Application.Core.Services;
-using MyApp.Application.Interfaces.Models;
-using MyApp.Application.Interfaces.Models.Requests;
+﻿using MyApp.Application.Interfaces.Models.Requests.CustomersDetails;
 using MyApp.Application.Interfaces.Services;
-using MyApp.Application.Models.DTOs.Customers;
+using MyApp.Domain.Core.Models;
 using MyApp.Domain.Core.Repositories;
 using MyApp.Domain.Entities.Customers;
 using MyApp.Domain.Enums;
-using MyApp.Domain.Specifications.Customers;
 
 namespace MyApp.Application.Services;
 
-public class CustomerService : ICustomerService<CustomerDto<Customer>, Customer>
+public class CustomerService : ICustomerService
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly ILoggerService _loggerService;
 
-    public CustomerService(IUnitOfWork unitOfWork, ILoggerService loggerService)
+    public CustomerService(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
-        _loggerService = loggerService;
     }
 
-    public async Task<IBaseResponse<IList<CustomerDto<Customer>>>> GetAllActiveCustomers(CancellationToken ctk = default)
+    public async Task<CustomerTypeEnum> GetCustomerTypeWithId(Guid id)
     {
-        throw new NotImplementedException();
+        var customer = await _unitOfWork.Repository<Customer>().GetByIdAsync(id);
+        return customer.CustomerType;
+    }
+
+    protected async Task AddDetailsToCustomer(IBothCustomerDetailsReq req, Customer customer, CancellationToken ctk = default)
+    {
+        customer.BillingDetails = await _unitOfWork.Repository<CustomerDetails>()
+            .AddAsync(BillingCustomerDetails(req, customer), ctk);
+        
+        customer.ShippingDetails = await _unitOfWork.Repository<CustomerDetails>()
+            .AddAsync(ShippingCustomerDetails(req, customer), ctk);
     }
     
-    public async Task<CustomerTypeEnum> GetCustomerTypeWithId(Guid id, CancellationToken ctk = default)
+    private static CustomerDetails BillingCustomerDetails(IBothCustomerDetailsReq req, IIdentifiableByIdEntity customer)
     {
-        var customerSpec = CustomerSpecifications<Customer>.GetCustomerById(id);
-        var customer = await _unitOfWork.Repository<Customer>().FirstOrDefaultAsync(customerSpec, ctk);
-        
-        // Return if not null
-        if (customer != null) return customer.CustomerType;
-        
-        // Log and throw
-        _loggerService.LogError($"Couldn't find customer with ID {id}");
-        throw new NullReferenceException();
+        return new CustomerDetails
+        {
+            BillingDetailsId = customer.Id,
+            City = req.BCity,
+            Street = req.BStreet,
+            PostalCode = req.BPostalCode,
+            State = req.BState,
+            Country = req.BCountry
+        };
+    }
+
+    private static CustomerDetails ShippingCustomerDetails(IBothCustomerDetailsReq req, IIdentifiableByIdEntity customer)
+    {
+        return new CustomerDetails
+        {
+            ShippingDetailsId = customer.Id,
+            City = req.SCity,
+            Street = req.SStreet,
+            PostalCode = req.SPostalCode,
+            State = req.SState,
+            Country = req.SCountry
+        };
     }
 }

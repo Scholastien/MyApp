@@ -15,16 +15,16 @@ public class CompanyDto : CustomerDto<Company>, ICompanyDto
     
     public CompanyDto(){}
 
-    public CompanyDto(Company customer) : base(customer)
+    public CompanyDto(Company entity) : base(entity)
     {
-        Kbis = customer.Kbis;
-        CompanySize = customer.CompanySize;
+        Kbis = entity.Kbis;
+        CompanySize = entity.CompanySize;
     }
 
-    public override void WriteTo(Company customer)
+    public override void WriteTo(Company entity)
     {
-        base.WriteTo(customer);
-        customer.Kbis = Kbis;
-        customer.CompanySize = CompanySize;
+        base.WriteTo(entity);
+        entity.Kbis = Kbis;
+        entity.CompanySize = CompanySize;
     }
 }

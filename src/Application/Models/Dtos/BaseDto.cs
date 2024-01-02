@@ -7,11 +7,11 @@ public abstract class BaseDto<T> where T : BaseEntity
     protected BaseDto(){}
 
 
-    protected BaseDto(T customer)
+    protected BaseDto(T entity)
     {
     }
 
-    public virtual void WriteTo(T customer)
+    public virtual void WriteTo(T entity)
     {
     }
 }

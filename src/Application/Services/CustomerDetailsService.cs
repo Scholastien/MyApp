@@ -25,7 +25,7 @@ public class CustomerDetailsService : ICustomerDetailsService
         
         if (details == null)
         {
-            _loggerService.LogInfo($"Couldn't find CustomerDetails with ID {editReq.Id}");
+            _loggerService.LogError($"Couldn't find CustomerDetails with ID {editReq.Id}");
             throw new NullReferenceException();
         }
         
@@ -38,7 +38,7 @@ public class CustomerDetailsService : ICustomerDetailsService
 
     public async Task<CustomerDetailsDto> GetCustomerDetailsDtoById(Guid id, CancellationToken ctk = default)
     {
-        var customerSpec = CustomerSpecifications<Customer>.GetCustomerWithDetailsMatchingId(id);
+        var customerSpec = CustomerSpecifications<Customer>.GetCustomerWithBillingOrShippingId(id);
         var customer = await _unitOfWork.Repository<Customer>().FirstOrDefaultAsync(customerSpec, ctk);
         
         var details = await _unitOfWork.Repository<CustomerDetails>().GetByIdAsync(id, ctk);
@@ -50,7 +50,7 @@ public class CustomerDetailsService : ICustomerDetailsService
         };
         
         // Log and throw
-        _loggerService.LogInfo($"Couldn't find CustomerDetails with ID {id}");
+        _loggerService.LogError($"Couldn't find CustomerDetails with ID {id}");
         throw new NullReferenceException();
     }
 }

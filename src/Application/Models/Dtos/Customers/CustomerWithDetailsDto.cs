@@ -1,5 +1,6 @@
 ﻿using MyApp.Application.Interfaces.Models.Dtos;
 using MyApp.Application.Models.DTOs.CustumersDetails;
+using MyApp.Application.Models.DTOs.Payments;
 using MyApp.Domain.Entities.Customers;
 using MyApp.Domain.Enums;
 
@@ -13,6 +14,7 @@ public class CustomerWithDetailsDto<T> : CustomerDto<T>, ICustomerWithDetailsDto
     public CustomerTypeEnum CustomerType { get; set; }
     public CustomerDetailsDto BillingDetails { get; set; }
     public CustomerDetailsDto ShippingDetails { get; set; }
+    public IEnumerable<PaymentDto> Payments { get; set; }
 
     #endregion
 
@@ -20,17 +22,13 @@ public class CustomerWithDetailsDto<T> : CustomerDto<T>, ICustomerWithDetailsDto
     {
     }
 
-    protected CustomerWithDetailsDto(T customer) : base(customer)
+    protected CustomerWithDetailsDto(T entity) : base(entity)
     {
-        BillingDetails = new CustomerDetailsDto(customer.BillingDetails);
-        ShippingDetails = new CustomerDetailsDto(customer.ShippingDetails);
-    }
-
-    public override void WriteTo(T customer)
-    {
-        base.WriteTo(customer);
-
-        BillingDetails.WriteTo(customer.BillingDetails);
-        ShippingDetails.WriteTo(customer.ShippingDetails);
+        BillingDetails = new CustomerDetailsDto(entity.BillingDetails);
+        ShippingDetails = new CustomerDetailsDto(entity.ShippingDetails);
+        Payments = entity.Payments.Select(p => new PaymentDto(p)
+        {
+            EntityController = CustomerType.ToString()
+        });
     }
 }

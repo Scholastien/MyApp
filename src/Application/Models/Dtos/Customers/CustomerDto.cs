@@ -22,21 +22,21 @@ public abstract class CustomerDto<T>: BaseDto<T>, ICustomerDto
     {
     }
 
-    protected CustomerDto(T customer) : base(customer)
+    protected CustomerDto(T entity) : base(entity)
     {
-        Id = customer.Id;
-        Email = customer.Email;
-        PhoneNumber = customer.PhoneNumber;
-        Status = (int) customer.StatusEnum;
-        StatusText = customer.StatusEnum.ToString();
+        Id = entity.Id;
+        Email = entity.Email;
+        PhoneNumber = entity.PhoneNumber;
+        Status = (int) entity.StatusEnum;
+        StatusText = entity.StatusEnum.ToString();
     }
 
-    public override void WriteTo(T customer)
+    public override void WriteTo(T entity)
     {
-        customer.Email = Email;
-        customer.PhoneNumber = PhoneNumber;
-        customer.StatusEnum = (CustomerStatusEnum)Status;
+        entity.Email = Email;
+        entity.PhoneNumber = PhoneNumber;
+        entity.StatusEnum = (CustomerStatusEnum)Status;
         
-        customer.LastModifiedOn = DateTimeOffset.Now;
+        entity.LastModifiedOn = DateTimeOffset.Now;
     }
 }

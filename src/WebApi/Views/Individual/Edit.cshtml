@@ -17,6 +17,8 @@
             @await Html.PartialAsync("Customers/_IndividualInfo", Model)
 
             @await Html.PartialAsync("Customers/_GlobalInfo", Model)
+            
+            @await Html.PartialAsync("Payments/_PaymentList", Model)
 
             @await Html.PartialAsync("Customers/Edit/_DetailsReadOnlyForm", Model)
 

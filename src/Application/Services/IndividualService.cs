@@ -11,7 +11,7 @@ using MyApp.Domain.Specifications.Customers;
 
 namespace MyApp.Application.Services;
 
-public class IndividualService : CustomerBaseService, IIndividualService
+public class IndividualService : CustomerService, IIndividualService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILoggerService _loggerService;
@@ -82,7 +82,7 @@ public class IndividualService : CustomerBaseService, IIndividualService
 
     public async Task<IndividualWithDetailsDto> GetIndividualDtoById(Guid id, CancellationToken ctk = default)
     {
-        var individualSpec = CustomerSpecifications<Individual>.IncludeDetailsToCustomerWithId(id);
+        var individualSpec = CustomerSpecifications<Individual>.AllIncludesToCustomerWithId(id);
         
         var individual = await _unitOfWork.Repository<Individual>().FirstOrDefaultAsync(individualSpec, ctk);
 
@@ -110,7 +110,7 @@ public class IndividualService : CustomerBaseService, IIndividualService
 
     public async Task<IndividualWithDetailsDto> GetIndividualWithDetailsDtoById(Guid id, CancellationToken ctk = default)
     {
-        var customerSpec = CustomerSpecifications<Individual>.GetCustomerWithDetailsMatchingId(id);
+        var customerSpec = CustomerSpecifications<Individual>.GetCustomerWithBillingOrShippingId(id);
         var customer = await _unitOfWork.Repository<Individual>().FirstOrDefaultAsync(customerSpec, ctk);
         
         var details = await _unitOfWork.Repository<CustomerDetails>().GetByIdAsync(id, ctk);

@@ -31,7 +31,7 @@ public class CustomerDetailsController : BaseControllerApp
 
         var editReq = new CustomerDetailsEditReq(dto)
         {
-            CustomerType = dto.CustomerType
+            CustomerType = dto.CustomerType,
         };
 
         return View(editReq);

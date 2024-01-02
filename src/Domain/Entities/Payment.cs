@@ -13,10 +13,15 @@ public class Payment : BaseEntity, IAuditableEntity, IIdentifiableByIdEntity
     [Key] public Guid Id { get; set; }
     
     #endregion
+
+    #region Fks
+    
     public Guid CustomerId { get; set; }
-    public required Customer Customer { get; set; }
-    public required ICollection<Billing> Billing { get; set; }
-    public PaymentTypeEnum PaymentType { get; set; }
+    public Customer Customer { get; set; }
+
+    #endregion
+    
+    public required PaymentTypeEnum PaymentType { get; set; }
     
     #region IAuditableEntity
     

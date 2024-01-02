@@ -170,18 +170,18 @@ namespace MyApp.Infrastructure.Data.Migrations
                     b.Property<DateTimeOffset>("CreatedOn")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid?>("LastModifiedBy")
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset?>("LastModifiedOn")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("PaymentId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("PaymentId");
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("Billings");
                 });
@@ -619,13 +619,13 @@ namespace MyApp.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("MyApp.Domain.Entities.Billings.Billing", b =>
                 {
-                    b.HasOne("MyApp.Domain.Entities.Payment", "Payment")
-                        .WithMany("Billing")
-                        .HasForeignKey("PaymentId")
+                    b.HasOne("MyApp.Domain.Entities.Customers.Customer", "Customer")
+                        .WithMany("Billings")
+                        .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Payment");
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("MyApp.Domain.Entities.Billings.BillingLine", b =>
@@ -692,15 +692,12 @@ namespace MyApp.Infrastructure.Data.Migrations
                     b.Navigation("BillingDetails")
                         .IsRequired();
 
+                    b.Navigation("Billings");
+
                     b.Navigation("Payments");
 
                     b.Navigation("ShippingDetails")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("MyApp.Domain.Entities.Payment", b =>
-                {
-                    b.Navigation("Billing");
                 });
 #pragma warning restore 612, 618
         }

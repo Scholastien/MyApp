@@ -16,7 +16,7 @@ public abstract class BaseEditRequest<TDto, TEntity>
     {
     }
 
-    public virtual void WriteTo(TEntity customer)
+    public virtual void WriteTo(TEntity entity)
     {
         
     }
