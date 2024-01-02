@@ -17,7 +17,7 @@ public class IndividualService : CustomerService, IIndividualService
     private readonly ILoggerService _loggerService;
 
     public IndividualService(IUnitOfWork unitOfWork, ILoggerService loggerService)
-        : base(unitOfWork)
+        : base(unitOfWork, loggerService)
     {
         _unitOfWork = unitOfWork;
         _loggerService = loggerService;
@@ -82,7 +82,7 @@ public class IndividualService : CustomerService, IIndividualService
 
     public async Task<IndividualWithDetailsDto> GetIndividualDtoById(Guid id, CancellationToken ctk = default)
     {
-        var individualSpec = CustomerSpecifications<Individual>.AllIncludesToCustomerWithId(id);
+        var individualSpec = CustomerSpecifications<Individual>.AllIncludesForEditToCustomerWithId(id);
         
         var individual = await _unitOfWork.Repository<Individual>().FirstOrDefaultAsync(individualSpec, ctk);
 

@@ -1,0 +1,47 @@
+﻿@using MyApp.Application.Models.Responses.Customers.Billings
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using MyApp.Infrastructure.Extensions
+@model MultipleBillingsRes
+
+@{
+    ViewData["Title"] = "Company";
+}
+
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th class="col-1 align-middle" scope="col">#</th>
+        <th class="col-2 align-middle" scope="col">Number of articles</th>
+        <th class="col-2 align-middle" scope="col">Total brut</th>
+        <th class="col-2 align-middle" scope="col">Remise</th>
+        <th class="col-2 align-middle" scope="col">Total net</th>
+        <th class="col-2 align-middle" scope="col">
+            <a class="btn btn-secondary" href="@Url.Action("Add", "Billing", new { customerId = Model.CustomerId })">
+                <i class="fas fa-user-plus"></i> Add Invoice
+            </a>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var (data, index) in Model.Data.WithIndex())
+    {
+        <tr>
+            <th scope="row">@index</th>
+            <td>@index</td>
+            <td>@index</td>
+            <td>@index</td>
+            <td>@index</td>
+            <td>
+                <div class="btn-group" role="group" aria-label="customer-edit-group">
+                    @* <a class="btn btn-primary" asp-area="" asp-controller="Billing" asp-action="Edit" asp-route-id="@data.Id"> *@
+                    @*     <i class="fas fa-user-edit"></i> *@
+                    @* </a> *@
+                    @* <a class="btn btn-danger" href="@Url.Action("Delete", "Billing", new { id = data.Id })"> *@
+                    @*     <i class="fas fa-trash"></i> *@
+                    @* </a> *@
+                </div>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

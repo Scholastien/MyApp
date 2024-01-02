@@ -34,7 +34,7 @@
                     <a class="btn btn-primary" asp-area="" asp-controller="Company" asp-action="Edit" asp-route-id="@data.Id">
                         <i class="fas fa-user-edit"></i>
                     </a>
-                    <a class="btn btn-secondary text-white">
+                    <a class="btn btn-secondary text-white" href="@Url.Action("Index", "Billing", new { customerId = data.Id })">
                         <i class="fas fa-file-invoice"></i> Billing
                     </a>
                     <a class="btn btn-danger" href="@Url.Action("Delete", "Company", new { id = data.Id })">

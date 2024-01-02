@@ -17,7 +17,7 @@ public class CompanyService : CustomerService, ICompanyService
     private readonly ILoggerService _loggerService;
 
     public CompanyService(IUnitOfWork unitOfWork, ILoggerService loggerService)
-        : base(unitOfWork)
+        : base(unitOfWork, loggerService)
     {
         _unitOfWork = unitOfWork;
         _loggerService = loggerService;
@@ -82,7 +82,7 @@ public class CompanyService : CustomerService, ICompanyService
 
     public async Task<CompanyWithDetailsDto> GetCompanyDtoById(Guid id, CancellationToken ctk = default)
     {
-        var companySpec = CustomerSpecifications<Company>.AllIncludesToCustomerWithId(id);
+        var companySpec = CustomerSpecifications<Company>.AllIncludesForEditToCustomerWithId(id);
 
         var company = await _unitOfWork.Repository<Company>().FirstOrDefaultAsync(companySpec, ctk);
         
