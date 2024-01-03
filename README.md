@@ -12,18 +12,21 @@ MyApp est un template d'application web déployé sur un cluster Kubernetes (k8s
   kubectl config use-context docker-desktop
  ```
 - Installer [Tilt](https://docs.tilt.dev/install.html):
-  ```properties
+```properties
   iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/tilt-dev/tilt/master/scripts/install.ps1'))
- ```
+```
+
 ## Utilisation
 
 ### Lancement
 - Ouvrir un terminal à la racine du projet
 
 - Lancer Tilt:
+
 ```properties  
 tilt up  
-```  
+```
+
 Un utilitaire de visualisation se lance avec Tilt, une fois le build fini, l'application sera disponible sur http://localhost:3000/
 ### Arrêt
 ```properties  
