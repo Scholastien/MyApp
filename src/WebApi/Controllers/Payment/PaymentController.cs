@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Application.Interfaces.Services;
 using MyApp.Application.Models.Requests.Customers.Companies;
-using MyApp.Application.Models.Requests.Payment;
+using MyApp.Application.Models.Requests.Payments;
 using MyApp.Domain.Entities;
 using MyApp.Domain.Enums;
 using MyApp.Infrastructure.Data;

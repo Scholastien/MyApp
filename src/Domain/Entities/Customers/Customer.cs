@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using MyApp.Domain.Core.Models;
 using MyApp.Domain.Entities.Billings;
+using MyApp.Domain.Entities.Payments;
 using MyApp.Domain.Enums;
 
 namespace MyApp.Domain.Entities.Customers;

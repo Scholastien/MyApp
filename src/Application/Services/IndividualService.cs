@@ -2,6 +2,7 @@
 using MyApp.Application.Interfaces.Models.Requests;
 using MyApp.Application.Interfaces.Services;
 using MyApp.Application.Models.Dtos.Customers;
+using MyApp.Application.Models.Dtos.Customers.Individuals;
 using MyApp.Application.Models.Requests.Customers.Individuals;
 using MyApp.Application.Models.Responses.Customers.Individuals;
 using MyApp.Domain.Core.Repositories;
@@ -13,20 +14,15 @@ namespace MyApp.Application.Services;
 
 public class IndividualService : CustomerService, IIndividualService
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly ILoggerService _loggerService;
-
     public IndividualService(IUnitOfWork unitOfWork, ILoggerService loggerService)
         : base(unitOfWork, loggerService)
     {
-        _unitOfWork = unitOfWork;
-        _loggerService = loggerService;
     }
 
     public async Task<IBaseResponse<IndividualWithDetailsDto>> CreateIndividual(IndividualCreateReq createReq,
         CancellationToken ctk = default)
     {
-        var customer = await _unitOfWork.Repository<Individual>().AddAsync(new Individual
+        var customer = await UnitOfWork.Repository<Individual>().AddAsync(new Individual
         {
             FirstName = createReq.FirstName,
             LastName = createReq.LastName,
@@ -40,9 +36,9 @@ public class IndividualService : CustomerService, IIndividualService
 
 
         await AddDetailsToCustomer(createReq, customer, ctk);
-        await _unitOfWork.SaveChangesAsync(ctk);
+        await UnitOfWork.SaveChangesAsync(ctk);
 
-        _loggerService.LogInfo("New individual created");
+        LoggerService.LogInfo("New individual created");
 
         return new IndividualRes { Data = new IndividualWithDetailsDto(customer)
             {
@@ -53,26 +49,26 @@ public class IndividualService : CustomerService, IIndividualService
 
     public async Task UpdateIndividual(IndividualEditReq editReq, CancellationToken ctk = default)
     {
-        var individual = await _unitOfWork.Repository<Individual>().GetByIdAsync(editReq.Id, ctk);
+        var individual = await UnitOfWork.Repository<Individual>().GetByIdAsync(editReq.Id, ctk);
 
         if (individual == null)
         {
-            _loggerService.LogError($"Couldn't find individual with ID {editReq.Id}");
+            LoggerService.LogError($"Couldn't find individual with ID {editReq.Id}");
             throw new NullReferenceException();
         }
 
         editReq.WriteTo(individual);
-        _unitOfWork.Repository<Individual>().Update(individual);
-        await _unitOfWork.SaveChangesAsync(ctk);
+        UnitOfWork.Repository<Individual>().Update(individual);
+        await UnitOfWork.SaveChangesAsync(ctk);
 
-        _loggerService.LogInfo($"individual {editReq.Id} updated");
+        LoggerService.LogInfo($"individual {editReq.Id} updated");
     }
 
     public async Task<MultipleIndividualsRes> GetAllActiveIndividuals(CancellationToken ctk = default)
     {
         var activeIndividualsSpec = CustomerSpecifications<Individual>.GetAllActiveCustomersSpec();
 
-        var individuals = await _unitOfWork.Repository<Individual>().ListAsync(activeIndividualsSpec, ctk);
+        var individuals = await UnitOfWork.Repository<Individual>().ListAsync(activeIndividualsSpec, ctk);
 
         return new MultipleIndividualsRes
         {
@@ -82,38 +78,38 @@ public class IndividualService : CustomerService, IIndividualService
 
     public async Task<IndividualWithDetailsDto> GetIndividualDtoById(Guid id, CancellationToken ctk = default)
     {
-        var individualSpec = CustomerSpecifications<Individual>.AllIncludesForEditToCustomerWithId(id);
+        var individualSpec = CustomerSpecifications<Individual>.AllIncludesForEditToCustomerWithIdSpec(id);
         
-        var individual = await _unitOfWork.Repository<Individual>().FirstOrDefaultAsync(individualSpec, ctk);
+        var individual = await UnitOfWork.Repository<Individual>().FirstOrDefaultAsync(individualSpec, ctk);
 
         // Return if not null
         if (individual != null) return new IndividualWithDetailsDto(individual);
         
         // Log and throw
-        _loggerService.LogError($"Couldn't find individual with ID {id}");
+        LoggerService.LogError($"Couldn't find individual with ID {id}");
         throw new NullReferenceException();
     }
 
     public async Task DeleteIndividualWithId(Guid id, CancellationToken ctk = default)
     {
-        var individual = await _unitOfWork.Repository<Individual>().GetByIdAsync(id, ctk);
+        var individual = await UnitOfWork.Repository<Individual>().GetByIdAsync(id, ctk);
 
         if (individual == null)
         {
-            _loggerService.LogError($"Couldn't find individual with ID {id}");
+            LoggerService.LogError($"Couldn't find individual with ID {id}");
             throw new NullReferenceException();
         }
 
-        _unitOfWork.Repository<Individual>().Delete(individual);
-        await _unitOfWork.SaveChangesAsync(ctk);
+        UnitOfWork.Repository<Individual>().Delete(individual);
+        await UnitOfWork.SaveChangesAsync(ctk);
     }
 
     public async Task<IndividualWithDetailsDto> GetIndividualWithDetailsDtoById(Guid id, CancellationToken ctk = default)
     {
-        var customerSpec = CustomerSpecifications<Individual>.GetCustomerWithBillingOrShippingId(id);
-        var customer = await _unitOfWork.Repository<Individual>().FirstOrDefaultAsync(customerSpec, ctk);
+        var customerSpec = CustomerSpecifications<Individual>.GetCustomerWithBillingOrShippingIdSpec(id);
+        var customer = await UnitOfWork.Repository<Individual>().FirstOrDefaultAsync(customerSpec, ctk);
         
-        var details = await _unitOfWork.Repository<CustomerDetails>().GetByIdAsync(id, ctk);
+        var details = await UnitOfWork.Repository<CustomerDetails>().GetByIdAsync(id, ctk);
 
         // Return if not null
         if (customer != null) return new IndividualWithDetailsDto(customer)
@@ -122,7 +118,7 @@ public class IndividualService : CustomerService, IIndividualService
         };
         
         // Log and throw
-        _loggerService.LogInfo($"Couldn't find CustomerDetails with ID {id}");
+        LoggerService.LogInfo($"Couldn't find CustomerDetails with ID {id}");
         throw new NullReferenceException();
     }
 }

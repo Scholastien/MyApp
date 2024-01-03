@@ -2,7 +2,7 @@
 using MyApp.Domain.Core.Models;
 using MyApp.Domain.Entities.Billings;
 
-namespace MyApp.Domain.Entities;
+namespace MyApp.Domain.Entities.Products;
 
 public class Product : BaseEntity, IIdentifiableByIdEntity, IAuditableEntity, ISoftDeleteEntity
 {

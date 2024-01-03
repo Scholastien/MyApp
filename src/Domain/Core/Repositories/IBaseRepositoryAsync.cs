@@ -9,7 +9,7 @@ public interface IBaseRepositoryAsync<TEntity> where TEntity : BaseEntity
     Task<IList<TEntity>> ListAllAsync();
     Task<List<TEntity?>> ListAsync(ISpecification<TEntity> spec, CancellationToken ctk = default);
     Task<TEntity?> FirstOrDefaultAsync(ISpecification<TEntity> spec, CancellationToken ctk = default);
-    Task<TEntity> AddAsync(TEntity entity, CancellationToken ctk);
+    Task<TEntity> AddAsync(TEntity entity, CancellationToken ctk = default);
     void Update(TEntity entity);
     void Delete(TEntity entity);
     Task<int> CountAsync(ISpecification<TEntity> spec);

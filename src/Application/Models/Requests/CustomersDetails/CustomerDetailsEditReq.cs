@@ -2,7 +2,7 @@
 using MyApp.Domain.Entities.Customers;
 using MyApp.Domain.Enums;
 
-namespace MyApp.Application.Models.Requests.Customers;
+namespace MyApp.Application.Models.Requests.CustomersDetails;
 
 public class CustomerDetailsEditReq : BaseEditRequest<CustomerDetailsDto, CustomerDetails>
 {

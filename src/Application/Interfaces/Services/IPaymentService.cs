@@ -1,6 +1,6 @@
 ﻿using MyApp.Application.Interfaces.Models.Requests;
 using MyApp.Application.Models.Dtos.Payments;
-using MyApp.Application.Models.Requests.Payment;
+using MyApp.Application.Models.Requests.Payments;
 using MyApp.Domain.Enums;
 
 namespace MyApp.Application.Interfaces.Services;

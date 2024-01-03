@@ -1,5 +1,5 @@
 ﻿@using MyApp.Infrastructure.Extensions
-@model IList<MyApp.Application.Models.Dtos.Customers.CompanyDto>
+@model IList<MyApp.Application.Models.Dtos.Customers.Companies.CompanyDto>
 
 @{
     ViewData["Title"] = "Company";
@@ -14,7 +14,7 @@
         <th class="col-2 align-middle" scope="col">Kbis</th>
         <th class="col-2 align-middle" scope="col">Size</th>
         <th class="col-2 align-middle" scope="col">
-            <a class="btn btn-secondary" asp-area="" asp-controller="Company" asp-action="Add">
+            <a class="btn btn-secondary" href="@Url.Action("Add", "Company")">
                 <i class="fas fa-user-plus"></i> Add Company
             </a>
         </th>
@@ -31,7 +31,7 @@
             <td>@data.CompanySize.ToString()</td>
             <td>
                 <div class="btn-group" role="group" aria-label="customer-edit-group">
-                    <a class="btn btn-primary" asp-area="" asp-controller="Company" asp-action="Edit" asp-route-id="@data.Id">
+                    <a class="btn btn-primary" href="@Url.Action("Edit", "Company", new { id = data.Id })">
                         <i class="fas fa-user-edit"></i>
                     </a>
                     <a class="btn btn-secondary text-white" href="@Url.Action("Index", "Billing", new { customerId = data.Id })">

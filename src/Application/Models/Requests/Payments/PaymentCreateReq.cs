@@ -1,6 +1,6 @@
 ﻿using MyApp.Domain.Enums;
 
-namespace MyApp.Application.Models.Requests.Payment;
+namespace MyApp.Application.Models.Requests.Payments;
 
 public class PaymentCreateReq
 {

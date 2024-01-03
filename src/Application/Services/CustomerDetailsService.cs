@@ -1,47 +1,43 @@
 ﻿using MyApp.Application.Core.Services;
 using MyApp.Application.Interfaces.Services;
 using MyApp.Application.Models.Dtos.CustumersDetails;
-using MyApp.Application.Models.Requests.Customers;
+using MyApp.Application.Models.Requests.CustomersDetails;
 using MyApp.Domain.Core.Repositories;
 using MyApp.Domain.Entities.Customers;
 using MyApp.Domain.Specifications.Customers;
 
 namespace MyApp.Application.Services;
 
-public class CustomerDetailsService : ICustomerDetailsService
+public class CustomerDetailsService : ServiceBase, ICustomerDetailsService
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly ILoggerService _loggerService;
-
-    public CustomerDetailsService(IUnitOfWork unitOfWork, ILoggerService loggerService)
+    public CustomerDetailsService(IUnitOfWork unitOfWork, ILoggerService loggerService) 
+        : base(unitOfWork, loggerService)
     {
-        _unitOfWork = unitOfWork;
-        _loggerService = loggerService;
     }
 
     public async Task UpdateCustomerDetails(CustomerDetailsEditReq editReq, CancellationToken ctk = default)
     {
-        var details = await _unitOfWork.Repository<CustomerDetails>().GetByIdAsync(editReq.Id, ctk);
+        var details = await UnitOfWork.Repository<CustomerDetails>().GetByIdAsync(editReq.Id, ctk);
         
         if (details == null)
         {
-            _loggerService.LogError($"Couldn't find CustomerDetails with ID {editReq.Id}");
+            LoggerService.LogError($"Couldn't find CustomerDetails with ID {editReq.Id}");
             throw new NullReferenceException();
         }
         
         editReq.WriteTo(details);
-        _unitOfWork.Repository<CustomerDetails>().Update(details);
-        await _unitOfWork.SaveChangesAsync(ctk);
+        UnitOfWork.Repository<CustomerDetails>().Update(details);
+        await UnitOfWork.SaveChangesAsync(ctk);
 
-        _loggerService.LogInfo($"individual {editReq.Id} updated");
+        LoggerService.LogInfo($"individual {editReq.Id} updated");
     }
 
     public async Task<CustomerDetailsDto> GetCustomerDetailsDtoById(Guid id, CancellationToken ctk = default)
     {
-        var customerSpec = CustomerSpecifications<Customer>.GetCustomerWithBillingOrShippingId(id);
-        var customer = await _unitOfWork.Repository<Customer>().FirstOrDefaultAsync(customerSpec, ctk);
+        var customerSpec = CustomerSpecifications<Customer>.GetCustomerWithBillingOrShippingIdSpec(id);
+        var customer = await UnitOfWork.Repository<Customer>().FirstOrDefaultAsync(customerSpec, ctk);
         
-        var details = await _unitOfWork.Repository<CustomerDetails>().GetByIdAsync(id, ctk);
+        var details = await UnitOfWork.Repository<CustomerDetails>().GetByIdAsync(id, ctk);
 
         // Return if not null
         if (details != null) return new CustomerDetailsDto(details)
@@ -50,7 +46,7 @@ public class CustomerDetailsService : ICustomerDetailsService
         };
         
         // Log and throw
-        _loggerService.LogError($"Couldn't find CustomerDetails with ID {id}");
+        LoggerService.LogError($"Couldn't find CustomerDetails with ID {id}");
         throw new NullReferenceException();
     }
 }

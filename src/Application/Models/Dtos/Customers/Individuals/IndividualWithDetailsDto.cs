@@ -1,9 +1,10 @@
 ﻿using MyApp.Application.Interfaces.Models.Dtos;
 using MyApp.Domain.Entities.Customers;
+using MyApp.Domain.Enums;
 
-namespace MyApp.Application.Models.Dtos.Customers;
+namespace MyApp.Application.Models.Dtos.Customers.Individuals;
 
-public class IndividualDto : CustomerDto<Individual>, IIndividualDto
+public class IndividualWithDetailsDto : CustomerWithDetailsDto<Individual>, IIndividualDto
 {
     #region IIndividualDto
 
@@ -12,10 +13,11 @@ public class IndividualDto : CustomerDto<Individual>, IIndividualDto
 
     #endregion
     
-    public IndividualDto(){}
+    public IndividualWithDetailsDto(){}
 
-    public IndividualDto(Individual entity) : base(entity)
+    public IndividualWithDetailsDto(Individual entity) : base(entity)
     {
+        CustomerType = CustomerTypeEnum.Individual;
         FirstName = entity.FirstName;
         LastName = entity.LastName;
     }

@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using MyApp.Domain.Core.Models;
-using MyApp.Domain.Entities.Billings;
 using MyApp.Domain.Entities.Customers;
 using MyApp.Domain.Enums;
 
-namespace MyApp.Domain.Entities;
+namespace MyApp.Domain.Entities.Payments;
 
 public class Payment : BaseEntity, IAuditableEntity, IIdentifiableByIdEntity
 {

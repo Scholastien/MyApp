@@ -3,5 +3,5 @@
 public enum CustomerStatusEnum
 {
     Active = 1,
-    InActive = 2
+    Inactive = 2
 }

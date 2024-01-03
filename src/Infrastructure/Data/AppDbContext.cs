@@ -8,6 +8,8 @@ using MyApp.Domain.Entities.DiscountPolicy;
 using MyApp.Domain.Entities.DiscountPolicy.Companies;
 using MyApp.Domain.Entities.DiscountPolicy.Individuals;
 using MyApp.Domain.Entities.Discounts;
+using MyApp.Domain.Entities.Payments;
+using MyApp.Domain.Entities.Products;
 using MyApp.Domain.Enums;
 
 namespace MyApp.Infrastructure.Data;

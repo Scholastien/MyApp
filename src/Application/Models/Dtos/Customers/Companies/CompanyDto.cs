@@ -2,9 +2,9 @@
 using MyApp.Domain.Entities.Customers;
 using MyApp.Domain.Enums;
 
-namespace MyApp.Application.Models.Dtos.Customers;
+namespace MyApp.Application.Models.Dtos.Customers.Companies;
 
-public class CompanyWithDetailsDto : CustomerWithDetailsDto<Company>, ICompanyDto
+public class CompanyDto : CustomerDto<Company>, ICompanyDto
 {
     #region ICompanyDto
 
@@ -13,11 +13,10 @@ public class CompanyWithDetailsDto : CustomerWithDetailsDto<Company>, ICompanyDt
 
     #endregion
     
-    public CompanyWithDetailsDto(){}
+    public CompanyDto(){}
 
-    public CompanyWithDetailsDto(Company entity) : base(entity)
+    public CompanyDto(Company entity) : base(entity)
     {
-        CustomerType = CustomerTypeEnum.Company;
         Kbis = entity.Kbis;
         CompanySize = entity.CompanySize;
     }

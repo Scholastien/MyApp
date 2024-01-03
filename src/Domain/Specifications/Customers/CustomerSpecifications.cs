@@ -7,12 +7,12 @@ namespace MyApp.Domain.Specifications.Customers;
 public static class CustomerSpecifications<T>
     where T : Customer
 {
-    public static BaseSpecification<T> GetCustomerById(Guid id)
+    public static BaseSpecification<T> GetCustomerByIdSpec(Guid id)
     {
         return new BaseSpecification<T>(c => c.Id == id);
     }
     
-    public static BaseSpecification<T> GetCustomerWithBillingOrShippingId(Guid id)
+    public static BaseSpecification<T> GetCustomerWithBillingOrShippingIdSpec(Guid id)
     {
         var spec = new BaseSpecification<T>(customer => customer.BillingDetails.Id == id || customer.ShippingDetails.Id == id);
         spec.AddInclude(c => c.BillingDetails);
@@ -25,7 +25,7 @@ public static class CustomerSpecifications<T>
         return new BaseSpecification<T>(c => c.StatusEnum == CustomerStatusEnum.Active && c.IsDeleted == false);
     }
 
-    public static BaseSpecification<T> AllIncludesForEditToCustomerWithId(Guid id)
+    public static BaseSpecification<T> AllIncludesForEditToCustomerWithIdSpec(Guid id)
     {
         var spec = new BaseSpecification<T>(c => c.Id == id);
         spec.AddInclude(c => c.BillingDetails);
@@ -34,7 +34,7 @@ public static class CustomerSpecifications<T>
         return spec;
     }
     
-    public static BaseSpecification<T> IncludeBillingsForCustomerWithId(Guid id)
+    public static BaseSpecification<T> IncludeBillingsForCustomerWithIdSpec(Guid id)
     {
         var spec = new BaseSpecification<T>(c => c.Id == id);
         spec.AddInclude(c => c.Billings);

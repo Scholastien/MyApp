@@ -1,6 +1,7 @@
 ﻿using MyApp.Domain.Core.Specifications;
 using MyApp.Domain.Entities;
 using MyApp.Domain.Entities.Customers;
+using MyApp.Domain.Entities.Payments;
 
 namespace MyApp.Domain.Specifications;
 

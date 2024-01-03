@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Application.Models.Requests;
+using MyApp.Application.Models.Requests.IdentityUser;
 using MyApp.Domain.Entities;
 using MyApp.Infrastructure.Data;
 

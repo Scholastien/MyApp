@@ -1,7 +1,7 @@
 ﻿using MyApp.Application.Core.Services;
 using MyApp.Application.Interfaces.Models.Requests;
 using MyApp.Application.Interfaces.Services;
-using MyApp.Application.Models.Dtos.Customers;
+using MyApp.Application.Models.Dtos.Customers.Companies;
 using MyApp.Application.Models.Requests.Customers.Companies;
 using MyApp.Application.Models.Responses.Customers.Companies;
 using MyApp.Domain.Core.Repositories;
@@ -13,20 +13,15 @@ namespace MyApp.Application.Services;
 
 public class CompanyService : CustomerService, ICompanyService
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly ILoggerService _loggerService;
-
     public CompanyService(IUnitOfWork unitOfWork, ILoggerService loggerService)
         : base(unitOfWork, loggerService)
     {
-        _unitOfWork = unitOfWork;
-        _loggerService = loggerService;
     }
 
     public async Task<IBaseResponse<CompanyWithDetailsDto>> CreateCompany(CompanyCreateReq req,
         CancellationToken ctk = default)
     {
-        var company = await _unitOfWork.Repository<Company>().AddAsync(new Company
+        var company = await UnitOfWork.Repository<Company>().AddAsync(new Company
         {
             Email = req.Email,
             PhoneNumber = req.PhoneNumber,
@@ -40,9 +35,9 @@ public class CompanyService : CustomerService, ICompanyService
 
         await AddDetailsToCustomer(req, company, ctk);
 
-        await _unitOfWork.SaveChangesAsync(ctk);
+        await UnitOfWork.SaveChangesAsync(ctk);
 
-        _loggerService.LogInfo("New Company created");
+        LoggerService.LogInfo("New Company created");
 
         return new CompanyRes { Data = new CompanyWithDetailsDto(company)
             {
@@ -53,26 +48,26 @@ public class CompanyService : CustomerService, ICompanyService
 
     public async Task UpdateCompany(CompanyEditReq editReq, CancellationToken ctk = default)
     {
-        var company = await _unitOfWork.Repository<Company>().GetByIdAsync(editReq.Id, ctk);
+        var company = await UnitOfWork.Repository<Company>().GetByIdAsync(editReq.Id, ctk);
 
         if (company == null)
         {
-            _loggerService.LogError($"Couldn't find company with ID {editReq.Id}");
+            LoggerService.LogError($"Couldn't find company with ID {editReq.Id}");
             throw new NullReferenceException();
         }
 
         editReq.WriteTo(company);
-        _unitOfWork.Repository<Company>().Update(company);
-        await _unitOfWork.SaveChangesAsync(ctk);
+        UnitOfWork.Repository<Company>().Update(company);
+        await UnitOfWork.SaveChangesAsync(ctk);
 
-        _loggerService.LogInfo($"company {editReq.Id} updated");
+        LoggerService.LogInfo($"company {editReq.Id} updated");
     }
 
     public async Task<IBaseResponse<IList<CompanyDto>>> GetAllActiveCompanies(CancellationToken ctk = default)
     {
         var activeCompaniesSpec = CustomerSpecifications<Company>.GetAllActiveCustomersSpec();
 
-        var companies = await _unitOfWork.Repository<Company>().ListAsync(activeCompaniesSpec, ctk);
+        var companies = await UnitOfWork.Repository<Company>().ListAsync(activeCompaniesSpec, ctk);
 
         return new MultipleCompaniesRes
         {
@@ -82,39 +77,39 @@ public class CompanyService : CustomerService, ICompanyService
 
     public async Task<CompanyWithDetailsDto> GetCompanyDtoById(Guid id, CancellationToken ctk = default)
     {
-        var companySpec = CustomerSpecifications<Company>.AllIncludesForEditToCustomerWithId(id);
+        var companySpec = CustomerSpecifications<Company>.AllIncludesForEditToCustomerWithIdSpec(id);
 
-        var company = await _unitOfWork.Repository<Company>().FirstOrDefaultAsync(companySpec, ctk);
+        var company = await UnitOfWork.Repository<Company>().FirstOrDefaultAsync(companySpec, ctk);
         
         // Return if not null
         if (company != null) return new CompanyWithDetailsDto(company);
         
         // Log and throw
-        _loggerService.LogError($"Couldn't find company with ID {id}");
+        LoggerService.LogError($"Couldn't find company with ID {id}");
         throw new NullReferenceException();
 
     }
 
     public async Task DeleteCompanyWithId(Guid id, CancellationToken ctk = default)
     {
-        var company = await _unitOfWork.Repository<Company>().GetByIdAsync(id, ctk);
+        var company = await UnitOfWork.Repository<Company>().GetByIdAsync(id, ctk);
 
         if (company == null)
         {
-            _loggerService.LogError($"Couldn't find company with ID {id}");
+            LoggerService.LogError($"Couldn't find company with ID {id}");
             throw new NullReferenceException();
         }
 
-        _unitOfWork.Repository<Company>().Delete(company);
-        await _unitOfWork.SaveChangesAsync(ctk);
+        UnitOfWork.Repository<Company>().Delete(company);
+        await UnitOfWork.SaveChangesAsync(ctk);
     }
 
     public async Task<CompanyWithDetailsDto> GetCompanyWithDetailsDtoById(Guid id, CancellationToken ctk = default)
     {
-        var customerSpec = CustomerSpecifications<Company>.GetCustomerWithBillingOrShippingId(id);
-        var customer = await _unitOfWork.Repository<Company>().FirstOrDefaultAsync(customerSpec, ctk);
+        var customerSpec = CustomerSpecifications<Company>.GetCustomerWithBillingOrShippingIdSpec(id);
+        var customer = await UnitOfWork.Repository<Company>().FirstOrDefaultAsync(customerSpec, ctk);
         
-        var details = await _unitOfWork.Repository<CustomerDetails>().GetByIdAsync(id, ctk);
+        var details = await UnitOfWork.Repository<CustomerDetails>().GetByIdAsync(id, ctk);
 
         // Return if not null
         if (customer != null) return new CompanyWithDetailsDto(customer)
@@ -123,7 +118,7 @@ public class CompanyService : CustomerService, ICompanyService
         };
         
         // Log and throw
-        _loggerService.LogInfo($"Couldn't find CustomerDetails with ID {id}");
+        LoggerService.LogInfo($"Couldn't find CustomerDetails with ID {id}");
         throw new NullReferenceException();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using MyApp.Application.Interfaces.Models.Dtos;
 using MyApp.Domain.Entities;
+using MyApp.Domain.Entities.Payments;
 using MyApp.Domain.Enums;
 
 namespace MyApp.Application.Models.Dtos.Payments;

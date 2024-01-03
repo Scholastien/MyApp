@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MyApp.Application.Interfaces.Services;
 using MyApp.Application.Models.Requests.Customers;
+using MyApp.Application.Models.Requests.CustomersDetails;
 using MyApp.Domain.Entities;
 using MyApp.Domain.Enums;
 using MyApp.Infrastructure.Data;

@@ -11,7 +11,7 @@
         <th class="col-2 align-middle" scope="col">#</th>
         <th class="col-8 align-middle" scope="col">Type</th>
         <th class="col-2 align-middle" scope="col">
-            <a class="btn btn-secondary" asp-area="" asp-controller="Payment" asp-action="Add" asp-route-customerId="@Model.Id">
+            <a class="btn btn-secondary" href="@Url.Action("Add", "Payment", new { customerId = Model.Id })">
                 <i class="fas fa-money-bill"></i> Add Payment
             </a>
         </th>

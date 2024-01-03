@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MyApp.Application.Models.Requests;
+namespace MyApp.Application.Models.Requests.IdentityUser;
 
 public class IdentityUserLoginReq
 {

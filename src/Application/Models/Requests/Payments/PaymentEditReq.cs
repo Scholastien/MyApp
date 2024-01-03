@@ -1,9 +1,10 @@
 ﻿using MyApp.Application.Models.Dtos.Payments;
 using MyApp.Domain.Enums;
+using MyApp.Domain.Entities.Payments;
 
-namespace MyApp.Application.Models.Requests.Payment;
+namespace MyApp.Application.Models.Requests.Payments;
 
-public class PaymentEditReq : BaseEditRequest<PaymentDto, Domain.Entities.Payment>
+public class PaymentEditReq : BaseEditRequest<PaymentDto, Payment>
 {
     public Guid Id { get; set; }
     public Guid CustomerId { get; set; }
@@ -21,7 +22,7 @@ public class PaymentEditReq : BaseEditRequest<PaymentDto, Domain.Entities.Paymen
         EntityController = data.EntityController;
     }
 
-    public override void WriteTo(Domain.Entities.Payment entity)
+    public override void WriteTo(Payment entity)
     {
         base.WriteTo(entity);
         entity.PaymentType = PaymentType;

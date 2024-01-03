@@ -2,7 +2,7 @@
 using MyApp.Domain.Entities;
 using MyApp.Domain.Enums;
 
-namespace MyApp.Application.Models.Requests;
+namespace MyApp.Application.Models.Requests.IdentityUser;
 
 public class IdentityUserRegistrationReq
 {

@@ -8,38 +8,33 @@ using MyApp.Domain.Enums;
 
 namespace MyApp.Application.Services;
 
-public class CustomerService : ICustomerService
+public class CustomerService : ServiceBase, ICustomerService
 {
-    private readonly IUnitOfWork _unitOfWork;    
-    private readonly ILoggerService _loggerService;
-
-
-    protected CustomerService(IUnitOfWork unitOfWork, ILoggerService loggerService)
+    protected CustomerService(IUnitOfWork unitOfWork, ILoggerService loggerService) 
+        : base(unitOfWork, loggerService)
     {
-        _unitOfWork = unitOfWork;
-        _loggerService = loggerService;
     }
 
     public async Task<CustomerTypeEnum> GetCustomerTypeWithId(Guid id)
     {
-        var customer = await _unitOfWork.Repository<Customer>().GetByIdAsync(id);
+        var customer = await UnitOfWork.Repository<Customer>().GetByIdAsync(id);
 
         if (customer != null) return customer.CustomerType;
-        
-        _loggerService.LogError($"Couldn't find customer with ID {id}");
-        throw new NullReferenceException();
 
+        LoggerService.LogError($"Couldn't find customer with ID {id}");
+        throw new NullReferenceException();
     }
 
-    protected async Task AddDetailsToCustomer(IBothCustomerDetailsReq req, Customer customer, CancellationToken ctk = default)
+    protected async Task AddDetailsToCustomer(IBothCustomerDetailsReq req, Customer customer,
+        CancellationToken ctk = default)
     {
-        customer.BillingDetails = await _unitOfWork.Repository<CustomerDetails>()
+        customer.BillingDetails = await UnitOfWork.Repository<CustomerDetails>()
             .AddAsync(BillingCustomerDetails(req, customer), ctk);
-        
-        customer.ShippingDetails = await _unitOfWork.Repository<CustomerDetails>()
+
+        customer.ShippingDetails = await UnitOfWork.Repository<CustomerDetails>()
             .AddAsync(ShippingCustomerDetails(req, customer), ctk);
     }
-    
+
     private static CustomerDetails BillingCustomerDetails(IBothCustomerDetailsReq req, IIdentifiableByIdEntity customer)
     {
         return new CustomerDetails
@@ -53,7 +48,8 @@ public class CustomerService : ICustomerService
         };
     }
 
-    private static CustomerDetails ShippingCustomerDetails(IBothCustomerDetailsReq req, IIdentifiableByIdEntity customer)
+    private static CustomerDetails ShippingCustomerDetails(IBothCustomerDetailsReq req,
+        IIdentifiableByIdEntity customer)
     {
         return new CustomerDetails
         {
