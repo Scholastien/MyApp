@@ -30,10 +30,13 @@
                     @if (SignInManager.IsSignedIn(User))
                     {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Individual" asp-action="Index"><i class="fas fa-user"></i> Individuals</a>
+                            <a class="nav-link text-dark" href="@Url.Action("Index", "Individual")"><i class="fas fa-user"></i> Individuals</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Company" asp-action="Index"><i class="fas fa-building"></i> Companies</a>
+                            <a class="nav-link text-dark" href="@Url.Action("Index", "Company")"><i class="fas fa-building"></i> Companies</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="@Url.Action("Index", "Product")"><i class="fas fa-tags"></i> Products</a>
                         </li>
                     }
                 </ul>

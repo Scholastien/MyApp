@@ -1,0 +1,41 @@
+@using MyApp.Infrastructure.Extensions
+@model MyApp.Application.Models.Responses.Products.MultipleProductRes
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th class="col-1 align-middle" scope="col">#</th>
+        <th class="col-6 align-middle" scope="col">Name</th>
+        <th class="col-2 align-middle" scope="col">Price</th>
+        <th class="col-2 align-middle" scope="col">
+            <a class="btn btn-secondary" href="@Url.Action("Add", "Product")">
+                <i class="fas fa-user-plus"></i> Add Product
+            </a>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var (data, index) in Model.Data.WithIndex())
+    {
+        <tr>
+            <th scope="row">@index</th>
+            <td>@data.Name</td>
+            <td>@data.Price</td>
+            <td>
+                <div class="btn-group" role="group" aria-label="customer-edit-group">
+                    <a class="btn btn-primary" href="@Url.Action("Edit", "Product", new { id = data.Id })">
+                        <i class="fas fa-user-edit"></i>
+                    </a>
+                    <a class="btn btn-danger" href="@Url.Action("Delete", "Product", new { id = data.Id })">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </div>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

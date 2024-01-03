@@ -4,7 +4,7 @@ using MyApp.Domain.Entities.Payments;
 
 namespace MyApp.Domain.Specifications.Payments;
 
-public static class PaymentSpecification
+public static class PaymentSpecifications
 {
     public static BaseSpecification<Payment> GetPaymentById(Guid id)
     {
