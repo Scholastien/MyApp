@@ -7,6 +7,7 @@ using MyApp.Application.Models.Responses.Billings;
 using MyApp.Domain.Core.Repositories;
 using MyApp.Domain.Entities.Customers;
 using MyApp.Domain.Specifications.Customers;
+using MultipleBillingsRes = MyApp.Application.Models.Requests.Billings.MultipleBillingsRes;
 
 namespace MyApp.Application.Services;
 
@@ -16,12 +17,12 @@ public class BillingService : ServiceBase, IBillingService
     {
     }
 
-    public Task<IBaseResponse<BillingDto>> CreateBilling(BillingCreateReq createReq, CancellationToken ctk = default)
+    public Task<IBaseResponse<BillingDto>> CreateBilling(MultipleBillingsRes createReq, CancellationToken ctk = default)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<MultipleBillingsRes> GetAllBillingsForCustomer(Guid customerId,
+    public async Task<Models.Responses.Billings.MultipleBillingsRes> GetAllBillingsForCustomer(Guid customerId,
         CancellationToken ctk = default)
     {
         var companySpec = CustomerSpecifications<Customer>.IncludeBillingsForCustomerWithIdSpec(customerId);
@@ -29,7 +30,7 @@ public class BillingService : ServiceBase, IBillingService
         var customer = await UnitOfWork.Repository<Customer>().FirstOrDefaultAsync(companySpec, ctk);
 
         if (customer != null)
-            return new MultipleBillingsRes
+            return new Models.Responses.Billings.MultipleBillingsRes
             {
                 Data = customer.Billings.Select(_ => new BillingDto(_)).ToList(),
                 CustomerId = customerId
