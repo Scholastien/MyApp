@@ -21,7 +21,19 @@ services.AddEndpointsApiExplorer();
 
 services.AddSwaggerGen();
 
-services.AddControllersWithViews();
+services.AddControllersWithViews()
+    .AddSessionStateTempDataProvider();
+
+services.AddHttpContextAccessor();
+
+services.AddDistributedMemoryCache();
+
+services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(10);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 // builder.Services.AddDataProtection()
 //     .SetApplicationName("WebApi")
@@ -63,6 +75,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseSession();
 
 #pragma warning disable ASP0014
 app.UseEndpoints(endpoints =>
