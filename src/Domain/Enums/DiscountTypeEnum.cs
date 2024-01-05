@@ -2,6 +2,8 @@
 
 public enum DiscountTypeEnum
 {
-    Bulk = 1,
-    Punctual = 2
+    BulkPercentage = 1, 
+    BulkFlat = 2,
+    TargetedPercentage = 3,
+    TargetedFlat= 4,
 }

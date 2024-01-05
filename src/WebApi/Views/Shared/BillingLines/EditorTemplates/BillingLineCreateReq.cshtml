@@ -1,0 +1,9 @@
+﻿@using MyApp.Application.Models.Requests.BillingLines
+@model BillingLineCreateReq
+
+<tr>
+    <td>
+        @Html.EditorFor(model => model.Quantity)
+        @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+    </td>
+</tr>

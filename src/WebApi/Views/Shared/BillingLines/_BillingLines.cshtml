@@ -1,0 +1,15 @@
+﻿@using MyApp.Application.Models.Requests.BillingLines
+@model IEnumerable<BillingLineCreateReq>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </th>
+    </tr>
+    </thead>
+    <tbody id="childtable">
+    @Html.EditorFor(model => Model)
+    </tbody>
+</table>

@@ -21,7 +21,7 @@ public class BillingLine : BaseEntity, IIdentifiableByIdEntity, IAuditableEntity
     public Product Product { get; set; }
     
     #endregion
-    public int Quantity { get; set; }
+    public uint Quantity { get; set; }
 
     #region IAuditableEntity
     

@@ -1,6 +1,6 @@
 ﻿@using MyApp.Application.Interfaces.Models.Requests.Customers
-@using MyApp.Infrastructure.Extensions
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using MyApp.Application.Extensions
 @model ICustomerWithDetailsReq
 
 <h3>Payments</h3>
@@ -11,7 +11,7 @@
         <th class="col-2 align-middle" scope="col">#</th>
         <th class="col-8 align-middle" scope="col">Type</th>
         <th class="col-2 align-middle" scope="col">
-            <a class="btn btn-secondary" href="@Url.Action("Add", "Payment", new { customerId = Model.Id })">
+            <a class="btn btn-primary" href="@Url.Action("Add", "Payment", new { customerId = Model.Id })">
                 <i class="fas fa-money-bill"></i> Add Payment
             </a>
         </th>
@@ -25,10 +25,10 @@
             <td>@data.PaymentType</td>
             <td>
                 <div class="btn-group" role="group" aria-label="customer-payment-edit-group">
-                    <a class="btn btn-primary" href="@Url.Action("Edit", "Payment", new { paymentId = data.Id, customerId = Model.Id })">
+                    <a class="btn btn-outline-primary" href="@Url.Action("Edit", "Payment", new { paymentId = data.Id, customerId = Model.Id })">
                         <i class="fas fa-user-edit"></i>
                     </a>
-                    <a class="btn btn-danger" href="@Url.Action("Delete", "Payment", new { paymentId = data.Id, customerId = Model.Id })">
+                    <a class="btn btn-outline-danger" href="@Url.Action("Delete", "Payment", new { paymentId = data.Id, customerId = Model.Id })">
                         <i class="fas fa-trash"></i>
                     </a>
                 </div>

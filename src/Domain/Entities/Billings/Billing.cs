@@ -23,9 +23,9 @@ public class Billing : BaseEntity, IIdentifiableByIdEntity, IAuditableEntity
 
     #region Navigation
 
-    public ICollection<BillingLine> BillingLines { get; } = new List<BillingLine>();
-    public ICollection<Discount> Discounts { get; } = new List<Discount>();
-    public ICollection<BillingDiscount> BillingsDiscounts { get; } = new List<BillingDiscount>();
+    public ICollection<BillingLine> BillingLines { get; init; } = new List<BillingLine>();
+    public ICollection<Discount> Discounts { get; init; } = new List<Discount>();
+    public ICollection<BillingDiscount> BillingsDiscounts { get; init; } = new List<BillingDiscount>(); // N'est utilisé que par le AppDbContext pour générer les props de navigation 
 
     #endregion
 

@@ -37,7 +37,6 @@ public static class CustomerSpecifications<T>
     public static BaseSpecification<T> IncludeBillingsForCustomerWithIdSpec(Guid id)
     {
         var spec = new BaseSpecification<T>(c => c.Id == id);
-        spec.AddInclude(c => c.Billings);
         return spec;
     }
 }

@@ -11,6 +11,7 @@ public class ProductCreateReq : IProductReq
     [Required(ErrorMessage = "Name is required")]
     public string Name { get; set; }
 
+    [Range(0.1f, float.MaxValue, ErrorMessage = "Price must be greater than zero.")]
     [Required(ErrorMessage = "Price is required")]
     public float Price { get; set; }
 

@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
-@using MyApp.Infrastructure.Extensions
+@using MyApp.Application.Extensions
 @model MyApp.Application.Models.Responses.Billings.MultipleBillingsRes
 
 @{
@@ -9,13 +9,14 @@
 <table class="table table-hover">
     <thead>
     <tr>
-        <th class="col-1 align-middle" scope="col">#</th>
-        <th class="col-2 align-middle" scope="col">Number of articles</th>
-        <th class="col-2 align-middle" scope="col">Total brut</th>
-        <th class="col-2 align-middle" scope="col">Remise</th>
-        <th class="col-2 align-middle" scope="col">Total net</th>
-        <th class="col-2 align-middle" scope="col">
-            <a class="btn btn-secondary" href="@Url.Action("Add", "Billing", new { customerId = Model.CustomerId })">
+        <th class="col col-md-auto align-middle" scope="col">#</th>
+        <th class="col col-md-auto align-middle" scope="col">Name</th>
+        <th class="col col-md-auto align-middle" scope="col">Number of articles</th>
+        <th class="col col-md-auto align-middle" scope="col">Total brut</th>
+        <th class="col col-md-auto align-middle" scope="col">Remise</th>
+        <th class="col col-md-auto align-middle" scope="col">Total net</th>
+        <th class="col col-md-auto align-middle" scope="col">
+            <a class="btn btn-primary" href="@Url.Action("Add", "Billing", new { customerId = Model.CustomerId })">
                 <i class="fas fa-user-plus"></i> Add Invoice
             </a>
         </th>
@@ -26,18 +27,19 @@
     {
         <tr>
             <th scope="row">@index</th>
-            <td>@index</td>
-            <td>@index</td>
-            <td>@index</td>
-            <td>@index</td>
+            <th>@data.Name</th>
+            <td>@data.ItemsCount</td>
+            <td>@data.TotalGross</td>
+            <td>@data.DiscountString</td>
+            <td>@data.TotalNet</td>
             <td>
                 <div class="btn-group" role="group" aria-label="customer-edit-group">
-                    @* <a class="btn btn-primary" asp-area="" asp-controller="Billing" asp-action="Edit" asp-route-id="@data.Id"> *@
-                    @*     <i class="fas fa-user-edit"></i> *@
-                    @* </a> *@
-                    @* <a class="btn btn-danger" href="@Url.Action("Delete", "Billing", new { id = data.Id })"> *@
-                    @*     <i class="fas fa-trash"></i> *@
-                    @* </a> *@
+                    <a class="btn btn-outline-primary" href="@Url.Action("Edit", "Billing", new { id = data.Id })">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                    <a class="btn btn-outline-danger" href="@Url.Action("Delete", "Billing", new { id = data.Id, customerId = data.CustomerId })">
+                        <i class="fas fa-trash"></i>
+                    </a>
                 </div>
             </td>
         </tr>

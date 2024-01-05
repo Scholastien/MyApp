@@ -7,7 +7,7 @@
             @await Html.PartialAsync("Customers/Create/_CreateBillingDetailsFrom", Model)
         </fieldset>
         <div class="form-group col justify-content-end">
-            <a href="@Url.Action("Edit", "CustomerDetails", new { id = Model.BillingId })" class="btn btn-primary">
+            <a href="@Url.Action("Edit", "CustomerDetails", new { id = Model.BillingId })" class="btn btn-outline-primary">
                 <i class="fas fa-edit"></i> Edit Billing
             </a>
         </div>
@@ -17,7 +17,7 @@
             @await Html.PartialAsync("Customers/Create/_CreateShippingDetailsFrom", Model)
         </fieldset>
         <div class="form-group col justify-content-end">
-            <a href="@Url.Action("Edit", "CustomerDetails", new { id = Model.ShippinId })" class="btn btn-primary">
+            <a href="@Url.Action("Edit", "CustomerDetails", new { id = Model.ShippinId })" class="btn btn-outline-primary">
                 <i class="fas fa-edit"></i> Edit Shipping
             </a>
         </div>

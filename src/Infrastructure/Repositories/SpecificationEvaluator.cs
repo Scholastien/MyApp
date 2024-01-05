@@ -23,6 +23,8 @@ public static class SpecificationEvaluator<TEntity> where TEntity : BaseEntity
         // Include any string-based include statements
         query = specification.IncludeStrings.Aggregate(query,
             (current, include) => current.Include(include));
+        
+        // TODO : then include
 
         // Apply ordering if expressions are set
         if (specification.OrderBy != null)
