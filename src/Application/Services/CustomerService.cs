@@ -10,7 +10,7 @@ namespace MyApp.Application.Services;
 
 public class CustomerService : ServiceBase, ICustomerService
 {
-    protected CustomerService(IUnitOfWork unitOfWork, ILoggerService loggerService) 
+    public CustomerService(IUnitOfWork unitOfWork, ILoggerService loggerService) 
         : base(unitOfWork, loggerService)
     {
     }
