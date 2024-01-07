@@ -7,7 +7,7 @@ namespace MyApp.Application.Models.Requests.CustomersDetails;
 public class CustomerDetailsEditReq : BaseEditRequest<CustomerDetailsDto, CustomerDetails>
 {
     public Guid Id { get; set; }
-    public required CustomerTypeEnum CustomerType { get; set; }
+    public CustomerTypeEnum CustomerType { get; set; }
     public bool IsBilling { get; set; }
     public Guid? CustomerId { get; set; }
     public string Street { get; set; }

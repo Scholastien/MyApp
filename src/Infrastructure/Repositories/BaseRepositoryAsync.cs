@@ -19,6 +19,11 @@ public class BaseRepositoryAsync<TEntity> : IBaseRepositoryAsync<TEntity> where 
     {
         return await _dbContext.Set<TEntity>().FindAsync(new object[] { id }, cancellationToken: ctk);
     }
+    
+    public async Task<TEntity?> GetByIdAsync(object[] ids, CancellationToken ctk = default)
+    {
+        return await _dbContext.Set<TEntity>().FindAsync(ids, cancellationToken: ctk);
+    }
 
     public async Task<IList<TEntity>> ListAllAsync()
     {

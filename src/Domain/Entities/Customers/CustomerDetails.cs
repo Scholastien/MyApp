@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using MyApp.Domain.Core.Models;
+using MyApp.Domain.Core.Models.Interface;
 
 namespace MyApp.Domain.Entities.Customers;
 

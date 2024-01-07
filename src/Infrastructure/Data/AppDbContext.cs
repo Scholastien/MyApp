@@ -8,6 +8,7 @@ using MyApp.Domain.Entities.DiscountPolicy;
 using MyApp.Domain.Entities.DiscountPolicy.Companies;
 using MyApp.Domain.Entities.DiscountPolicy.Individuals;
 using MyApp.Domain.Entities.Discounts;
+using MyApp.Domain.Entities.PaymentHistories;
 using MyApp.Domain.Entities.Payments;
 using MyApp.Domain.Entities.Products;
 using MyApp.Domain.Enums;
@@ -25,6 +26,8 @@ public class AppDbContext : IdentityDbContext<IdentityUserBase>
     public DbSet<CustomerDetails>? CustomersDetails { get; set; }
     
     public DbSet<Payment>? Payments { get; set; }
+    
+    public DbSet<PaymentHistory>? PaymentHistories { get; set; }
     
     public DbSet<Billing>? Billings { get; set; }
     

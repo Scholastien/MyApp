@@ -13,7 +13,7 @@ namespace MyApp.Application.Services;
 
 public class PaymentService : ServiceBase, IPaymentService
 {
-    public PaymentService(IUnitOfWork unitOfWork, ILoggerService loggerService) 
+    public PaymentService(IUnitOfWork unitOfWork, ILoggerService loggerService)
         : base(unitOfWork, loggerService)
     {
     }
@@ -25,8 +25,8 @@ public class PaymentService : ServiceBase, IPaymentService
 
         var payment = await UnitOfWork.Repository<Payment>().AddAsync(new Payment
         {
-            PaymentType = createReq.PaymentType,
-            Customer = customer
+            CustomerId = createReq.CustomerId,
+            PaymentType = createReq.PaymentType
         }, ctk);
 
 
@@ -45,7 +45,7 @@ public class PaymentService : ServiceBase, IPaymentService
 
     public async Task UpdatePayment(PaymentEditReq editReq, CancellationToken ctk = default)
     {
-        var payment = await UnitOfWork.Repository<Payment>().GetByIdAsync(editReq.Id, ctk);
+        var payment = await UnitOfWork.Repository<Payment>().GetByIdAsync(new object[]{editReq.Id, editReq.CustomerId}, ctk);
 
         if (payment == null)
         {
@@ -60,9 +60,9 @@ public class PaymentService : ServiceBase, IPaymentService
         LoggerService.LogInfo($"Payment {editReq.Id} updated");
     }
 
-    public async Task DeletePaymentWithId(Guid id, CancellationToken ctk = default)
+    public async Task DeletePaymentWithId(Guid id, Guid customerId, CancellationToken ctk = default)
     {
-        var payment = await UnitOfWork.Repository<Payment>().GetByIdAsync(id, ctk);
+        var payment = await UnitOfWork.Repository<Payment>().GetByIdAsync(new object[] { id, customerId }, ctk);
 
         if (payment == null)
         {
@@ -74,10 +74,10 @@ public class PaymentService : ServiceBase, IPaymentService
         await UnitOfWork.SaveChangesAsync(ctk);
     }
 
-    public async Task<PaymentDto> GetPaymentDtoById(Guid id, CustomerTypeEnum customerType,
+    public async Task<PaymentDto> GetPaymentDtoById(Guid id, Guid customerId, CustomerTypeEnum customerType,
         CancellationToken ctk = default)
     {
-        var individual = await UnitOfWork.Repository<Payment>().GetByIdAsync(id, ctk);
+        var individual = await UnitOfWork.Repository<Payment>().GetByIdAsync(new object[] { id, customerId }, ctk);
 
         // Return if not null
         if (individual != null)

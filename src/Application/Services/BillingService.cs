@@ -5,10 +5,9 @@ using MyApp.Application.Models.Requests.Billings;
 using MyApp.Application.Models.Responses.Billings;
 using MyApp.Domain.Core.Repositories;
 using MyApp.Domain.Entities.Billings;
-using MyApp.Domain.Entities.Customers;
+using MyApp.Domain.Enums;
 using MyApp.Domain.Specifications.BillingLines;
 using MyApp.Domain.Specifications.Billings;
-using MyApp.Domain.Specifications.Customers;
 
 namespace MyApp.Application.Services;
 
@@ -22,6 +21,7 @@ public class BillingService : ServiceBase, IBillingService
     {
         var billing = await UnitOfWork.Repository<Billing>().AddAsync(new Billing
         {
+            //Id = Guid.NewGuid(),
             CustomerId = req.CustomerId,
             CreatedOn = DateTimeOffset.Now,
             CreatedBy = Guid.NewGuid(),
@@ -40,33 +40,19 @@ public class BillingService : ServiceBase, IBillingService
     public async Task<MultipleBillingsRes> GetAllBillingsForCustomer(Guid customerId,
         CancellationToken ctk = default)
     {
-        var customerSpec = CustomerSpecifications<Customer>.GetCustomerByIdSpec(customerId);
-        var billingSpec = BillingSpecifications.IncludeBillingsForCustomerIdSpec(customerId);
-
-        var customer = await UnitOfWork.Repository<Customer>().FirstOrDefaultAsync(customerSpec, ctk);
+        var billingSpec = BillingSpecifications.MultipleBillingsForCustomerIdSpec(customerId);
         var billings = await UnitOfWork.Repository<Billing>().ListAsync(billingSpec, ctk);
-
-        if (customer != null)
-            return new MultipleBillingsRes
-            {
-                CustomerId = customerId,
-                Data = billings.Select(b => new BillingDto(b)).ToList()
-            };
-
-        // if (customer != null)
-        //     return new MultipleBillingsRes
-        //     {
-        //         Data = customer.Billings.Select(b => new BillingDto(b)).ToList(),
-        //         CustomerId = customerId
-        //     };
-
-        LoggerService.LogError($"Couldn't find billings for customer with ID {customerId}");
-        throw new NullReferenceException();
+        
+        return new MultipleBillingsRes
+        {
+            CustomerId = customerId,
+            Data = billings.Select(b => new BillingDto(b)).ToList()
+        };
     }
 
-    public async Task<BillingDto> GetBillingDtoById(Guid id, CancellationToken ctk = default)
+    public async Task<BillingDto> GetBillingDtoById(Guid id, Guid customerId, CancellationToken ctk = default)
     {
-        var billingSpec = BillingSpecifications.IncludeBillingLinesWithIdSpec(id);
+        var billingSpec = BillingSpecifications.SingleBillingWithAllIncludesSpec(id, customerId);
 
         var billing = await UnitOfWork.Repository<Billing>().FirstOrDefaultAsync(billingSpec, ctk);
 
@@ -81,14 +67,14 @@ public class BillingService : ServiceBase, IBillingService
 
     public async Task<BillingRes> CreateOrUpdateBillingLine(BillingEditReq req, CancellationToken ctk = default)
     {
-        var lineSpec = BillingLineSpecifications.WithBillingIdAndProductIdSpec(req.Id, req.NewLineProduct);
+        var lineSpec = BillingLineSpecifications.WithBillingIdAndProductIdSpec((req.Id, req.CustomerId), req.NewLineProduct);
         var line = await UnitOfWork.Repository<BillingLine>().FirstOrDefaultAsync(lineSpec, ctk);
 
         if (line == null)
         {
             return await CreateBillingLine(req, ctk);
         }
-        
+
         return await UpdateBillingLine(req, line, ctk);
     }
 
@@ -97,6 +83,7 @@ public class BillingService : ServiceBase, IBillingService
         var billingLine = await UnitOfWork.Repository<BillingLine>().AddAsync(new BillingLine
         {
             BillingId = req.Id,
+            BillingCustomerId = req.CustomerId,
             ProductId = req.NewLineProduct,
             Quantity = req.NewLineQuantity,
             CreatedOn = DateTimeOffset.Now,
@@ -107,7 +94,7 @@ public class BillingService : ServiceBase, IBillingService
 
         LoggerService.LogInfo("New billing line created");
 
-        var billingSpec = BillingSpecifications.IncludeBillingLinesWithIdSpec(req.Id);
+        var billingSpec = BillingSpecifications.SingleBillingWithAllIncludesSpec(req.Id, req.CustomerId);
 
         var billing = await UnitOfWork.Repository<Billing>().FirstOrDefaultAsync(billingSpec, ctk);
         return new BillingRes
@@ -116,13 +103,14 @@ public class BillingService : ServiceBase, IBillingService
         };
     }
 
-    public async Task<BillingRes> UpdateBillingLine(BillingEditReq req, BillingLine line, CancellationToken ctk = default)
+    public async Task<BillingRes> UpdateBillingLine(BillingEditReq req, BillingLine line,
+        CancellationToken ctk = default)
     {
         line.Quantity += req.NewLineQuantity;
-        UnitOfWork.Repository<BillingLine>().Update(line);        
+        UnitOfWork.Repository<BillingLine>().Update(line);
         await UnitOfWork.SaveChangesAsync(ctk);
 
-        var billingSpec = BillingSpecifications.IncludeBillingLinesWithIdSpec(req.Id);
+        var billingSpec = BillingSpecifications.SingleBillingWithAllIncludesSpec(req.Id, req.CustomerId);
 
         var billing = await UnitOfWork.Repository<Billing>().FirstOrDefaultAsync(billingSpec, ctk);
         return new BillingRes
@@ -131,10 +119,11 @@ public class BillingService : ServiceBase, IBillingService
         };
     }
 
-    public async Task<Guid> DeleteBillingLine(Guid id, CancellationToken ctk = default)
+    public async Task<(Guid BillingId, Guid BillingCustomerId)> DeleteBillingLine(Guid id,
+        CancellationToken ctk = default)
     {
         var line = await UnitOfWork.Repository<BillingLine>().GetByIdAsync(id, ctk);
-        
+
         if (line == null)
         {
             LoggerService.LogError($"Couldn't find BillingLine with ID {id}");
@@ -144,12 +133,12 @@ public class BillingService : ServiceBase, IBillingService
         UnitOfWork.Repository<BillingLine>().Delete(line);
         await UnitOfWork.SaveChangesAsync(ctk);
 
-        return line.BillingId;
+        return (line.BillingId, line.BillingCustomerId);
     }
 
-    public async Task DeleteBillingWithId(Guid id, CancellationToken ctk = default)
+    public async Task DeleteBillingWithId(Guid id, Guid customerId, CancellationToken ctk = default)
     {
-        var billing = await UnitOfWork.Repository<Billing>().GetByIdAsync(id, ctk);
+        var billing = await UnitOfWork.Repository<Billing>().GetByIdAsync(new object[] { id, customerId }, ctk);
 
         if (billing == null)
         {
@@ -159,5 +148,10 @@ public class BillingService : ServiceBase, IBillingService
 
         UnitOfWork.Repository<Billing>().Delete(billing);
         await UnitOfWork.SaveChangesAsync(ctk);
+    }
+
+    public BillingStateEnum GetBillingState(Guid id, Guid customerId, CancellationToken ctk = default)
+    {
+        throw new NotImplementedException(); // TODO
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using MyApp.Domain.Core.Models;
+using MyApp.Domain.Core.Models.Interface;
 using MyApp.Domain.Entities.Billings;
 using MyApp.Domain.Entities.BillingsDiscounts;
 using MyApp.Domain.Entities.DiscountPolicy;

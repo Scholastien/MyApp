@@ -1,4 +1,4 @@
-﻿namespace MyApp.Domain.Core.Models;
+﻿namespace MyApp.Domain.Core.Models.Interface;
 
 public interface IAuditableEntity
 {

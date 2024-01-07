@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using MyApp.Application.Models.Dtos.BillingLines;
 using MyApp.Application.Models.Dtos.Billings;
 using MyApp.Domain.Entities.Billings;

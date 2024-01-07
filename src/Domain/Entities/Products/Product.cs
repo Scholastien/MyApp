@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using MyApp.Domain.Core.Models;
+using MyApp.Domain.Core.Models.Interface;
 using MyApp.Domain.Entities.Billings;
 
 namespace MyApp.Domain.Entities.Products;

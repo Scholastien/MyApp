@@ -1,31 +1,22 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 using MyApp.Domain.Core.Models;
+using MyApp.Domain.Core.Models.Interface;
 using MyApp.Domain.Entities.BillingsDiscounts;
 using MyApp.Domain.Entities.Customers;
 using MyApp.Domain.Entities.Discounts;
+using MyApp.Domain.Entities.PaymentHistories;
 
 namespace MyApp.Domain.Entities.Billings;
 
-public class Billing : BaseEntity, IIdentifiableByIdEntity, IAuditableEntity
+[PrimaryKey(nameof(Id), nameof(CustomerId))]
+public class Billing : BaseEntity, IIdentifiableByIdEntity, IAuditableEntity, ISoftDeleteEntity
 {
     #region IIdentifiableByIdEntity
 
-    [Key] public Guid Id { get; set; }
-
-    #endregion
-
-    #region Fks
-
-    public Guid CustomerId { get; set; }
-    public Customer Customer { get; set; }
-
-    #endregion
-
-    #region Navigation
-
-    public ICollection<BillingLine> BillingLines { get; init; } = new List<BillingLine>();
-    public ICollection<Discount> Discounts { get; init; } = new List<Discount>();
-    public ICollection<BillingDiscount> BillingsDiscounts { get; init; } = new List<BillingDiscount>(); // N'est utilisé que par le AppDbContext pour générer les props de navigation 
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public Guid Id { get; set; }
 
     #endregion
 
@@ -37,4 +28,25 @@ public class Billing : BaseEntity, IIdentifiableByIdEntity, IAuditableEntity
     public DateTimeOffset? LastModifiedOn { get; set; }
 
     #endregion
+
+    #region Fks
+
+    public required Guid CustomerId { get; set; }
+    public Customer Customer { get; set; }
+
+    #endregion
+
+    #region Navigation
+
+    public ICollection<BillingLine> BillingLines { get; init; } = new List<BillingLine>();
+    public ICollection<Discount> Discounts { get; init; } = new List<Discount>();
+
+    public ICollection<BillingDiscount> BillingsDiscounts { get; init; } =
+        new List<BillingDiscount>(); // Used by AppDbContext to generate navigation props
+
+    public ICollection<PaymentHistory> PaymentHistories { get; init; } = new List<PaymentHistory>();
+
+    #endregion
+
+    public bool IsDeleted { get; set; }
 }

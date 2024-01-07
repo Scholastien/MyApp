@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using MyApp.Domain.Entities.Customers;
 
 namespace MyApp.Domain.Core.Specifications;
 
@@ -24,8 +25,7 @@ public class BaseSpecification<TEntity> : ISpecification<TEntity>
         Includes.Add(includeExpression);
     }
     
-    // TODO : then include
-    // Workaround Then include using queryable strings
+    // Workaround to "ThenInclude" using queryable strings
     public virtual void AddInclude(string includeString)
     {
         IncludeStrings.Add(includeString);
@@ -52,4 +52,7 @@ public class BaseSpecification<TEntity> : ISpecification<TEntity>
     {
         GroupBy = groupByExpression;
     }
+
+
+    
 }

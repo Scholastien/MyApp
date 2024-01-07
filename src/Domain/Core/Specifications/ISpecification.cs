@@ -4,8 +4,6 @@ namespace MyApp.Domain.Core.Specifications;
 
 public interface ISpecification<TEntity>
 {
-    // TODO : then include
-
     Expression<Func<TEntity, bool>>? Criteria { get; }
     List<Expression<Func<TEntity, object>>> Includes { get; }
     List<string> IncludeStrings { get; }

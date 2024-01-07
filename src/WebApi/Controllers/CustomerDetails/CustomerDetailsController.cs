@@ -30,10 +30,7 @@ public class CustomerDetailsController : BaseControllerApp
     {
         var dto = await _customerDetailsService.GetCustomerDetailsDtoById(id);
 
-        var editReq = new CustomerDetailsEditReq(dto)
-        {
-            CustomerType = dto.CustomerType,
-        };
+        var editReq = new CustomerDetailsEditReq(dto);
 
         return View(editReq);
     }

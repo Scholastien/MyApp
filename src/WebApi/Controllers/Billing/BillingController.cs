@@ -54,7 +54,7 @@ public class BillingController : BaseControllerApp
     }
 
     [HttpGet]
-    public async Task<IActionResult> Edit(Guid id)
+    public async Task<IActionResult> Edit(Guid id, Guid customerId)
     {
         var products = await _productService.GetAllProducts();
 
@@ -66,7 +66,7 @@ public class BillingController : BaseControllerApp
                 "Name");
         }
         
-        var billing = await _billingService.GetBillingDtoById(id);
+        var billing = await _billingService.GetBillingDtoById(id, customerId);
 
         return View(new BillingEditReq(billing));
     }
@@ -78,16 +78,16 @@ public class BillingController : BaseControllerApp
     {
         await _billingService.CreateOrUpdateBillingLine(req);
         
-        return RedirectToAction("Edit", "Billing", new { id = req.Id });
+        return RedirectToAction("Edit", "Billing", new { id = req.Id, customerId = req.CustomerId });
     }
 
     // TODO : utiliser Session and state management pour l'ajout/suppression "dynamique" de ligne pendant la creation de la facture
     [HttpGet]
     public async Task<ActionResult> RemoveBillingLine(Guid id)
     {
-        var parentId = await _billingService.DeleteBillingLine(id);
+        var ids = await _billingService.DeleteBillingLine(id);
         
-        return RedirectToAction("Edit", "Billing", new { id = parentId });
+        return RedirectToAction("Edit", "Billing", new { id = ids.BillingId, customerId = ids.BillingCustomerId });
     }
 
     // TODO : utiliser Session and state management pour l'ajout/suppression "dynamique" de ligne pendant la creation de la facture
@@ -101,7 +101,7 @@ public class BillingController : BaseControllerApp
     [HttpGet]
     public async Task<ActionResult> Delete(Guid id, Guid customerId)
     {
-        await _billingService.DeleteBillingWithId(id);
+        await _billingService.DeleteBillingWithId(id, customerId);
         
         return RedirectToAction("Index", "Billing", new { customerId });
     }

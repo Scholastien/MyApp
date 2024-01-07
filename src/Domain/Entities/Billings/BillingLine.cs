@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using MyApp.Domain.Core.Models;
+using MyApp.Domain.Core.Models.Interface;
 using MyApp.Domain.Entities.Products;
 
 namespace MyApp.Domain.Entities.Billings;
@@ -19,6 +20,7 @@ public class BillingLine : BaseEntity, IIdentifiableByIdEntity, IAuditableEntity
 
     public Guid ProductId { get; set; }
     public Product Product { get; set; }
+    public Guid BillingCustomerId { get; set; }
     
     #endregion
     public uint Quantity { get; set; }

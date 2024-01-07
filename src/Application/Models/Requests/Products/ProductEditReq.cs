@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using MyApp.Application.Models.Dtos.Products;
-using MyApp.Domain.Entities;
 using MyApp.Domain.Entities.Products;
 
 namespace MyApp.Application.Models.Requests.Products;

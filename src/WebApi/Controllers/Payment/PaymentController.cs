@@ -58,7 +58,7 @@ public class PaymentController : BaseControllerApp
     {
         var type = await _customerService.GetCustomerTypeWithId(customerId);
 
-        var dto = await _paymentService.GetPaymentDtoById(paymentId, type);
+        var dto = await _paymentService.GetPaymentDtoById(paymentId, customerId, type);
 
         var editReq = new PaymentEditReq(dto)
         {
@@ -86,7 +86,7 @@ public class PaymentController : BaseControllerApp
     {
         var type = await _customerService.GetCustomerTypeWithId(customerId);
 
-        await _paymentService.DeletePaymentWithId(paymentId);
+        await _paymentService.DeletePaymentWithId(paymentId, customerId);
 
         return RedirectToAction("Edit", type.ToString(), new { id = customerId });
     }

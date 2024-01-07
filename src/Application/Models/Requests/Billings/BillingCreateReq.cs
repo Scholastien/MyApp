@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using MyApp.Application.Models.Requests.BillingLines;
+﻿using MyApp.Application.Models.Requests.BillingLines;
 
 namespace MyApp.Application.Models.Requests.Billings;
 

@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 using MyApp.Domain.Core.Models;
+using MyApp.Domain.Core.Models.Interface;
 using MyApp.Domain.Enums;
 
 namespace MyApp.Domain.Entities;

@@ -14,10 +14,10 @@ public static class CustomerSpecifications<T>
     
     public static BaseSpecification<T> GetCustomerWithBillingOrShippingIdSpec(Guid id)
     {
-        var spec = new BaseSpecification<T>(customer => customer.BillingDetails.Id == id || customer.ShippingDetails.Id == id);
-        spec.AddInclude(c => c.BillingDetails);
-        spec.AddInclude(c => c.ShippingDetails);
-        return spec;
+        var spec = new BaseSpecification<T>(customer =>
+            customer.BillingDetails.Id == id || customer.ShippingDetails.Id == id);
+        return spec
+            .IncludeDetails();
     }
 
     public static BaseSpecification<T> GetAllActiveCustomersSpec()
@@ -28,15 +28,24 @@ public static class CustomerSpecifications<T>
     public static BaseSpecification<T> AllIncludesForEditToCustomerWithIdSpec(Guid id)
     {
         var spec = new BaseSpecification<T>(c => c.Id == id);
+        return spec
+            .IncludeDetails()
+            .IncludePayments();
+    }
+}
+
+public static class CustomerSpecificationsExtension
+{
+    public static BaseSpecification<T> IncludeDetails<T>(this BaseSpecification<T> spec) where T : Customer
+    {
         spec.AddInclude(c => c.BillingDetails);
         spec.AddInclude(c => c.ShippingDetails);
-        spec.AddInclude(c => c.Payments);
         return spec;
     }
     
-    public static BaseSpecification<T> IncludeBillingsForCustomerWithIdSpec(Guid id)
+    public static BaseSpecification<T> IncludePayments<T>(this BaseSpecification<T> spec) where T : Customer
     {
-        var spec = new BaseSpecification<T>(c => c.Id == id);
+        spec.AddInclude(c => c.Payments);
         return spec;
     }
 }

@@ -34,7 +34,7 @@
             <td>@data.TotalNet</td>
             <td>
                 <div class="btn-group" role="group" aria-label="customer-edit-group">
-                    <a class="btn btn-outline-primary" href="@Url.Action("Edit", "Billing", new { id = data.Id })">
+                    <a class="btn btn-outline-primary" href="@Url.Action("Edit", "Billing", new { id = data.Id, customerId = data.CustomerId })">
                         <i class="fas fa-edit"></i>
                     </a>
                     <a class="btn btn-outline-danger" href="@Url.Action("Delete", "Billing", new { id = data.Id, customerId = data.CustomerId })">

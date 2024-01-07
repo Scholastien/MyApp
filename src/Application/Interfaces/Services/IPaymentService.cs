@@ -9,7 +9,8 @@ public interface IPaymentService
 {
     Task<IBaseResponse<PaymentDto>> CreatePayment(PaymentCreateReq createReq, CancellationToken ctk = default);
     Task UpdatePayment(PaymentEditReq editReq, CancellationToken ctk = default);
-    Task DeletePaymentWithId(Guid id, CancellationToken ctk = default);
-    Task<PaymentDto> GetPaymentDtoById(Guid id, CustomerTypeEnum customerType, CancellationToken ctk = default);
+    Task DeletePaymentWithId(Guid id, Guid customerId, CancellationToken ctk = default);
+    Task<PaymentDto> GetPaymentDtoById(Guid id, Guid customerId, CustomerTypeEnum customerType,
+        CancellationToken ctk = default);
 
 }

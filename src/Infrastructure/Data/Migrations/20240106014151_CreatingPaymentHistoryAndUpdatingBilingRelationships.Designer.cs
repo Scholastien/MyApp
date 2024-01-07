@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyApp.Infrastructure.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyApp.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240106014151_CreatingPaymentHistoryAndUpdatingBilingRelationships")]
+    partial class CreatingPaymentHistoryAndUpdatingBilingRelationships
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -161,7 +164,6 @@ namespace MyApp.Infrastructure.Data.Migrations
             modelBuilder.Entity("MyApp.Domain.Entities.Billings.Billing", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("CustomerId")
@@ -172,9 +174,6 @@ namespace MyApp.Infrastructure.Data.Migrations
 
                     b.Property<DateTimeOffset>("CreatedOn")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
 
                     b.Property<Guid?>("LastModifiedBy")
                         .HasColumnType("uuid");
@@ -195,7 +194,7 @@ namespace MyApp.Infrastructure.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("BillingCustomerId")
+                    b.Property<Guid?>("BillingCustomerId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("BillingId")
@@ -508,7 +507,6 @@ namespace MyApp.Infrastructure.Data.Migrations
             modelBuilder.Entity("MyApp.Domain.Entities.PaymentHistories.PaymentHistory", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("BillingId")
@@ -553,7 +551,6 @@ namespace MyApp.Infrastructure.Data.Migrations
             modelBuilder.Entity("MyApp.Domain.Entities.Payments.Payment", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("CustomerId")
@@ -564,9 +561,6 @@ namespace MyApp.Infrastructure.Data.Migrations
 
                     b.Property<DateTimeOffset>("CreatedOn")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
 
                     b.Property<Guid?>("LastModifiedBy")
                         .HasColumnType("uuid");
@@ -739,9 +733,7 @@ namespace MyApp.Infrastructure.Data.Migrations
 
                     b.HasOne("MyApp.Domain.Entities.Billings.Billing", "Billing")
                         .WithMany("BillingLines")
-                        .HasForeignKey("BillingId", "BillingCustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BillingId", "BillingCustomerId");
 
                     b.Navigation("Billing");
 

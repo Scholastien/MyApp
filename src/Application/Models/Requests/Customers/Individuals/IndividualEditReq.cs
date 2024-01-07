@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using MyApp.Application.Interfaces.Models.Requests.Customers;
-using MyApp.Application.Models.Dtos.Customers;
 using MyApp.Application.Models.Dtos.Customers.Individuals;
 using MyApp.Domain.Entities.Customers;
 
