@@ -5,7 +5,7 @@
 @model DiscountPolicyEditReq<DiscountPolicyDto<DiscountPolicyBase>, DiscountPolicyBase>
 
 @Html.ValidationSummary()
-<form asp-action="CreateDiscount" asp-controller="DiscountPolicy" method="post" enctype="application/x-www-form-urlencoded">
+<form asp-action="Add" asp-controller="Discount" method="post" enctype="application/x-www-form-urlencoded">
     @Html.HiddenFor(model => model.Id)
     <div class="form-row">
         <div class="col-6 col-md-6">

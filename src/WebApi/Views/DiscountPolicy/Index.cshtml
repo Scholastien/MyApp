@@ -24,8 +24,9 @@
             <td>@data.MaxValue</td>
             <td>
                 <div class="btn-group" role="group" aria-label="customer-edit-group">
-                    <a class="btn btn-outline-primary" href="@Url.Action("Edit", "DiscountPolicy", new { id = data.Id })">
-                        <i class="fas fa-user-edit"></i>
+                    <a class="btn btn-outline-primary" href="@Url.Action("Edit", "DiscountPolicy", new { id = data.Id })"
+                       data-toggle="tooltip" data-placement="top" title="Edit Discounts">
+                        <i class="fas fa-cart-arrow-down"></i>
                     </a>
                 </div>
             </td>

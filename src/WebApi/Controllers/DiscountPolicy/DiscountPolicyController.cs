@@ -49,22 +49,4 @@ public class DiscountPolicyController : BaseControllerApp
         
         return View(editReq);
     }
-    
-    // TODO : utiliser Session and state management pour l'ajout/suppression "dynamique" de ligne pendant la creation de la facture
-    [HttpPost]
-    public async Task<ActionResult> CreateDiscount([FromForm] DiscountPolicyEditReq<DiscountPolicyDto<DiscountPolicyBase>, DiscountPolicyBase> req)
-    {
-        var res = await _discountPolicyService.CreateDiscount(req);
-        
-        return RedirectToAction("Edit", "DiscountPolicy", new { id = req.Id, msg = res.CreateDiscountMessage});
-    }
-    
-    // TODO : utiliser Session and state management pour l'ajout/suppression "dynamique" de ligne pendant la creation de la facture
-    [HttpGet]
-    public async Task<ActionResult> DeleteDiscount(Guid id)
-    {
-        var discountPolicyId = await _discountPolicyService.DeleteDiscount(id);
-        
-        return RedirectToAction("Edit", "DiscountPolicy", new { id = discountPolicyId });
-    }
 }

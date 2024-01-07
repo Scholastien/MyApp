@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MyApp.Application.Interfaces.Services;
-using MyApp.Application.Models.Dtos.Products;
 using MyApp.Application.Models.Requests.BillingLines;
 using MyApp.Application.Models.Requests.Billings;
 using MyApp.Domain.Entities;
@@ -70,33 +69,6 @@ public class BillingController : BaseControllerApp
 
         return View(new BillingEditReq(billing));
     }
-
-
-    // TODO : utiliser Session and state management pour l'ajout/suppression "dynamique" de ligne pendant la creation de la facture
-    [HttpPost]
-    public async Task<ActionResult> AddBillingLine([FromForm] BillingEditReq req)
-    {
-        await _billingService.CreateOrUpdateBillingLine(req);
-        
-        return RedirectToAction("Edit", "Billing", new { id = req.Id, customerId = req.CustomerId });
-    }
-
-    // TODO : utiliser Session and state management pour l'ajout/suppression "dynamique" de ligne pendant la creation de la facture
-    [HttpGet]
-    public async Task<ActionResult> RemoveBillingLine(Guid id)
-    {
-        var ids = await _billingService.DeleteBillingLine(id);
-        
-        return RedirectToAction("Edit", "Billing", new { id = ids.BillingId, customerId = ids.BillingCustomerId });
-    }
-
-    // TODO : utiliser Session and state management pour l'ajout/suppression "dynamique" de ligne pendant la creation de la facture
-    // [HttpPost]
-    // public async Task<ActionResult> CancelAndRefresh([FromForm] BillingCreateReq req)
-    // {
-    //     // force reload of data from database
-    //     return RedirectToAction("Add", "Billing", new { customerId = req.CustomerId });
-    // }
     
     [HttpGet]
     public async Task<ActionResult> Delete(Guid id, Guid customerId)

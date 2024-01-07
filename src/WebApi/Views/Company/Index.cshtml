@@ -31,13 +31,16 @@
             <td>@data.CompanySize.ToString()</td>
             <td>
                 <div class="btn-group" role="group" aria-label="customer-edit-group">
-                    <a class="btn btn-outline-primary" href="@Url.Action("Edit", "Company", new { id = data.Id })">
+                    <a class="btn btn-outline-primary" href="@Url.Action("Edit", "Company", new { id = data.Id })"
+                       data-toggle="tooltip" data-placement="top" title="Edit Company">
                         <i class="fas fa-user-edit"></i>
                     </a>
-                    <a class="btn btn-success" href="@Url.Action("Index", "Billing", new { customerId = data.Id })">
-                        <i class="fas fa-file-invoice"></i> Billing
+                    <a class="btn btn-outline-success" href="@Url.Action("Index", "Billing", new { customerId = data.Id })"
+                       data-toggle="tooltip" data-placement="top" title="Company Billings">
+                        <i class="fas fa-file-invoice"></i>
                     </a>
-                    <a class="btn btn-outline-danger" href="@Url.Action("Delete", "Company", new { id = data.Id })">
+                    <a class="btn btn-outline-danger" href="@Url.Action("Delete", "Company", new { id = data.Id })"
+                       data-toggle="tooltip" data-placement="top" title="Delete Company">
                         <i class="fas fa-trash"></i>
                     </a>
                 </div>

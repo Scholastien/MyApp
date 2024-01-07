@@ -10,7 +10,7 @@
     var baseurl = ViewBag.BaseUrl;
 }
 <div class="container">
-    <h1>Add Billing Line</h1>
+    <h1>Add Discount</h1>
 
     @await Html.PartialAsync("DiscountPolicies/_AddDiscountForm", Model)
 
@@ -32,7 +32,8 @@
                     <td>@data.Name</td>
                     <td>
 
-                        <a class="btn btn-outline-danger" href="@Url.Action("DeleteDiscount", "DiscountPolicy", new { id = data.Id })">
+                        <a class="btn btn-outline-danger" href="@Url.Action("Delete", "Discount", new { id = data.Id })"
+                           data-toggle="tooltip" data-placement="top" title="Delete Discount">
                             <i class="fas fa-trash"></i>
                         </a>
                         @* <div class="btn-group" role="group" aria-label="customer-edit-group"> *@

@@ -13,8 +13,11 @@ namespace MyApp.Application.Services;
 
 public class BillingService : ServiceBase, IBillingService
 {
-    public BillingService(ILoggerService loggerService, IUnitOfWork unitOfWork) : base(unitOfWork, loggerService)
+    private readonly ICustomerService _customerService;  
+    
+    public BillingService(ILoggerService loggerService, IUnitOfWork unitOfWork, ICustomerService customerService) : base(unitOfWork, loggerService)
     {
+        _customerService = customerService;
     }
 
     public async Task<BillingRes> CreateBilling(BillingCreateReq req, CancellationToken ctk = default)
@@ -40,13 +43,17 @@ public class BillingService : ServiceBase, IBillingService
     public async Task<MultipleBillingsRes> GetAllBillingsForCustomer(Guid customerId,
         CancellationToken ctk = default)
     {
+        var type = await _customerService.GetCustomerTypeWithId(customerId);
+        
         var billingSpec = BillingSpecifications.MultipleBillingsForCustomerIdSpec(customerId);
         var billings = await UnitOfWork.Repository<Billing>().ListAsync(billingSpec, ctk);
         
         return new MultipleBillingsRes
         {
             CustomerId = customerId,
-            Data = billings.Select(b => new BillingDto(b)).ToList()
+            Data = billings.Select(b => new BillingDto(b))
+                .ToList(),
+            CustomerType = type
         };
     }
 

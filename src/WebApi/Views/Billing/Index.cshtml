@@ -34,10 +34,17 @@
             <td>@data.TotalNet</td>
             <td>
                 <div class="btn-group" role="group" aria-label="customer-edit-group">
-                    <a class="btn btn-outline-primary" href="@Url.Action("Edit", "Billing", new { id = data.Id, customerId = data.CustomerId })">
+                    <a class="btn btn-outline-primary" href="@Url.Action("Edit", "Billing", new { id = data.Id, customerId = data.CustomerId })"
+                       data-toggle="tooltip" data-placement="top" title="Edit Billing">
                         <i class="fas fa-edit"></i>
                     </a>
-                    <a class="btn btn-outline-danger" href="@Url.Action("Delete", "Billing", new { id = data.Id, customerId = data.CustomerId })">
+                    <a class="btn btn-outline-success" type="button"
+                       href="@Url.Action("Edit", "Discount", new { id = data.Id, customerId = data.CustomerId })"
+                       data-toggle="tooltip" data-placement="top" title="Apply Bulk Discount">
+                        <i class="fas fa-cart-arrow-down"></i>
+                    </a>
+                    <a class="btn btn-outline-danger" href="@Url.Action("Delete", "Billing", new { id = data.Id, customerId = data.CustomerId })"
+                       data-toggle="tooltip" data-placement="top" title="Delete Billing">
                         <i class="fas fa-trash"></i>
                     </a>
                 </div>
@@ -46,3 +53,13 @@
     }
     </tbody>
 </table>
+
+<div class="row">
+    <div class="col-6 col-md-6">
+        <div class="col">
+            <a href="@Url.Action("Index", Model.CustomerType.ToString())" class="btn btn-outline-secondary">
+                <i class="fas fa-step-backward"></i> Return
+            </a>
+        </div>
+    </div>
+</div>
