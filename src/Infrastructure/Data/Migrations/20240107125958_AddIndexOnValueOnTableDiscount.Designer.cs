@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyApp.Infrastructure.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MyApp.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240107125958_AddIndexOnValueOnTableDiscount")]
+    partial class AddIndexOnValueOnTableDiscount
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -409,9 +412,9 @@ namespace MyApp.Infrastructure.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("c2039db8-06d4-437a-b060-ebc1e5d63b7e"),
+                            Id = new Guid("274ddbb5-0657-4329-b175-0eb6fcb0f537"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedOn = new DateTimeOffset(new DateTime(2024, 1, 7, 14, 40, 12, 906, DateTimeKind.Unspecified).AddTicks(1808), new TimeSpan(0, 1, 0, 0, 0)),
+                            CreatedOn = new DateTimeOffset(new DateTime(2024, 1, 7, 13, 59, 58, 68, DateTimeKind.Unspecified).AddTicks(70), new TimeSpan(0, 1, 0, 0, 0)),
                             CustomerType = 1,
                             DiscountType = 1,
                             DiscountUnit = 2,
@@ -421,9 +424,9 @@ namespace MyApp.Infrastructure.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("7b46edb7-83e4-48d3-8ebe-8f4c0c0c9e1f"),
+                            Id = new Guid("185211e4-f455-410d-8448-60c9e89f2d13"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedOn = new DateTimeOffset(new DateTime(2024, 1, 7, 14, 40, 12, 906, DateTimeKind.Unspecified).AddTicks(1864), new TimeSpan(0, 1, 0, 0, 0)),
+                            CreatedOn = new DateTimeOffset(new DateTime(2024, 1, 7, 13, 59, 58, 68, DateTimeKind.Unspecified).AddTicks(138), new TimeSpan(0, 1, 0, 0, 0)),
                             CustomerType = 1,
                             DiscountType = 1,
                             DiscountUnit = 1,
@@ -433,9 +436,9 @@ namespace MyApp.Infrastructure.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("721401f9-7330-4947-9ea1-e7bfe10eff2a"),
+                            Id = new Guid("1a468e8f-bda6-4d1e-8d8c-d895f9718963"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedOn = new DateTimeOffset(new DateTime(2024, 1, 7, 14, 40, 12, 906, DateTimeKind.Unspecified).AddTicks(1867), new TimeSpan(0, 1, 0, 0, 0)),
+                            CreatedOn = new DateTimeOffset(new DateTime(2024, 1, 7, 13, 59, 58, 68, DateTimeKind.Unspecified).AddTicks(141), new TimeSpan(0, 1, 0, 0, 0)),
                             CustomerType = 2,
                             DiscountType = 1,
                             DiscountUnit = 2,
@@ -445,9 +448,9 @@ namespace MyApp.Infrastructure.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("92860606-79bf-47f3-a0de-f8cee69c7c16"),
+                            Id = new Guid("d54ac313-b2c3-4bf0-a12f-128e55bda008"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedOn = new DateTimeOffset(new DateTime(2024, 1, 7, 14, 40, 12, 906, DateTimeKind.Unspecified).AddTicks(1869), new TimeSpan(0, 1, 0, 0, 0)),
+                            CreatedOn = new DateTimeOffset(new DateTime(2024, 1, 7, 13, 59, 58, 68, DateTimeKind.Unspecified).AddTicks(144), new TimeSpan(0, 1, 0, 0, 0)),
                             CustomerType = 2,
                             DiscountType = 1,
                             DiscountUnit = 1,
@@ -457,9 +460,9 @@ namespace MyApp.Infrastructure.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("dc567ff4-d61e-4591-ab8c-65de067eda1d"),
+                            Id = new Guid("d1a892fc-5060-45c0-a4d5-65af3988ceb0"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedOn = new DateTimeOffset(new DateTime(2024, 1, 7, 14, 40, 12, 906, DateTimeKind.Unspecified).AddTicks(1871), new TimeSpan(0, 1, 0, 0, 0)),
+                            CreatedOn = new DateTimeOffset(new DateTime(2024, 1, 7, 13, 59, 58, 68, DateTimeKind.Unspecified).AddTicks(178), new TimeSpan(0, 1, 0, 0, 0)),
                             CustomerType = 2,
                             DiscountType = 2,
                             DiscountUnit = 2,
@@ -469,9 +472,9 @@ namespace MyApp.Infrastructure.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("8b64278e-b67f-43c9-9787-7ace52333c79"),
+                            Id = new Guid("2cf4a5c4-0a4f-4e32-83d3-d698ad30d174"),
                             CreatedBy = new Guid("00000000-0000-0000-0000-000000000000"),
-                            CreatedOn = new DateTimeOffset(new DateTime(2024, 1, 7, 14, 40, 12, 906, DateTimeKind.Unspecified).AddTicks(1874), new TimeSpan(0, 1, 0, 0, 0)),
+                            CreatedOn = new DateTimeOffset(new DateTime(2024, 1, 7, 13, 59, 58, 68, DateTimeKind.Unspecified).AddTicks(180), new TimeSpan(0, 1, 0, 0, 0)),
                             CustomerType = 2,
                             DiscountType = 2,
                             DiscountUnit = 1,
@@ -505,8 +508,8 @@ namespace MyApp.Infrastructure.Data.Migrations
                     b.Property<DateTimeOffset?>("LastModifiedOn")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("Value")
-                        .HasColumnType("bigint");
+                    b.Property<int>("Value")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

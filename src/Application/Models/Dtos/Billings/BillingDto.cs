@@ -35,5 +35,6 @@ public class BillingDto : BaseDto<Billing>
     public override void WriteTo(Billing entity)
     {
         base.WriteTo(entity);
+        entity.LastModifiedOn = DateTimeOffset.Now;
     }
 }

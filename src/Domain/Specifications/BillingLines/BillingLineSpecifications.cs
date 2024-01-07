@@ -8,11 +8,11 @@ public static class BillingLineSpecifications
     public static BaseSpecification<BillingLine> WithBillingIdAndProductIdSpec(
         (Guid BillingId, Guid BillingCustomerId) billingIds, Guid productId)
     {
-        var spec = new BaseSpecification<BillingLine>(c
+        return new BaseSpecification<BillingLine>(c
             => c.BillingId == billingIds.BillingId
                && c.BillingCustomerId == billingIds.BillingCustomerId
-               && c.ProductId == productId);
-        return spec.IncludeProducts();
+               && c.ProductId == productId)
+            .IncludeProducts();
     }
 
     public static BaseSpecification<BillingLine> IncludeProducts(this BaseSpecification<BillingLine> spec)

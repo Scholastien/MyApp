@@ -24,5 +24,6 @@ public class ProductDto : BaseDto<Product>
         base.WriteTo(entity);
         entity.Name = Name;
         entity.Price = Price;
+        entity.LastModifiedOn = DateTimeOffset.Now;
     }
 }

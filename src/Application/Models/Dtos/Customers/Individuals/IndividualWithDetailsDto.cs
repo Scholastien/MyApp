@@ -27,5 +27,6 @@ public class IndividualWithDetailsDto : CustomerWithDetailsDto<Individual>, IInd
         base.WriteTo(entity);
         entity.FirstName = FirstName;
         entity.LastName = LastName;
+        entity.LastModifiedOn = DateTimeOffset.Now;
     }
 }

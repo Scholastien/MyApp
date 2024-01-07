@@ -37,5 +37,6 @@ public abstract class CustomerDto<T>: BaseDto<T>, ICustomerDto
         entity.StatusEnum = (CustomerStatusEnum)Status;
         
         entity.LastModifiedOn = DateTimeOffset.Now;
+        entity.LastModifiedOn = DateTimeOffset.Now;
     }
 }

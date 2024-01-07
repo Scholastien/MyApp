@@ -15,5 +15,6 @@ public static class DependencyInjections
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<IBillingService, BillingService>();
         services.AddScoped<IProductService, ProductService>();
+        services.AddScoped<IDiscountPolicyService, DiscountPolicyService>();
     }
 }

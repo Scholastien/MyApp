@@ -27,5 +27,6 @@ public class CompanyWithDetailsDto : CustomerWithDetailsDto<Company>, ICompanyDt
         base.WriteTo(entity);
         entity.Kbis = Kbis;
         entity.CompanySize = CompanySize;
+        entity.LastModifiedOn = DateTimeOffset.Now;
     }
 }

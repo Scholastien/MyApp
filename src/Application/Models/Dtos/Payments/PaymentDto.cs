@@ -24,5 +24,6 @@ public class PaymentDto: BaseDto<Payment>, IPaymentDto
     {
         base.WriteTo(entity);
         entity.PaymentType = PaymentType;
+        entity.LastModifiedOn = DateTimeOffset.Now;
     }
 }

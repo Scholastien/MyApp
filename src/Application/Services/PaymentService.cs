@@ -3,7 +3,7 @@ using MyApp.Application.Interfaces.Models.Requests;
 using MyApp.Application.Interfaces.Services;
 using MyApp.Application.Models.Dtos.Payments;
 using MyApp.Application.Models.Requests.Payments;
-using MyApp.Application.Models.Responses.Payment;
+using MyApp.Application.Models.Responses.Payments;
 using MyApp.Domain.Core.Repositories;
 using MyApp.Domain.Entities.Customers;
 using MyApp.Domain.Entities.Payments;

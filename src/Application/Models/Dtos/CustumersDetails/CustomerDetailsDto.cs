@@ -38,5 +38,6 @@ public class CustomerDetailsDto : BaseDto<CustomerDetails>
         entity.PostalCode = PostalCode;
         entity.State = State;
         entity.Country = Country;
+        entity.LastModifiedOn = DateTimeOffset.Now;
     }
 }

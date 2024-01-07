@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 using MyApp.Domain.Core.Models;
 using MyApp.Domain.Core.Models.Interface;
 using MyApp.Domain.Entities.Billings;
@@ -7,6 +8,7 @@ using MyApp.Domain.Entities.DiscountPolicy;
 
 namespace MyApp.Domain.Entities.Discounts;
 
+[Index(nameof(Value))]
 public class Discount : BaseEntity, IIdentifiableByIdEntity, IAuditableEntity, ISoftDeleteEntity
 {
     #region IIdentifiableByIdEntity
@@ -21,6 +23,8 @@ public class Discount : BaseEntity, IIdentifiableByIdEntity, IAuditableEntity, I
     public DiscountPolicyBase DiscountPolicy { get; set; } = null!;
 
     #endregion
+    
+    public uint Value { get; set; }
 
     #region Navigation
 

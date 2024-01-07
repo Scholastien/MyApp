@@ -7,7 +7,9 @@ public static class BillingSpecifications
 {
     public static BaseSpecification<Billing> MultipleBillingsForCustomerIdSpec(Guid customerId)
     {
-        var spec = new BaseSpecification<Billing>(c => c.CustomerId == customerId);
+        var spec = new BaseSpecification<Billing>(c 
+            => c.CustomerId == customerId
+            && c.IsDeleted == false);
         return spec.IncludeAllLinkedEntities();
     }
 

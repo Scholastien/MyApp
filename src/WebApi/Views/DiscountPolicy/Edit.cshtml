@@ -1,0 +1,70 @@
+﻿@using MyApp.Application.Models.Requests.DiscountPolicies
+@using MyApp.Application.Models.Dtos.DiscountPolicies
+@using MyApp.Domain.Entities.DiscountPolicy
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using MyApp.Application.Extensions
+@model DiscountPolicyEditReq<DiscountPolicyDto<DiscountPolicyBase>, DiscountPolicyBase>
+
+@{
+    ViewData["Title"] = "Home Page";
+    var baseurl = ViewBag.BaseUrl;
+}
+<div class="container">
+    <h1>Add Billing Line</h1>
+
+    @await Html.PartialAsync("DiscountPolicies/_AddDiscountForm", Model)
+
+    @if (Model.Discounts != null)
+    {
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th class="col-1 align-middle" scope="col">#</th>
+                <th class="col-2 align-middle" scope="col">Name</th>
+                <th class="col-2 align-middle" scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var (data, index) in Model.Discounts.WithIndex())
+            {
+                <tr>
+                    <th scope="row">@index</th>
+                    <td>@data.Name</td>
+                    <td>
+
+                        <a class="btn btn-outline-danger" href="@Url.Action("DeleteDiscount", "DiscountPolicy", new { id = data.Id })">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                        @* <div class="btn-group" role="group" aria-label="customer-edit-group"> *@
+                        @*     <a class="btn btn-primary" href="@Url.Action("Edit", "Company", new { id = data.Id })"> *@
+                        @*         <i class="fas fa-user-edit"></i> *@
+                        @*     </a> *@
+                        @*     <a class="btn btn-secondary text-white" href="@Url.Action("Index", "Billing", new { customerId = data.Id })"> *@
+                        @*         <i class="fas fa-file-invoice"></i> Billing *@
+                        @*     </a> *@
+                        @* </div> *@
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        <div class="row">
+            <div class="col-6 col-md-6">
+                <div class="col">
+                    <a href="@Url.Action("Index", "DiscountPolicy")" class="btn btn-outline-secondary">
+                        <i class="fas fa-step-backward"></i> Return
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+@section Scripts{
+
+    @{
+        <partial name="_ValidationScriptsPartial"/>
+    }
+
+}

@@ -23,5 +23,6 @@ public class BillingLineDto : BaseDto<BillingLine>
     {
         base.WriteTo(entity);
         entity.Quantity = Quantity;
+        entity.LastModifiedOn = DateTimeOffset.Now;
     }
 }

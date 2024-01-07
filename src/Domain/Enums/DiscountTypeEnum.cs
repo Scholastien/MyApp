@@ -2,8 +2,12 @@
 
 public enum DiscountTypeEnum
 {
-    BulkPercentage = 1, 
-    BulkFlat = 2,
-    TargetedPercentage = 3,
-    TargetedFlat= 4,
+    /// <summary>
+    /// Applied on the Total of a specific bill
+    /// </summary>
+    Bulk = 1,
+    /// <summary>
+    /// Applied on a Billing line of a specific bill
+    /// </summary>
+    Targeted = 2
 }

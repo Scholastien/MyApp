@@ -36,17 +36,17 @@ public class ProductController : BaseControllerApp
         var req = new ProductCreateReq();
         return View(req);
     }
-    
+
     [HttpPost]
     public async Task<IActionResult> Add([FromForm] ProductCreateReq req)
-    { 
+    {
         if (!ModelState.IsValid)
         {
             return View(req);
         }
-        
+
         await _productService.CreateProduct(req);
-        
+
         return RedirectToAction("Index");
     }
 
@@ -56,19 +56,20 @@ public class ProductController : BaseControllerApp
         var dto = await _productService.GetProductDtoById(id);
 
         var editReq = new ProductEditReq(dto);
-        
-        return View(editReq);    }
-    
+
+        return View(editReq);
+    }
+
     [HttpPost]
     public async Task<IActionResult> Edit([FromForm] ProductEditReq req)
-    { 
+    {
         if (!ModelState.IsValid)
         {
             return View(req);
         }
-        
+
         await _productService.UpdateProduct(req);
-        
+
         return RedirectToAction("Index");
     }
 
@@ -76,7 +77,7 @@ public class ProductController : BaseControllerApp
     public async Task<IActionResult> Delete(Guid id)
     {
         await _productService.DeleteProductWithId(id);
-        
+
         return RedirectToAction("Index");
     }
 }

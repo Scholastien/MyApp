@@ -1,0 +1,35 @@
+﻿@using MyApp.Application.Extensions
+@model MyApp.Application.Models.Responses.DiscountPolicies.MultipleDiscountPolicyRes<MyApp.Domain.Entities.DiscountPolicy.DiscountPolicyBase>
+
+@{
+    ViewData["Title"] = "Discount Policies";
+}
+
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th class="col-1 align-middle" scope="col">#</th>
+        <th class="col-3 align-middle" scope="col">Name</th>
+        <th class="col align-middle" scope="col">Preview</th>
+        <th class="col-2 align-middle" scope="col">MaxValue</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var (data, index) in Model.Data.WithIndex())
+    {
+        <tr>
+            <th scope="row">@index</th>
+            <td>@data.Name</td>
+            <td>@data.Preview</td>
+            <td>@data.MaxValue</td>
+            <td>
+                <div class="btn-group" role="group" aria-label="customer-edit-group">
+                    <a class="btn btn-outline-primary" href="@Url.Action("Edit", "DiscountPolicy", new { id = data.Id })">
+                        <i class="fas fa-user-edit"></i>
+                    </a>
+                </div>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

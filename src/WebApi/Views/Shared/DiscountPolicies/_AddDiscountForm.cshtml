@@ -1,0 +1,39 @@
+﻿@using MyApp.Application.Models.Requests.DiscountPolicies
+@using MyApp.Application.Models.Dtos.DiscountPolicies
+@using MyApp.Domain.Entities.DiscountPolicy
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model DiscountPolicyEditReq<DiscountPolicyDto<DiscountPolicyBase>, DiscountPolicyBase>
+
+@Html.ValidationSummary()
+<form asp-action="CreateDiscount" asp-controller="DiscountPolicy" method="post" enctype="application/x-www-form-urlencoded">
+    @Html.HiddenFor(model => model.Id)
+    <div class="form-row">
+        <div class="col-6 col-md-6">
+            <div class="form-group col">
+                <label asp-for="@Model.NewDiscountValue" class="col control-label"></label>
+                <br>
+                <div class="col">
+                    <div class="input-group">
+                        @Html.TextBoxFor(m => m.NewDiscountValue, new { placeholder = "1", @class = "form-control", type = "number", min = "1" })
+                        <div class="input-group-append">
+                            <span class="input-group-text">@Model.DiscountUnitString</span>
+                        </div>
+                        <div class="col">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-cart-plus"></i>Create Discount
+                            </button>
+                        </div>
+                        @Html.ValidationMessageFor(m => m.NewDiscountValue)
+                        @if (!string.IsNullOrEmpty(ViewBag.CreateMsg))
+                        {
+                            <br/>
+                            <div class="alert alert-primary" role="alert">
+                                @ViewBag.CreateMsg
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
