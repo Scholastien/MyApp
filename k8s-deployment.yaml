@@ -20,7 +20,7 @@ spec:
           ports:
             - containerPort: 80
               name: http
-          image: webapi:dev
+          image: webapi:latest
           volumeMounts:
             - mountPath: /var/temp-key/
               name: cryptographic-keys
