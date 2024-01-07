@@ -38,7 +38,7 @@
                        data-toggle="tooltip" data-placement="top" title="Edit Billing">
                         <i class="fas fa-edit"></i>
                     </a>
-                    <a class="btn btn-outline-success" type="button"
+                    <a class="btn btn-outline-success disabled" type="button" @* TODO: implement Apply Bulk Discount*@
                        href="@Url.Action("Edit", "Discount", new { id = data.Id, customerId = data.CustomerId })"
                        data-toggle="tooltip" data-placement="top" title="Apply Bulk Discount">
                         <i class="fas fa-cart-arrow-down"></i>

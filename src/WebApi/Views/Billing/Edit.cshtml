@@ -39,12 +39,12 @@
 
                         <div class="btn-group" role="group" aria-label="customer-edit-group">
                             <a href="@Url.Action("Edit", "BillingLine", new { id = data.Id })"
-                               class="btn btn-outline-primary" 
+                               class="btn btn-outline-primary disabled"  @* TODO: Implement BillingLine Edit*@
                                data-toggle="tooltip" data-placement="top" title="Edit Billing Line">
                                 <i class="fas fa-edit"></i>
                             </a>
                             <a href="@Url.Action("Edit", "Discount", new { id = data.Id })"
-                               class="btn btn-info" 
+                               class="btn btn-outline-success disabled" @* TODO: Implement Apply targeted discount*@
                                data-toggle="tooltip" data-placement="top" title="Apply Targeted Discount">
                                 <i class="fas fa-cart-arrow-down"></i>
                             </a>
