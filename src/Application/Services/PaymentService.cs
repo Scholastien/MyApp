@@ -21,8 +21,6 @@ public class PaymentService : ServiceBase, IPaymentService
     public async Task<IBaseResponse<PaymentDto>> CreatePayment(PaymentCreateReq createReq,
         CancellationToken ctk = default)
     {
-        var customer = await UnitOfWork.Repository<Customer>().GetByIdAsync(createReq.CustomerId, ctk);
-
         var payment = await UnitOfWork.Repository<Payment>().AddAsync(new Payment
         {
             CustomerId = createReq.CustomerId,
@@ -45,49 +43,55 @@ public class PaymentService : ServiceBase, IPaymentService
 
     public async Task UpdatePayment(PaymentEditReq editReq, CancellationToken ctk = default)
     {
-        var payment = await UnitOfWork.Repository<Payment>().GetByIdAsync(new object[]{editReq.Id, editReq.CustomerId}, ctk);
-
-        if (payment == null)
+        try
         {
-            LoggerService.LogError($"Couldn't find Payment with ID {editReq.Id}");
-            throw new NullReferenceException();
+            var payment = await GetEntityByIdAsync<Payment>(new object[] { editReq.Id, editReq.CustomerId }, ctk);
+
+            editReq.WriteTo(payment);
+            UnitOfWork.Repository<Payment>().Update(payment);
+            await UnitOfWork.SaveChangesAsync(ctk);
+
+            LoggerService.LogInfo($"Payment {editReq.Id} updated");
         }
-
-        editReq.WriteTo(payment);
-        UnitOfWork.Repository<Payment>().Update(payment);
-        await UnitOfWork.SaveChangesAsync(ctk);
-
-        LoggerService.LogInfo($"Payment {editReq.Id} updated");
+        catch (Exception e)
+        {
+            LoggerService.LogError("A problem during Payment update occured", e);
+            throw;
+        }
     }
 
     public async Task DeletePaymentWithId(Guid id, Guid customerId, CancellationToken ctk = default)
     {
-        var payment = await UnitOfWork.Repository<Payment>().GetByIdAsync(new object[] { id, customerId }, ctk);
-
-        if (payment == null)
+        try
         {
-            LoggerService.LogError($"Couldn't find payment with ID {id}");
-            throw new NullReferenceException();
-        }
+            var payment = await GetEntityByIdAsync<Payment>(new object[] { id, customerId }, ctk);
 
-        UnitOfWork.Repository<Payment>().Delete(payment);
-        await UnitOfWork.SaveChangesAsync(ctk);
+            UnitOfWork.Repository<Payment>().Delete(payment);
+            await UnitOfWork.SaveChangesAsync(ctk);
+        }
+        catch (Exception e)
+        {
+            LoggerService.LogError("A problem during Payment deletion occured", e);
+            throw;
+        }
     }
 
     public async Task<PaymentDto> GetPaymentDtoById(Guid id, Guid customerId, CustomerTypeEnum customerType,
         CancellationToken ctk = default)
     {
-        var individual = await UnitOfWork.Repository<Payment>().GetByIdAsync(new object[] { id, customerId }, ctk);
+        try
+        {
+            var payment = await GetEntityByIdAsync<Payment>(new object[] { id, customerId }, ctk);
 
-        // Return if not null
-        if (individual != null)
-            return new PaymentDto(individual)
+            return new PaymentDto(payment)
             {
                 EntityController = customerType.ToString()
             };
-
-        // Log and throw
-        LoggerService.LogError($"Couldn't find individual with ID {id}");
-        throw new NullReferenceException();
+        }
+        catch (Exception e)
+        {
+            LoggerService.LogError("A problem during Payment fetching as Dto occured", e);
+            throw;
+        }
     }
 }

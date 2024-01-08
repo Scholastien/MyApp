@@ -18,5 +18,6 @@ public static class DependencyInjections
         services.AddScoped<IDiscountPolicyService, DiscountPolicyService>();
         services.AddScoped<IBillingsDiscountsService, BillingsDiscountsService>();
         services.AddScoped<IDiscountService, DiscountService>();
+        services.AddScoped<IBillingLineService, BillingLineService>();
     }
 }

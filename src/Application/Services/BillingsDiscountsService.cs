@@ -52,7 +52,6 @@ public class BillingsDiscountsService : ServiceBase, IBillingsDiscountsService
     {
         try
         {
-            // Check if Discount exceeds total
             if (await NewDiscountExceedsTotal(req, ctk))
             {
                 return new BillingDiscountRes
@@ -92,20 +91,13 @@ public class BillingsDiscountsService : ServiceBase, IBillingsDiscountsService
         }
     }
 
-    public async Task<(Guid BillingId, Guid BillingCustomerId)> DeleteProductWithId(Guid discountId, Guid billingId,
+    public async Task<(Guid BillingId, Guid BillingCustomerId)> DeleteBillingDiscountWithIds(Guid discountId, Guid billingId,
         CancellationToken ctk = default)
     {
         try
         {
-            var billingDiscount = await UnitOfWork.Repository<BillingDiscount>()
-                .GetByIdAsync(new object[] { discountId, billingId }, ctk);
-
-            if (billingDiscount == null)
-            {
-                var errMsg = $"Couldn't find BillingDiscount with IDs {new object[] { discountId, billingId }}";
-                throw new NullReferenceException(errMsg);
-            }
-
+            var billingDiscount = await GetEntityByIdAsync<BillingDiscount>(new object[] { discountId, billingId}, ctk);
+            
             UnitOfWork.Repository<BillingDiscount>().Delete(billingDiscount);
             await UnitOfWork.SaveChangesAsync(ctk);
 
@@ -113,7 +105,7 @@ public class BillingsDiscountsService : ServiceBase, IBillingsDiscountsService
         }
         catch (Exception e)
         {
-            LoggerService.LogError("A problem during BillingDiscount creation occured", e);
+            LoggerService.LogError("A problem during BillingDiscount deletion occured", e);
             throw;
         }
     }

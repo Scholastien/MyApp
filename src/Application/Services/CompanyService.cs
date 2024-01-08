@@ -48,19 +48,21 @@ public class CompanyService : CustomerService, ICompanyService
 
     public async Task UpdateCompany(CompanyEditReq editReq, CancellationToken ctk = default)
     {
-        var company = await UnitOfWork.Repository<Company>().GetByIdAsync(editReq.Id, ctk);
-
-        if (company == null)
+        try
         {
-            LoggerService.LogError($"Couldn't find company with ID {editReq.Id}");
-            throw new NullReferenceException();
+            var company = await GetEntityByIdAsync<Company>(editReq.Id, ctk);
+
+            editReq.WriteTo(company);
+            UnitOfWork.Repository<Company>().Update(company);
+            await UnitOfWork.SaveChangesAsync(ctk);
+
+            LoggerService.LogInfo($"company {editReq.Id} updated");
         }
-
-        editReq.WriteTo(company);
-        UnitOfWork.Repository<Company>().Update(company);
-        await UnitOfWork.SaveChangesAsync(ctk);
-
-        LoggerService.LogInfo($"company {editReq.Id} updated");
+        catch (Exception e)
+        {
+            LoggerService.LogError("A problem during Company update occured", e);
+            throw;
+        }
     }
 
     public async Task<IBaseResponse<IList<CompanyDto>>> GetAllActiveCompanies(CancellationToken ctk = default)
@@ -92,24 +94,24 @@ public class CompanyService : CustomerService, ICompanyService
 
     public async Task DeleteCompanyWithId(Guid id, CancellationToken ctk = default)
     {
-        var company = await UnitOfWork.Repository<Company>().GetByIdAsync(id, ctk);
-
-        if (company == null)
+        try
         {
-            LoggerService.LogError($"Couldn't find company with ID {id}");
-            throw new NullReferenceException();
-        }
+            var company = await GetEntityByIdAsync<Company>(id, ctk);
 
-        UnitOfWork.Repository<Company>().Delete(company);
-        await UnitOfWork.SaveChangesAsync(ctk);
+            UnitOfWork.Repository<Company>().Delete(company);
+            await UnitOfWork.SaveChangesAsync(ctk);
+        }
+        catch (Exception e)
+        {
+            LoggerService.LogError("A problem during Company deletion occured", e);
+            throw;
+        }
     }
 
     public async Task<CompanyWithDetailsDto> GetCompanyWithDetailsDtoById(Guid id, CancellationToken ctk = default)
     {
         var customerSpec = CustomerSpecifications<Company>.GetCustomerWithBillingOrShippingIdSpec(id);
         var customer = await UnitOfWork.Repository<Company>().FirstOrDefaultAsync(customerSpec, ctk);
-        
-        var details = await UnitOfWork.Repository<CustomerDetails>().GetByIdAsync(id, ctk);
 
         // Return if not null
         if (customer != null) return new CompanyWithDetailsDto(customer)

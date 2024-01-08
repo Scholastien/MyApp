@@ -9,7 +9,7 @@ public class BillingDto : BaseDto<Billing>
 {
     public Guid Id { get; set; }
     public Guid CustomerId { get; set; }
-    public CustomerTypeEnum CustomerType { get; set; }
+    public CustomerTypeEnum? CustomerType { get; set; }
     public string Name { get; set; }
     public uint ItemsCount { get; set; }
     public float TotalGross { get; set; }
@@ -25,7 +25,7 @@ public class BillingDto : BaseDto<Billing>
     {
         Id = entity.Id;
         CustomerId = entity.CustomerId;
-        CustomerType = entity.Customer.CustomerType;
+        CustomerType = entity.Customer?.CustomerType;
         Lines = entity.BillingLines.Select(b => new BillingLineDto(b)).ToList();
         
         // Label display

@@ -49,19 +49,21 @@ public class IndividualService : CustomerService, IIndividualService
 
     public async Task UpdateIndividual(IndividualEditReq editReq, CancellationToken ctk = default)
     {
-        var individual = await UnitOfWork.Repository<Individual>().GetByIdAsync(editReq.Id, ctk);
-
-        if (individual == null)
+        try
         {
-            LoggerService.LogError($"Couldn't find individual with ID {editReq.Id}");
-            throw new NullReferenceException();
+            var individual = await GetEntityByIdAsync<Individual>(editReq.Id, ctk);
+
+            editReq.WriteTo(individual);
+            UnitOfWork.Repository<Individual>().Update(individual);
+            await UnitOfWork.SaveChangesAsync(ctk);
+
+            LoggerService.LogInfo($"individual {editReq.Id} updated");
         }
-
-        editReq.WriteTo(individual);
-        UnitOfWork.Repository<Individual>().Update(individual);
-        await UnitOfWork.SaveChangesAsync(ctk);
-
-        LoggerService.LogInfo($"individual {editReq.Id} updated");
+        catch (Exception e)
+        {
+            LoggerService.LogError("A problem during Individual update occured", e);
+            throw;
+        }
     }
 
     public async Task<MultipleIndividualsRes> GetAllActiveIndividuals(CancellationToken ctk = default)
@@ -92,24 +94,24 @@ public class IndividualService : CustomerService, IIndividualService
 
     public async Task DeleteIndividualWithId(Guid id, CancellationToken ctk = default)
     {
-        var individual = await UnitOfWork.Repository<Individual>().GetByIdAsync(id, ctk);
-
-        if (individual == null)
+        try
         {
-            LoggerService.LogError($"Couldn't find individual with ID {id}");
-            throw new NullReferenceException();
-        }
+            var individual = await GetEntityByIdAsync<Individual>(id, ctk);
 
-        UnitOfWork.Repository<Individual>().Delete(individual);
-        await UnitOfWork.SaveChangesAsync(ctk);
+            UnitOfWork.Repository<Individual>().Delete(individual);
+            await UnitOfWork.SaveChangesAsync(ctk);
+        }
+        catch (Exception e)
+        {
+            LoggerService.LogError("A problem during Individual deletion occured", e);
+            throw;
+        }
     }
 
     public async Task<IndividualWithDetailsDto> GetIndividualWithDetailsDtoById(Guid id, CancellationToken ctk = default)
     {
         var customerSpec = CustomerSpecifications<Individual>.GetCustomerWithBillingOrShippingIdSpec(id);
         var customer = await UnitOfWork.Repository<Individual>().FirstOrDefaultAsync(customerSpec, ctk);
-        
-        var details = await UnitOfWork.Repository<CustomerDetails>().GetByIdAsync(id, ctk);
 
         // Return if not null
         if (customer != null) return new IndividualWithDetailsDto(customer)

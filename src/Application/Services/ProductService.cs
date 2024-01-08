@@ -50,45 +50,51 @@ public class ProductService : ServiceBase, IProductService
 
     public async Task<ProductDto> GetProductDtoById(Guid id, CancellationToken ctk = default)
     {
-        var product = await UnitOfWork.Repository<Product>().GetByIdAsync(id, ctk);
+        try
+        {
+            var product = await GetEntityByIdAsync<Product>(id, ctk);
 
-        // Return if not null
-        if (product != null)
             return new ProductDto(product);
-
-        // Log and throw
-        LoggerService.LogError($"Couldn't find product with ID {id}");
-        throw new NullReferenceException();
+        }
+        catch (Exception e)
+        {
+            LoggerService.LogError("A problem during Product fetching as Dto occured", e);
+            throw;
+        }
     }
 
     public async Task UpdateProduct(ProductEditReq req, CancellationToken ctk = default)
     {
-        var product = await UnitOfWork.Repository<Product>().GetByIdAsync(req.Id, ctk);
-
-        if (product == null)
+        try
         {
-            LoggerService.LogError($"Couldn't find product with ID {req.Id}");
-            throw new NullReferenceException();
+            var product = await GetEntityByIdAsync<Product>(req.Id, ctk);
+
+            req.WriteTo(product);
+            UnitOfWork.Repository<Product>().Update(product);
+            await UnitOfWork.SaveChangesAsync(ctk);
+
+            LoggerService.LogInfo($"Payment {req.Id} updated");
         }
-
-        req.WriteTo(product);
-        UnitOfWork.Repository<Product>().Update(product);
-        await UnitOfWork.SaveChangesAsync(ctk);
-
-        LoggerService.LogInfo($"Payment {req.Id} updated");
+        catch (Exception e)
+        {
+            LoggerService.LogError("A problem during Product update occured", e);
+            throw;
+        }
     }
 
     public async Task DeleteProductWithId(Guid id, CancellationToken ctk = default)
     {
-        var product = await UnitOfWork.Repository<Product>().GetByIdAsync(id, ctk);
-
-        if (product == null)
+        try
         {
-            LoggerService.LogError($"Couldn't find product with ID {id}");
-            throw new NullReferenceException();
-        }
+            var product = await GetEntityByIdAsync<Product>(id, ctk);
 
-        UnitOfWork.Repository<Product>().Delete(product);
-        await UnitOfWork.SaveChangesAsync(ctk);
+            UnitOfWork.Repository<Product>().Delete(product);
+            await UnitOfWork.SaveChangesAsync(ctk);
+        }
+        catch (Exception e)
+        {
+            LoggerService.LogError("A problem during Product deletion occured", e);
+            throw;
+        }
     }
 }

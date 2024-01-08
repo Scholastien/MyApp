@@ -13,21 +13,21 @@ namespace MyApp.WebApi.Controllers.BillingLine;
 [Route("[controller]/[action]")]
 public class BillingLineController : BaseControllerApp
 {
-    private readonly IBillingService _billingService;
+    private readonly IBillingLineService _billingLineService;
 
     public BillingLineController(UserManager<IdentityUserBase> userManager,
         SignInManager<IdentityUserBase> signInManager, ILogger<BillingLineController> logger,
-        AppDbContext dbContext, IBillingService billingService) : base(userManager,
+        AppDbContext dbContext, IBillingLineService billingLineService) : base(userManager,
         signInManager, logger, dbContext)
     {
-        _billingService = billingService;
+        _billingLineService = billingLineService;
     }
     
     // TODO : utiliser Session and state management pour l'ajout/suppression "dynamique" de ligne pendant la creation de la facture
     [HttpPost]
     public async Task<ActionResult> Add([FromForm] BillingEditReq req)
     {
-        await _billingService.CreateOrUpdateBillingLine(req);
+        await _billingLineService.CreateOrUpdateBillingLine(req);
         
         return RedirectToAction("Edit", "Billing", new { id = req.Id, customerId = req.CustomerId });
     }
@@ -36,16 +36,8 @@ public class BillingLineController : BaseControllerApp
     [HttpGet]
     public async Task<ActionResult> Delete(Guid id)
     {
-        var ids = await _billingService.DeleteBillingLine(id);
+        var ids = await _billingLineService.DeleteBillingLine(id);
         
         return RedirectToAction("Edit", "Billing", new { id = ids.BillingId, customerId = ids.BillingCustomerId });
     }
-
-    // TODO : utiliser Session and state management pour l'ajout/suppression "dynamique" de ligne pendant la creation de la facture
-    // [HttpPost]
-    // public async Task<ActionResult> CancelAndRefresh([FromForm] BillingCreateReq req)
-    // {
-    //     // force reload of data from database
-    //     return RedirectToAction("Add", "Billing", new { customerId = req.CustomerId });
-    // }
 }

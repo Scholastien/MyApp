@@ -17,36 +17,41 @@ public class CustomerDetailsService : ServiceBase, ICustomerDetailsService
 
     public async Task UpdateCustomerDetails(CustomerDetailsEditReq editReq, CancellationToken ctk = default)
     {
-        var details = await UnitOfWork.Repository<CustomerDetails>().GetByIdAsync(editReq.Id, ctk);
-        
-        if (details == null)
+        try
         {
-            LoggerService.LogError($"Couldn't find CustomerDetails with ID {editReq.Id}");
-            throw new NullReferenceException();
-        }
+            var details = await GetEntityByIdAsync<CustomerDetails>(editReq.Id, ctk);
         
-        editReq.WriteTo(details);
-        UnitOfWork.Repository<CustomerDetails>().Update(details);
-        await UnitOfWork.SaveChangesAsync(ctk);
+            editReq.WriteTo(details);
+            UnitOfWork.Repository<CustomerDetails>().Update(details);
+            await UnitOfWork.SaveChangesAsync(ctk);
 
-        LoggerService.LogInfo($"individual {editReq.Id} updated");
+            LoggerService.LogInfo($"individual {editReq.Id} updated");
+        }
+        catch (Exception e)
+        {
+            LoggerService.LogError("A problem during CustomerDetails update occured", e);
+            throw;
+        }
     }
 
     public async Task<CustomerDetailsDto> GetCustomerDetailsDtoById(Guid id, CancellationToken ctk = default)
     {
-        var customerSpec = CustomerSpecifications<Customer>.GetCustomerWithBillingOrShippingIdSpec(id);
-        var customer = await UnitOfWork.Repository<Customer>().FirstOrDefaultAsync(customerSpec, ctk);
-        
-        var details = await UnitOfWork.Repository<CustomerDetails>().GetByIdAsync(id, ctk);
-
-        // Return if not null
-        if (details != null) return new CustomerDetailsDto(details)
+        try
         {
-            CustomerType = customer.CustomerType
-        };
+            var customerSpec = CustomerSpecifications<Customer>.GetCustomerWithBillingOrShippingIdSpec(id);
+            var customer = await UnitOfWork.Repository<Customer>().FirstOrDefaultAsync(customerSpec, ctk);
         
-        // Log and throw
-        LoggerService.LogError($"Couldn't find CustomerDetails with ID {id}");
-        throw new NullReferenceException();
+            var details = await GetEntityByIdAsync<CustomerDetails>(id, ctk);
+
+            return new CustomerDetailsDto(details)
+            {
+                CustomerType = customer.CustomerType
+            };
+        }
+        catch (Exception e)
+        {
+            LoggerService.LogError("A problem during CustomerDetails fetching as Dto occured", e);
+            throw;
+        }
     }
 }

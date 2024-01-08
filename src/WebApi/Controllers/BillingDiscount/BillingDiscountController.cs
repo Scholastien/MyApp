@@ -86,7 +86,7 @@ public class BillingDiscountController : BaseControllerApp
 
     public async Task<IActionResult> Delete(Guid discountId, Guid billingId)
     {
-        var res = await _billingsDiscountsService.DeleteProductWithId(discountId, billingId);
+        var res = await _billingsDiscountsService.DeleteBillingDiscountWithIds(discountId, billingId);
 
         return RedirectToAction("Index", "BillingDiscount", new { billingId = res.BillingId, customerId = res.BillingCustomerId, msg = "Billing Discount deleted" });
     }

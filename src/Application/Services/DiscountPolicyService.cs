@@ -118,18 +118,20 @@ public class DiscountPolicyService : ServiceBase, IDiscountPolicyService
 
     public async Task<Guid> DeleteDiscount(Guid id, CancellationToken ctk = default)
     {
-        var discount = await UnitOfWork.Repository<Discount>().GetByIdAsync(id, ctk);
-
-        if (discount == null)
+        try
         {
-            LoggerService.LogError($"Couldn't find Discount with ID {id}");
-            throw new NullReferenceException();
+            var discount = await GetEntityByIdAsync<Discount>(id, ctk);
+
+            UnitOfWork.Repository<Discount>().Delete(discount);
+            await UnitOfWork.SaveChangesAsync(ctk);
+
+            return discount.DiscountPolicyId;
         }
-
-        UnitOfWork.Repository<Discount>().Delete(discount);
-        await UnitOfWork.SaveChangesAsync(ctk);
-
-        return discount.DiscountPolicyId;
+        catch (Exception e)
+        {
+            LoggerService.LogError("A problem during Discount deletion occured", e);
+            throw;
+        }
     }
 
     public async Task<MultipleDiscountRes> GetAllAvailableBulkDiscountsLinkedToBilling(Guid billingId, Guid customerId,

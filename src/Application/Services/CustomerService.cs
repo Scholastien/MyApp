@@ -18,12 +18,17 @@ public class CustomerService : ServiceBase, ICustomerService
 
     public async Task<CustomerTypeEnum> GetCustomerTypeWithId(Guid id)
     {
-        var customer = await UnitOfWork.Repository<Customer>().GetByIdAsync(id);
+        try
+        {
+            var customer = await GetEntityByIdAsync<Customer>(id);
 
-        if (customer != null) return customer.CustomerType;
-
-        LoggerService.LogError($"Couldn't find customer with ID {id}");
-        throw new NullReferenceException();
+            return customer.CustomerType;
+        }
+        catch (Exception e)
+        {
+            LoggerService.LogError("A problem during Customer fetching as CustomerType occured", e);
+            throw;
+        }
     }
 
     protected async Task AddDetailsToCustomer(IBothCustomerDetailsReq req, Customer customer,
