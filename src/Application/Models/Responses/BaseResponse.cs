@@ -9,4 +9,5 @@ public class BaseResponse<TDto, TEntity> : IBaseResponse<TDto>
     where TEntity : BaseEntity
 {
     public TDto Data { get; set; }
+    public string Message { get; set; }
 }

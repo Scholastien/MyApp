@@ -26,7 +26,7 @@ public class DiscountPolicyController : BaseControllerApp
 
     public async Task<IActionResult> Index()
     {
-        var res = await _discountPolicyService.GetAllDiscountPolicys();
+        var res = await _discountPolicyService.GetAllDiscountPolicies();
 
         res.Data = res.Data
             .OrderBy(d => d.CustomerType)

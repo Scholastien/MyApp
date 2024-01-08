@@ -22,22 +22,29 @@ public class BillingService : ServiceBase, IBillingService
 
     public async Task<BillingRes> CreateBilling(BillingCreateReq req, CancellationToken ctk = default)
     {
-        var billing = await UnitOfWork.Repository<Billing>().AddAsync(new Billing
+        try
         {
-            //Id = Guid.NewGuid(),
-            CustomerId = req.CustomerId,
-            CreatedOn = DateTimeOffset.Now,
-            CreatedBy = Guid.NewGuid(),
-        }, ctk);
+            var billing = await UnitOfWork.Repository<Billing>().AddAsync(new Billing
+            {
+                CustomerId = req.CustomerId,
+                CreatedOn = DateTimeOffset.Now,
+                CreatedBy = Guid.NewGuid(),
+            }, ctk);
 
-        await UnitOfWork.SaveChangesAsync(ctk);
+            await UnitOfWork.SaveChangesAsync(ctk);
 
-        LoggerService.LogInfo("New billing created");
+            LoggerService.LogInfo("New billing created");
 
-        return new BillingRes
+            return new BillingRes
+            {
+                Data = new BillingDto(billing)
+            };
+        }
+        catch (Exception e)
         {
-            Data = new BillingDto(billing)
-        };
+            LoggerService.LogInfo("A problem during Billing creation occured", e);
+            throw;
+        }
     }
 
     public async Task<MultipleBillingsRes> GetAllBillingsForCustomer(Guid customerId,

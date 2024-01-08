@@ -1,6 +1,6 @@
-﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@using MyApp.Application.Models.Responses.Billings
 @using MyApp.Application.Extensions
-@model MyApp.Application.Models.Responses.Billings.MultipleBillingsRes
+@model MultipleBillingsRes
 
 @{
     ViewData["Title"] = "Company";
@@ -38,8 +38,13 @@
                        data-toggle="tooltip" data-placement="top" title="Edit Billing">
                         <i class="fas fa-edit"></i>
                     </a>
-                    <a class="btn btn-outline-success disabled" type="button" @* TODO: implement Apply Bulk Discount*@
-                       href="@Url.Action("Edit", "Discount", new { id = data.Id, customerId = data.CustomerId })"
+                    <a class="btn btn-outline-dark" type="button"
+                       href="@Url.Action("Index", "PaymentHistory", new { billingId = data.Id, customerId = data.CustomerId })"
+                       data-toggle="tooltip" data-placement="top" title="Billing history">
+                        <i class="fas fa-history"></i>
+                    </a>
+                    <a class="btn btn-outline-success" type="button"
+                       href="@Url.Action("Index", "BillingDiscount", new { billingId = data.Id, customerId = data.CustomerId })"
                        data-toggle="tooltip" data-placement="top" title="Apply Bulk Discount">
                         <i class="fas fa-cart-arrow-down"></i>
                     </a>

@@ -1,0 +1,23 @@
+﻿@model MyApp.Application.Models.Requests.BillingsDiscounts.BillingDiscountCreateReq
+
+@Html.ValidationSummary()
+<form asp-action="Add" asp-controller="BillingDiscount" method="post" enctype="application/x-www-form-urlencoded">
+    @Html.HiddenFor(model => model.BillingId)
+    @Html.HiddenFor(model => model.CustomerId)
+    <div class="form-row">
+        <div class="col-6 col-md-6">
+            <div class="form-group col">
+                <label asp-for="@Model.NewDiscount" class="control-label">Discount</label>
+                <br>
+                <div class="col">
+                    <select asp-for="@Model.NewDiscount" class="form-control" asp-items="ViewBag.AvailableDiscounts" id="ddlDiscountId"></select>
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-primary" disabled="@(!ViewBag.HasAvailableDiscounts)">
+                        <i class="fas fa-cart-arrow-down"></i>Add Discount
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -8,8 +8,8 @@ public static class DiscountSpecifications
     public static BaseSpecification<Discount> WithExistingValueForDiscountPolicyIdSpec(Guid discountPolicyId,
         uint reqNewDiscountValue)
     {
-        return new BaseSpecification<Discount>(d 
-                => d.DiscountPolicyId == discountPolicyId 
+        return new BaseSpecification<Discount>(d
+                => d.DiscountPolicyId == discountPolicyId
                    && d.Value == reqNewDiscountValue
                    && d.IsDeleted != false)
             .IncludeDiscountPolicy();
@@ -19,5 +19,11 @@ public static class DiscountSpecifications
     {
         spec.AddInclude(c => c.DiscountPolicy);
         return spec;
+    }
+
+    public static BaseSpecification<Discount> GetDiscountWithIdSpec(Guid id)
+    {
+        return new BaseSpecification<Discount>(d => d.Id == id)
+            .IncludeDiscountPolicy();
     }
 }

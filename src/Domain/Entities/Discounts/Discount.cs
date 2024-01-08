@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Domain.Core.Models;
 using MyApp.Domain.Core.Models.Interface;
 using MyApp.Domain.Entities.Billings;
 using MyApp.Domain.Entities.BillingsDiscounts;
 using MyApp.Domain.Entities.DiscountPolicy;
+using MyApp.Domain.Enums;
 
 namespace MyApp.Domain.Entities.Discounts;
 
@@ -47,4 +49,16 @@ public class Discount : BaseEntity, IIdentifiableByIdEntity, IAuditableEntity, I
     public bool IsDeleted { get; set; }
 
     #endregion
+
+    [NotMapped] public DiscountUnitEnum? DiscountUnit => DiscountPolicy.DiscountUnit;
+
+    [NotMapped] public string DiscountUnitString => DiscountUnit switch
+    {
+        DiscountUnitEnum.Flat => "$",
+        DiscountUnitEnum.Percentage => "%",
+        _ => throw new ArgumentOutOfRangeException(nameof(DiscountUnitString),
+            $"DiscountUnit not defined on DiscountPolicyBase entity with id {DiscountPolicy}")
+    };
+
+    [NotMapped] public string Name => Value + DiscountUnitString;
 }
