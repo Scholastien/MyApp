@@ -63,6 +63,6 @@ public class BaseRepositoryAsync<TEntity> : IBaseRepositoryAsync<TEntity> where 
 
     private IQueryable<TEntity?> ApplySpecification(ISpecification<TEntity> spec)
     {
-        return SpecificationEvaluator<TEntity>.GetQuery(_dbContext.Set<TEntity>().AsQueryable(), spec);
+        return SpecificationEvaluator<TEntity>.GetQuery(_dbContext.Set<TEntity>().AsQueryable().AsSplitQuery(), spec);
     }
 }
