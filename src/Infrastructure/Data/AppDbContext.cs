@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Domain.Entities;
 using MyApp.Domain.Entities.Billings;
@@ -15,60 +16,64 @@ using MyApp.Domain.Enums;
 
 namespace MyApp.Infrastructure.Data;
 
-public class AppDbContext : IdentityDbContext<IdentityUserBase>
+public class AppDbContext : IdentityDbContext<IdentityUserBase>, IDataProtectionKeyContext
 {
+    public DbSet<DataProtectionKey> DataProtectionKeys { get; set; }
+    
     // Customers
-    public DbSet<Customer>? Customers { get; set; }
-    public DbSet<Company>? Companies { get; set; }
-    public DbSet<Individual>? Individuals { get; set; }
+    public DbSet<Customer> Customers { get; set; }
+    public DbSet<Company> Companies { get; set; }
+    public DbSet<Individual> Individuals { get; set; }
 
     // CustomersDetails
-    public DbSet<CustomerDetails>? CustomersDetails { get; set; }
+    public DbSet<CustomerDetails> CustomersDetails { get; set; }
 
-    public DbSet<Payment>? Payments { get; set; }
+    public DbSet<Payment> Payments { get; set; }
 
-    public DbSet<PaymentHistory>? PaymentHistories { get; set; }
+    public DbSet<PaymentHistory> PaymentHistories { get; set; }
 
-    public DbSet<Billing>? Billings { get; set; }
+    public DbSet<Billing> Billings { get; set; }
 
-    public DbSet<BillingLine>? BillingLines { get; set; }
+    public DbSet<BillingLine> BillingLines { get; set; }
 
-    public DbSet<Product>? Products { get; set; }
+    public DbSet<Product> Products { get; set; }
 
-    public DbSet<BillingDiscount>? BillingsDiscounts { get; set; }
+    public DbSet<BillingDiscount> BillingsDiscounts { get; set; }
 
-    public DbSet<Discount>? Discounts { get; set; }
+    public DbSet<Discount> Discounts { get; set; }
 
     // DiscountPolicies
-    public DbSet<DiscountPolicyBase>? DiscountPolicies { get; set; }
-    public DbSet<IndividualDiscountPolicy>? IndividualDiscountPolicies { get; set; }
-    public DbSet<CompanyDiscountPolicy>? CompanyDiscountPolicies { get; set; }
+    public DbSet<DiscountPolicyBase> DiscountPolicies { get; set; }
+    public DbSet<IndividualDiscountPolicy> IndividualDiscountPolicies { get; set; }
+    public DbSet<CompanyDiscountPolicy> CompanyDiscountPolicies { get; set; }
 
     /// <inheritdoc />
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
 
-    protected override void OnModelCreating(ModelBuilder builder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(builder);
+        base.OnModelCreating(modelBuilder);
 
-        builder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+        DataProtectionKeyMapping(modelBuilder);
+
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 
         // Discriminator on CustomerType to differentiate Companies from Individuals
-        builder.Entity<Customer>()
+        modelBuilder.Entity<Customer>()
             .HasDiscriminator<CustomerTypeEnum>("CustomerType")
             .HasValue<Company>(CustomerTypeEnum.Company)
             .HasValue<Individual>(CustomerTypeEnum.Individual);
 
         // Discriminator on CustomerType to differentiate CompanyDiscountPolicies from IndividualDiscountPolicies
-        builder.Entity<DiscountPolicyBase>()
+        modelBuilder.Entity<DiscountPolicyBase>()
             .HasDiscriminator<CustomerTypeEnum>("CustomerType")
             .HasValue<IndividualDiscountPolicy>(CustomerTypeEnum.Individual)
             .HasValue<CompanyDiscountPolicy>(CustomerTypeEnum.Company);
 
         // 1 to 1 relationship for Customer-BillingDetails
-        builder.Entity<Customer>()
+        modelBuilder.Entity<Customer>()
             .HasOne(r => r.BillingDetails)
             .WithOne()
             .HasForeignKey<CustomerDetails>("BillingDetailsId")
@@ -76,7 +81,7 @@ public class AppDbContext : IdentityDbContext<IdentityUserBase>
             .IsRequired(false);
 
         // 1 to 1 relationship for Customer-ShippingDetails
-        builder.Entity<Customer>()
+        modelBuilder.Entity<Customer>()
             .HasOne(r => r.ShippingDetails)
             .WithOne()
             .HasForeignKey<CustomerDetails>("ShippingDetailsId")
@@ -84,7 +89,7 @@ public class AppDbContext : IdentityDbContext<IdentityUserBase>
             .IsRequired(false);
 
         // * to * relationship with navigation Billing-Discount
-        builder.Entity<Billing>()
+        modelBuilder.Entity<Billing>()
             .HasMany(e => e.Discounts)
             .WithMany(e => e.Billings)
             .UsingEntity<BillingDiscount>(
@@ -92,7 +97,7 @@ public class AppDbContext : IdentityDbContext<IdentityUserBase>
                 r => r.HasOne<Billing>().WithMany(e => e.BillingsDiscounts));
 
         // Data seeding on DiscountPolicy
-        builder.Entity<DiscountPolicyBase>().HasData(
+        modelBuilder.Entity<DiscountPolicyBase>().HasData(
             new
             {
                 Id = Guid.NewGuid(),
@@ -167,4 +172,27 @@ public class AppDbContext : IdentityDbContext<IdentityUserBase>
             }
         );
     }
+    
+    private static void DataProtectionKeyMapping(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<DataProtectionKey>()
+            .ToTable("myapp_protection_keys", "public")
+            ;
+
+        modelBuilder.Entity<DataProtectionKey>()
+            .Property(x => x.Id)
+            .HasColumnName("id")
+            ;
+
+        modelBuilder.Entity<DataProtectionKey>()
+            .Property(x => x.FriendlyName)
+            .HasColumnName("friendly_name")
+            ;
+
+        modelBuilder.Entity<DataProtectionKey>()
+            .Property(x => x.Xml)
+            .HasColumnName("xml")
+            ;
+    }
+
 }

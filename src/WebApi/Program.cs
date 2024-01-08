@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
+using MyApp.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,14 +40,21 @@ services.AddSession(options =>
 //     .SetApplicationName("WebApi")
 //     .PersistKeysToFileSystem(new DirectoryInfo("/var/dpkeys/"));
 
-services.AddDataProtection()
+// services.AddDataProtection()
+//     .SetApplicationName("WebApi")
+//     .PersistKeysToFileSystem(new DirectoryInfo("/var/temp-key/"))
+//     .UseCryptographicAlgorithms(new AuthenticatedEncryptorConfiguration
+//     {
+//         EncryptionAlgorithm = EncryptionAlgorithm.AES_256_CBC,
+//         ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
+//     });
+
+services
+    .AddDataProtection()
+    // Le discriminateur doit être partagé entre toutes les applis
     .SetApplicationName("WebApi")
-    .PersistKeysToFileSystem(new DirectoryInfo("/var/temp-key/"))
-    .UseCryptographicAlgorithms(new AuthenticatedEncryptorConfiguration
-    {
-        EncryptionAlgorithm = EncryptionAlgorithm.AES_256_CBC,
-        ValidationAlgorithm = ValidationAlgorithm.HMACSHA256
-    });
+    .PersistKeysToDbContext<AppDbContext>()
+    ;
 
 var app = builder.Build();
 
