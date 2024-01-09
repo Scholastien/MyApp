@@ -21,24 +21,24 @@ public class PaymentService : ServiceBase, IPaymentService
     public async Task<IBaseResponse<PaymentDto>> CreatePayment(PaymentCreateReq createReq,
         CancellationToken ctk = default)
     {
-        var payment = await UnitOfWork.Repository<Payment>().AddAsync(new Payment
+        try
         {
-            CustomerId = createReq.CustomerId,
-            PaymentType = createReq.PaymentType
-        }, ctk);
-
-
-        await UnitOfWork.SaveChangesAsync(ctk);
-
-        LoggerService.LogInfo("New payment created");
-
-        return new PaymentRes
-        {
-            Data = new PaymentDto(payment)
+            var payment = await UnitOfWork.Repository<Payment>().AddAsync(new Payment
             {
-                EntityController = null
-            }
-        };
+                CustomerId = createReq.CustomerId,
+                PaymentType = createReq.PaymentType
+            }, ctk);
+
+            await UnitOfWork.SaveChangesAsync(ctk);
+            LoggerService.LogInfo("New payment created");
+
+            return new PaymentRes { Data = new PaymentDto(payment) { EntityController = null } };
+        }
+        catch (Exception e)
+        {
+            LoggerService.LogError("A problem during Payment creation occured", e);
+            throw;
+        }
     }
 
     public async Task UpdatePayment(PaymentEditReq editReq, CancellationToken ctk = default)
