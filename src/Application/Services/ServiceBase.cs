@@ -50,4 +50,10 @@ public abstract class ServiceBase
         var errMsg = $"Couldn't find {nameof(TBaseEntity)} with IDs {ids}";
         throw new NullReferenceException(errMsg);
     }
+
+    protected async Task UpdateAsync<T>(T entity, CancellationToken ctk = default) where T : BaseEntity
+    {
+        UnitOfWork.Repository<T>().Update(entity);
+        await UnitOfWork.SaveChangesAsync(ctk);
+    }
 }

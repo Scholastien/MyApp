@@ -77,6 +77,12 @@ public class BillingsDiscountsService : ServiceBase, IBillingsDiscountsService
             await UnitOfWork.SaveChangesAsync(ctk);
 
             LoggerService.LogInfo("New BillingDiscount created");
+            
+            // Remove authorization BulkDiscountAfter Line addition
+            await _billingService.RemoveStateFlagAsync(req.BillingId, req.CustomerId,
+                BillingStateFlag.CanAddBillingLines, ctk);
+            await _billingService.RemoveStateFlagAsync(req.BillingId, req.CustomerId,
+                BillingStateFlag.CanModifyBillingLines, ctk);
 
             return new BillingDiscountRes
             {

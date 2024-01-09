@@ -6,7 +6,6 @@ using MyApp.Application.Models.Responses.Billings;
 using MyApp.Domain.Core.Repositories;
 using MyApp.Domain.Entities.Billings;
 using MyApp.Domain.Enums;
-using MyApp.Domain.Specifications.BillingLines;
 using MyApp.Domain.Specifications.Billings;
 
 namespace MyApp.Application.Services;
@@ -107,8 +106,38 @@ public class BillingService : ServiceBase, IBillingService
         }
     }
 
-    public BillingStateEnum GetBillingState(Guid id, Guid customerId, CancellationToken ctk = default)
+    public BillingStateFlag GetBillingState(Guid id, Guid customerId, CancellationToken ctk = default)
     {
         throw new NotImplementedException(); // TODO
+    }
+
+    public async Task AddStateFlagAsync(Guid billingId, Guid customerId, BillingStateFlag stateFlag, CancellationToken ctk = default)
+    {
+        try
+        {
+            var billing = await GetEntityByIdAsync<Billing>(new object[] { billingId, customerId }, ctk);
+            billing.StateFlag |= stateFlag;
+            await UpdateAsync(billing, ctk);
+        }
+        catch (Exception e)
+        {
+            LoggerService.LogError("A problem during Billing state flag modification occured", e);
+            throw;
+        }
+    }
+
+    public async Task RemoveStateFlagAsync(Guid billingId, Guid customerId, BillingStateFlag stateFlag, CancellationToken ctk = default)
+    {
+        try
+        {
+            var billing = await GetEntityByIdAsync<Billing>(new object[] { billingId, customerId }, ctk);
+            billing.StateFlag ^= stateFlag;
+            await UpdateAsync(billing, ctk);
+        }
+        catch (Exception e)
+        {
+            LoggerService.LogError("A problem during Billing state flag modification occured", e);
+            throw;
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿@using MyApp.Application.Models.Responses.Billings
 @using MyApp.Application.Extensions
+@using MyApp.Domain.Enums
 @model MultipleBillingsRes
 
 @{
@@ -34,24 +35,39 @@
             <td>@data.TotalNet</td>
             <td>
                 <div class="btn-group" role="group" aria-label="customer-edit-group">
-                    <a class="btn btn-outline-primary" href="@Url.Action("Edit", "Billing", new { id = data.Id, customerId = data.CustomerId })"
-                       data-toggle="tooltip" data-placement="top" title="Edit Billing">
-                        <i class="fas fa-edit"></i>
-                    </a>
-                    <a class="btn btn-outline-dark" type="button"
-                       href="@Url.Action("Index", "PaymentHistory", new { billingId = data.Id, customerId = data.CustomerId })"
-                       data-toggle="tooltip" data-placement="top" title="Billing history">
-                        <i class="fas fa-history"></i>
-                    </a>
-                    <a class="btn btn-outline-success" type="button"
-                       href="@Url.Action("Index", "BillingDiscount", new { billingId = data.Id, customerId = data.CustomerId })"
-                       data-toggle="tooltip" data-placement="top" title="Apply Bulk Discount">
-                        <i class="fas fa-cart-arrow-down"></i>
-                    </a>
-                    <a class="btn btn-outline-danger" href="@Url.Action("Delete", "Billing", new { id = data.Id, customerId = data.CustomerId })"
-                       data-toggle="tooltip" data-placement="top" title="Delete Billing">
-                        <i class="fas fa-trash"></i>
-                    </a>
+                    @if (data.StateFlag.HasFlag(BillingStateFlag.CanAddBillingLines)
+                         || data.StateFlag.HasFlag(BillingStateFlag.CanModifyBillingLines))
+                    {
+                        <a class="btn btn-outline-primary" href="@Url.Action("Index", "BillingLine", new { id = data.Id, customerId = data.CustomerId })"
+                           data-toggle="tooltip" data-placement="top" title="Edit Billing Lines">
+                            <i class="fas fa-list-ol"></i>
+                        </a>
+                    }
+                    @if (data.StateFlag.HasFlag(BillingStateFlag.CanAddPayment) ||
+                         data.StateFlag.HasFlag(BillingStateFlag.CanModifyPayment))
+                    {
+                        <a class="btn btn-outline-dark" type="button"
+                           href="@Url.Action("Index", "PaymentHistory", new { billingId = data.Id, customerId = data.CustomerId })"
+                           data-toggle="tooltip" data-placement="top" title="Billing history">
+                            <i class="fas fa-history"></i>
+                        </a>
+                    }
+                    @if (data.StateFlag.HasFlag(BillingStateFlag.CanAddBulkDiscounts)
+                         || data.StateFlag.HasFlag(BillingStateFlag.CanAddBulkDiscounts))
+                    {
+                        <a class="btn btn-outline-success" type="button"
+                           href="@Url.Action("Index", "BillingDiscount", new { billingId = data.Id, customerId = data.CustomerId })"
+                           data-toggle="tooltip" data-placement="top" title="Apply Bulk Discount">
+                            <i class="fas fa-cart-arrow-down"></i>
+                        </a>
+                    }
+                    @if (data.StateFlag.HasFlag(BillingStateFlag.CanDelete))
+                    {
+                        <a class="btn btn-outline-danger" href="@Url.Action("Delete", "Billing", new { id = data.Id, customerId = data.CustomerId })"
+                           data-toggle="tooltip" data-placement="top" title="Delete Billing">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    }
                 </div>
             </td>
         </tr>

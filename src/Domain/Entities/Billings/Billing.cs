@@ -7,6 +7,7 @@ using MyApp.Domain.Entities.BillingsDiscounts;
 using MyApp.Domain.Entities.Customers;
 using MyApp.Domain.Entities.Discounts;
 using MyApp.Domain.Entities.PaymentHistories;
+using MyApp.Domain.Enums;
 
 namespace MyApp.Domain.Entities.Billings;
 
@@ -48,5 +49,14 @@ public class Billing : BaseEntity, IIdentifiableByIdEntity, IAuditableEntity, IS
 
     #endregion
 
+    #region ISoftDeleteEntity
+    
     public bool IsDeleted { get; set; }
+
+    #endregion
+
+    public BillingStateFlag StateFlag { get; set; } = BillingStateFlag.CanAddPayment 
+                                                      | BillingStateFlag.CanAddBillingLines 
+                                                      | BillingStateFlag.CanModifyBillingLines 
+                                                      | BillingStateFlag.CanDelete;
 }

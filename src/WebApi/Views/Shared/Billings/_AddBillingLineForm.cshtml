@@ -3,36 +3,39 @@
 
 @Html.ValidationSummary()
 <form asp-action="Add" asp-controller="BillingLine" method="post" enctype="application/x-www-form-urlencoded">
-    @Html.HiddenFor(model => model.Id)
-    @Html.HiddenFor(model => model.CustomerId)
-    <div class="form-row">
-        <div class="col-6 col-md-6">
-            <div class="form-group col">
-                <label asp-for="@Model.NewLineProduct" class="control-label">Product</label>
-                <br>
-                <div class="col">
-                    <select asp-for="@Model.NewLineProduct" class="form-control" asp-items="ViewBag.Products" id="ddlProductId"></select>
+    <fieldset disabled="@ViewBag.HasDiscount">
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.CustomerId)
+        <div class="form-row">
+            <div class="col-6 col-md-6">
+                <div class="form-group col">
+                    <label asp-for="@Model.NewLineProduct" class="control-label">Product</label>
+                    <br>
+                    <div class="col">
+                        <select asp-for="@Model.NewLineProduct" class="form-control" asp-items="ViewBag.Products" id="ddlProductId"></select>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-6 col-md-6">
-            <div class="form-group col">
-                <label asp-for="@Model.NewLineQuantity" class="col control-label">Quantity</label>
-                <br>
-                <div class="col">
-                    <div class="row">
-                        <div class="col">
-                            @Html.TextBoxFor(m => m.NewLineQuantity, new { placeholder = "Quantity", @class = "form-control", type = "number" , min="1"})
-                            @Html.ValidationMessageFor(m => m.NewLineQuantity)
-                        </div>
-                        <div class="col">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-cart-plus"></i>Add Product
-                            </button>
+            <div class="col-6 col-md-6">
+                <div class="form-group col">
+                    <label asp-for="@Model.NewLineQuantity" class="col control-label">Quantity</label>
+                    <br>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col">
+                                @Html.TextBoxFor(m => m.NewLineQuantity, new { placeholder = "Quantity", @class = "form-control", type = "number", min = "1" })
+                                @Html.ValidationMessageFor(m => m.NewLineQuantity)
+                            </div>
+                            <div class="col">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-cart-plus"></i>Add Product
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+
+    </fieldset>
 </form>

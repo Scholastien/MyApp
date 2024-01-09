@@ -1,35 +1,30 @@
 ﻿using MyApp.Application.Core.Services;
 using MyApp.Application.Interfaces.Services;
-using MyApp.Application.Models.Dtos.Billings;
+using MyApp.Application.Models.Dtos.BillingLines;
 using MyApp.Application.Models.Requests.Billings;
-using MyApp.Application.Models.Responses.Billings;
+using MyApp.Application.Models.Responses.BillingLines;
 using MyApp.Domain.Core.Repositories;
 using MyApp.Domain.Entities.Billings;
+using MyApp.Domain.Entities.Products;
+using MyApp.Domain.Enums;
 using MyApp.Domain.Specifications.BillingLines;
-using MyApp.Domain.Specifications.Billings;
 
 namespace MyApp.Application.Services;
 
 public class BillingLineService : ServiceBase, IBillingLineService
 {
-    public BillingLineService(IUnitOfWork unitOfWork, ILoggerService loggerService) : base(unitOfWork, loggerService)
-    {
-    }
-    
-    private async Task<Billing> GetBillingWithIncludesByIds(Guid billingId, Guid customerId, CancellationToken ctk)
-    {
-        var billingSpec = BillingSpecifications.SingleBillingWithAllIncludesSpec(billingId, customerId);
-        var billing = await UnitOfWork.Repository<Billing>().FirstOrDefaultAsync(billingSpec, ctk);
-        
-        if (billing != null) return billing;
+    private readonly IBillingService _billingService;
 
-        var errMsg = $"Couldn't find Billing with ID {billingId}";
-        throw new NullReferenceException(errMsg);
+    public BillingLineService(IUnitOfWork unitOfWork, ILoggerService loggerService, IBillingService billingService) :
+        base(unitOfWork, loggerService)
+    {
+        _billingService = billingService;
     }
 
-    public async Task<BillingRes> CreateOrUpdateBillingLine(BillingEditReq req, CancellationToken ctk = default)
+    public async Task<BillingLineRes> CreateOrUpdateBillingLine(BillingEditReq req, CancellationToken ctk = default)
     {
-        var lineSpec = BillingLineSpecifications.WithBillingIdAndProductIdSpec((req.Id, req.CustomerId), req.NewLineProduct);
+        var lineSpec =
+            BillingLineSpecifications.WithBillingIdAndProductIdSpec((req.Id, req.CustomerId), req.NewLineProduct);
         var line = await UnitOfWork.Repository<BillingLine>().FirstOrDefaultAsync(lineSpec, ctk);
 
         if (line == null)
@@ -40,7 +35,7 @@ public class BillingLineService : ServiceBase, IBillingLineService
         return await UpdateBillingLine(req, line, ctk);
     }
 
-    public async Task<BillingRes> CreateBillingLine(BillingEditReq req, CancellationToken ctk = default)
+    private async Task<BillingLineRes> CreateBillingLine(BillingEditReq req, CancellationToken ctk = default)
     {
         try
         {
@@ -57,12 +52,22 @@ public class BillingLineService : ServiceBase, IBillingLineService
             await UnitOfWork.SaveChangesAsync(ctk);
 
             LoggerService.LogInfo($"New billing line created {billingLine.Id}");
-        
-            var billing = await GetBillingWithIncludesByIds(req.Id, req.CustomerId, ctk);
-        
-            return new BillingRes
+
+            // Allow BulkDiscountAfter Line addition
+            await _billingService.AddStateFlagAsync(req.Id, req.CustomerId,
+                BillingStateFlag.CanAddBulkDiscounts, ctk);
+            await _billingService.AddStateFlagAsync(req.Id, req.CustomerId,
+                BillingStateFlag.CanDeleteBulkDiscounts, ctk);
+
+            var product = await GetEntityByIdAsync<Product>(req.NewLineProduct, ctk);
+
+            return new BillingLineRes
             {
-                Data = new BillingDto(billing)
+                Data = new BillingLineDto(billingLine)
+                {
+                    Name = product.Name,
+                    Price = product.Price
+                }
             };
         }
         catch (Exception e)
@@ -72,7 +77,8 @@ public class BillingLineService : ServiceBase, IBillingLineService
         }
     }
 
-    public async Task<BillingRes> UpdateBillingLine(BillingEditReq req, BillingLine line, CancellationToken ctk = default)
+    private async Task<BillingLineRes> UpdateBillingLine(BillingEditReq req, BillingLine line,
+        CancellationToken ctk = default)
     {
         try
         {
@@ -80,11 +86,15 @@ public class BillingLineService : ServiceBase, IBillingLineService
             UnitOfWork.Repository<BillingLine>().Update(line);
             await UnitOfWork.SaveChangesAsync(ctk);
 
-            var billing = await GetBillingWithIncludesByIds(req.Id, req.CustomerId, ctk);
+            var product = await GetEntityByIdAsync<Product>(line.ProductId, ctk);
 
-            return new BillingRes
+            return new BillingLineRes
             {
-                Data = new BillingDto(billing)
+                Data = new BillingLineDto(line)
+                {
+                    Name = product.Name,
+                    Price = product.Price
+                }
             };
         }
         catch (Exception e)
@@ -94,7 +104,8 @@ public class BillingLineService : ServiceBase, IBillingLineService
         }
     }
 
-    public async Task<(Guid BillingId, Guid BillingCustomerId)> DeleteBillingLine(Guid id, CancellationToken ctk = default)
+    public async Task<(Guid BillingId, Guid BillingCustomerId)> DeleteBillingLine(Guid id,
+        CancellationToken ctk = default)
     {
         try
         {
@@ -102,6 +113,15 @@ public class BillingLineService : ServiceBase, IBillingLineService
 
             UnitOfWork.Repository<BillingLine>().Delete(line);
             await UnitOfWork.SaveChangesAsync(ctk);
+
+            var billing = await _billingService.GetBillingDtoById(line.BillingId, line.BillingCustomerId, ctk);
+            if (billing.Lines.Any()) return (line.BillingId, line.BillingCustomerId);
+            
+            // Remove authorization BulkDiscountAfter Line addition
+            await _billingService.RemoveStateFlagAsync(line.BillingId, line.BillingCustomerId,
+                BillingStateFlag.CanAddBulkDiscounts, ctk);
+            await _billingService.RemoveStateFlagAsync(line.BillingId, line.BillingCustomerId,
+                BillingStateFlag.CanDeleteBulkDiscounts, ctk);
 
             return (line.BillingId, line.BillingCustomerId);
         }

@@ -5,16 +5,20 @@ namespace MyApp.Application.Models.Dtos.BillingLines;
 public class BillingLineDto : BaseDto<BillingLine>
 {
     public Guid Id { get; set; }
-    public string Name { get; set; }
-    public float Price { get; set; }
+    public Guid BillingId { get; set; }
+    public Guid ProductId { get; set; }
+    public Guid CustomerId { get; set; }
+    public required string Name { get; set; }
+    public required float Price { get; set; }
     public uint Quantity { get; set; }
     public float Total { get; set; }
     
     public BillingLineDto(BillingLine entity) : base(entity)
     {
         Id = entity.Id;
-        Name = entity.Product.Name;
-        Price = entity.Product.Price;
+        BillingId = entity.BillingId;
+        ProductId = entity.ProductId;
+        CustomerId = entity.BillingCustomerId;
         Quantity = entity.Quantity;
         Total = Quantity * Price;
     }

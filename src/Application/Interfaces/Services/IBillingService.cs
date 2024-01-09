@@ -11,5 +11,7 @@ public interface IBillingService
     Task<MultipleBillingsRes> GetAllBillingsForCustomer(Guid customerId, CancellationToken ctk = default);
     Task<BillingDto> GetBillingDtoById(Guid id, Guid customerId, CancellationToken ctk = default);
     Task DeleteBillingWithId(Guid id, Guid customerId, CancellationToken ctk = default);
-    BillingStateEnum GetBillingState(Guid id, Guid customerId, CancellationToken ctk = default);
+    BillingStateFlag GetBillingState(Guid id, Guid customerId, CancellationToken ctk = default);
+    Task AddStateFlagAsync(Guid billingId, Guid customerId, BillingStateFlag stateFlag, CancellationToken ctk = default);
+    Task RemoveStateFlagAsync(Guid billingId, Guid customerId, BillingStateFlag stateFlag, CancellationToken ctk = default);
 }

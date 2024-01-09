@@ -18,20 +18,28 @@ public class BillingDto : BaseDto<Billing>
     public float TotalNet { get; set; }
     public string DiscountString { get; set; }
     public List<BillingLineDto> Lines { get; set; }
+    public bool HasDiscount { get; set; }
+    public BillingStateFlag StateFlag { get; set; }
 
     public BillingDto(){}
     
     public BillingDto(Billing entity) : base(entity)
     {
         Id = entity.Id;
+        StateFlag = entity.StateFlag;
         CustomerId = entity.CustomerId;
         CustomerType = entity.Customer?.CustomerType;
-        Lines = entity.BillingLines.Select(b => new BillingLineDto(b)).ToList();
+        Lines = entity.BillingLines.Select(b => new BillingLineDto(b)
+        {
+            Name = b.Product.Name,
+            Price = b.Product.Price
+        }).ToList();
         
         // Label display
         Name = Convert.ToBase64String(entity.Id.ToByteArray());
         
         // Discount display
+        HasDiscount = entity.Discounts.Any();
         DiscountPercentage = entity.Discounts.Where(d => d.DiscountUnit == DiscountUnitEnum.Percentage).Select(d => d.Value).Sum();
         DiscountFlat = entity.Discounts.Where(d => d.DiscountUnit == DiscountUnitEnum.Flat).Select(d => d.Value).Sum();
         if (DiscountFlat != 0 && DiscountPercentage != 0) DiscountString = $"{DiscountFlat}$ + {DiscountPercentage}%";

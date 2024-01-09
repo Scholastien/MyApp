@@ -51,24 +51,6 @@ public class BillingController : BaseControllerApp
 
         return RedirectToAction("Index", "Billing", new { customerId });
     }
-
-    [HttpGet]
-    public async Task<IActionResult> Edit(Guid id, Guid customerId)
-    {
-        var products = await _productService.GetAllProducts();
-
-        if (products != null)
-        {
-            ViewBag.Products = new SelectList(
-                products.Data.ToList(),
-                "Id",
-                "Name");
-        }
-        
-        var billing = await _billingService.GetBillingDtoById(id, customerId);
-
-        return View(new BillingEditReq(billing));
-    }
     
     [HttpGet]
     public async Task<ActionResult> Delete(Guid id, Guid customerId)
