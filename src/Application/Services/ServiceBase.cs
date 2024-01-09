@@ -1,6 +1,7 @@
 ﻿using MyApp.Application.Core.Services;
 using MyApp.Domain.Core.Models;
 using MyApp.Domain.Core.Repositories;
+using MyApp.Domain.Core.Specifications;
 
 namespace MyApp.Application.Services;
 
@@ -51,9 +52,20 @@ public abstract class ServiceBase
         throw new NullReferenceException(errMsg);
     }
 
-    protected async Task UpdateAsync<T>(T entity, CancellationToken ctk = default) where T : BaseEntity
+    protected async Task UpdateAsync<TBaseEntity>(TBaseEntity entity, CancellationToken ctk = default) where TBaseEntity : BaseEntity
     {
-        UnitOfWork.Repository<T>().Update(entity);
+        UnitOfWork.Repository<TBaseEntity>().Update(entity);
         await UnitOfWork.SaveChangesAsync(ctk);
+    }
+
+    protected async Task<TBaseEntity> FirstOrDefaultAsync<TBaseEntity>(BaseSpecification<TBaseEntity> spec, CancellationToken ctk = default)
+        where TBaseEntity : BaseEntity
+    {
+        var entity = await UnitOfWork.Repository<TBaseEntity>().FirstOrDefaultAsync(spec, ctk);
+        
+        if (entity != null) return entity;
+
+        var errMsg = $"Couldn't find {nameof(TBaseEntity)} with specs {spec.Criteria}";
+        throw new NullReferenceException(errMsg);
     }
 }

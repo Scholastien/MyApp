@@ -5,6 +5,11 @@ namespace MyApp.Domain.Specifications.Billings;
 
 public static class BillingSpecifications
 {
+    public static BaseSpecification<Billing> SingleBillingSpec(Guid id, Guid customerId)
+    {
+        return new BaseSpecification<Billing>(c => c.Id == id && c.CustomerId == customerId);
+    }
+    
     public static BaseSpecification<Billing> MultipleBillingsForCustomerIdSpec(Guid customerId)
     {
         var spec = new BaseSpecification<Billing>(c 
@@ -15,8 +20,7 @@ public static class BillingSpecifications
 
     public static BaseSpecification<Billing> SingleBillingWithAllIncludesSpec(Guid id, Guid customerId)
     {
-        var spec = new BaseSpecification<Billing>(c => c.Id == id && c.CustomerId == customerId);
-        return spec.IncludeAllLinkedEntities();
+        return SingleBillingSpec(id, customerId).IncludeAllLinkedEntities();
     }
     
     public static BaseSpecification<Billing> IncludeEntitiesForListing(this BaseSpecification<Billing> spec)
