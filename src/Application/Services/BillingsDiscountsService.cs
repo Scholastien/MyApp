@@ -13,13 +13,15 @@ public class BillingsDiscountsService : ServiceBase, IBillingsDiscountsService
 {
     private readonly IBillingService _billingService;
     private readonly IDiscountService _discountService;
+    private readonly IBillingFlagService _billingFlagService;
 
     public BillingsDiscountsService(IUnitOfWork unitOfWork, ILoggerService loggerService,
-        IBillingService billingService, IDiscountService discountService) : base(unitOfWork,
+        IBillingService billingService, IDiscountService discountService, IBillingFlagService billingFlagService) : base(unitOfWork,
         loggerService)
     {
         _billingService = billingService;
         _discountService = discountService;
+        _billingFlagService = billingFlagService;
     }
 
     private async Task<bool> NewDiscountExceedsTotal(BillingDiscountCreateReq req, CancellationToken ctk = default)
@@ -79,10 +81,7 @@ public class BillingsDiscountsService : ServiceBase, IBillingsDiscountsService
             LoggerService.LogInfo("New BillingDiscount created");
             
             // Remove authorization BulkDiscountAfter Line addition
-            await _billingService.RemoveStateFlagAsync(req.BillingId, req.CustomerId,
-                BillingStateFlag.CanAddBillingLines, ctk);
-            await _billingService.RemoveStateFlagAsync(req.BillingId, req.CustomerId,
-                BillingStateFlag.CanModifyBillingLines, ctk);
+            await _billingFlagService.AddBulkDiscountFlags(req.BillingId, req.CustomerId, ctk);
 
             return new BillingDiscountRes
             {
@@ -106,7 +105,13 @@ public class BillingsDiscountsService : ServiceBase, IBillingsDiscountsService
             
             UnitOfWork.Repository<BillingDiscount>().Delete(billingDiscount);
             await UnitOfWork.SaveChangesAsync(ctk);
+            
+            var billing = await _billingService.GetBillingDtoById(billingDiscount.BillingId, billingDiscount.BillingCustomerId, ctk);
 
+            if (billing.HasDiscount) return (billingDiscount.BillingId, billingDiscount.BillingCustomerId);
+            
+            // update flags if we don't have discounts anymore
+            await _billingFlagService.DeleteBulkDiscountFlags(billingDiscount.BillingId, billingDiscount.BillingCustomerId, ctk);
             return (billingDiscount.BillingId, billingDiscount.BillingCustomerId);
         }
         catch (Exception e)

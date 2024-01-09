@@ -14,11 +14,13 @@ namespace MyApp.Application.Services;
 public class BillingLineService : ServiceBase, IBillingLineService
 {
     private readonly IBillingService _billingService;
+    private readonly IBillingFlagService _billingFlagService;
 
-    public BillingLineService(IUnitOfWork unitOfWork, ILoggerService loggerService, IBillingService billingService) :
+    public BillingLineService(IUnitOfWork unitOfWork, ILoggerService loggerService, IBillingService billingService, IBillingFlagService billingFlagService) :
         base(unitOfWork, loggerService)
     {
         _billingService = billingService;
+        _billingFlagService = billingFlagService;
     }
 
     public async Task<BillingLineRes> CreateOrUpdateBillingLine(BillingEditReq req, CancellationToken ctk = default)
@@ -53,11 +55,7 @@ public class BillingLineService : ServiceBase, IBillingLineService
 
             LoggerService.LogInfo($"New billing line created {billingLine.Id}");
 
-            // Allow BulkDiscountAfter Line addition
-            await _billingService.AddStateFlagAsync(req.Id, req.CustomerId,
-                BillingStateFlag.CanAddBulkDiscounts, ctk);
-            await _billingService.AddStateFlagAsync(req.Id, req.CustomerId,
-                BillingStateFlag.CanDeleteBulkDiscounts, ctk);
+            await _billingFlagService.AddBillingLineFlags(req.Id, req.CustomerId, ctk);
 
             var product = await GetEntityByIdAsync<Product>(req.NewLineProduct, ctk);
 
@@ -110,19 +108,16 @@ public class BillingLineService : ServiceBase, IBillingLineService
         try
         {
             var line = await GetEntityByIdAsync<BillingLine>(id, ctk);
-
             UnitOfWork.Repository<BillingLine>().Delete(line);
             await UnitOfWork.SaveChangesAsync(ctk);
-
+            
             var billing = await _billingService.GetBillingDtoById(line.BillingId, line.BillingCustomerId, ctk);
+            
+            // if we still have billing lines
             if (billing.Lines.Any()) return (line.BillingId, line.BillingCustomerId);
             
-            // Remove authorization BulkDiscountAfter Line addition
-            await _billingService.RemoveStateFlagAsync(line.BillingId, line.BillingCustomerId,
-                BillingStateFlag.CanAddBulkDiscounts, ctk);
-            await _billingService.RemoveStateFlagAsync(line.BillingId, line.BillingCustomerId,
-                BillingStateFlag.CanDeleteBulkDiscounts, ctk);
-
+            // update flags if we don't have billing lines anymore
+            await _billingFlagService.DeleteBillingLineFlags(line.BillingId, line.BillingCustomerId, ctk);
             return (line.BillingId, line.BillingCustomerId);
         }
         catch (Exception e)

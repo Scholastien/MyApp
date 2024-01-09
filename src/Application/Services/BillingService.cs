@@ -110,34 +110,4 @@ public class BillingService : ServiceBase, IBillingService
     {
         throw new NotImplementedException(); // TODO
     }
-
-    public async Task AddStateFlagAsync(Guid billingId, Guid customerId, BillingStateFlag stateFlag, CancellationToken ctk = default)
-    {
-        try
-        {
-            var billing = await GetEntityByIdAsync<Billing>(new object[] { billingId, customerId }, ctk);
-            billing.StateFlag |= stateFlag;
-            await UpdateAsync(billing, ctk);
-        }
-        catch (Exception e)
-        {
-            LoggerService.LogError("A problem during Billing state flag modification occured", e);
-            throw;
-        }
-    }
-
-    public async Task RemoveStateFlagAsync(Guid billingId, Guid customerId, BillingStateFlag stateFlag, CancellationToken ctk = default)
-    {
-        try
-        {
-            var billing = await GetEntityByIdAsync<Billing>(new object[] { billingId, customerId }, ctk);
-            billing.StateFlag ^= stateFlag;
-            await UpdateAsync(billing, ctk);
-        }
-        catch (Exception e)
-        {
-            LoggerService.LogError("A problem during Billing state flag modification occured", e);
-            throw;
-        }
-    }
 }

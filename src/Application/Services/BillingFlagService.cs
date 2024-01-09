@@ -19,7 +19,7 @@ public class BillingFlagService : ServiceBase, IBillingFlagService
             var spec = BillingSpecifications.SingleBillingSpec(billingId, customerId);
             var billing = await FirstOrDefaultAsync(spec, ctk);
 
-            billing.StateFlag.GetFlagForAction(UserActionEnum.AddBillingLine);
+            billing.StateFlag = billing.StateFlag.GetFlagForAction(UserActionEnum.AddBillingLine);
 
             await UpdateAsync(billing, ctk);
         }
@@ -37,6 +37,10 @@ public class BillingFlagService : ServiceBase, IBillingFlagService
             var spec = BillingSpecifications.SingleBillingSpec(billingId, customerId)
                 .IncludeBillingLines();
             var billing = await FirstOrDefaultAsync(spec, ctk);
+
+            billing.StateFlag = billing.StateFlag.GetFlagForAction(UserActionEnum.DeleteBillingLine);
+
+            await UpdateAsync(billing, ctk);
         }
         catch (Exception e)
         {
@@ -51,6 +55,10 @@ public class BillingFlagService : ServiceBase, IBillingFlagService
         {
             var spec = BillingSpecifications.SingleBillingSpec(billingId, customerId);
             var billing = await FirstOrDefaultAsync(spec, ctk);
+
+            billing.StateFlag = billing.StateFlag.GetFlagForAction(UserActionEnum.AddBulkDiscount);
+
+            await UpdateAsync(billing, ctk);
         }
         catch (Exception e)
         {
@@ -66,6 +74,10 @@ public class BillingFlagService : ServiceBase, IBillingFlagService
             var spec = BillingSpecifications.SingleBillingSpec(billingId, customerId)
                 .IncludeDiscounts();
             var billing = await FirstOrDefaultAsync(spec, ctk);
+
+            billing.StateFlag = billing.StateFlag.GetFlagForAction(UserActionEnum.DeleteBulkDiscount);
+
+            await UpdateAsync(billing, ctk);
         }
         catch (Exception e)
         {
@@ -91,13 +103,20 @@ public static class BillingStateFlagExtension
         {
             case UserActionEnum.AddBillingLine:
                 stateFlag |= BillingStateFlag.CanAddBulkDiscounts;
+                stateFlag |= BillingStateFlag.CanDeleteBulkDiscounts;
                 stateFlag |= BillingStateFlag.CanModifyBillingLines;
                 break;
             case UserActionEnum.DeleteBillingLine:
+                stateFlag ^= BillingStateFlag.CanAddBulkDiscounts;
+                stateFlag ^= BillingStateFlag.CanDeleteBulkDiscounts;
                 break;
             case UserActionEnum.AddBulkDiscount:
+                stateFlag ^= BillingStateFlag.CanAddBillingLines;
+                stateFlag ^= BillingStateFlag.CanModifyBillingLines;
                 break;
             case UserActionEnum.DeleteBulkDiscount:
+                stateFlag |= BillingStateFlag.CanAddBillingLines;
+                stateFlag |= BillingStateFlag.CanModifyBillingLines;
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(action), action, null);
