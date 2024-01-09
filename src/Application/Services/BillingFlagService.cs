@@ -2,6 +2,7 @@
 using MyApp.Application.Extensions;
 using MyApp.Application.Interfaces.Services;
 using MyApp.Domain.Core.Repositories;
+using MyApp.Domain.Enums;
 using MyApp.Domain.Specifications.Billings;
 
 namespace MyApp.Application.Services;
@@ -85,12 +86,4 @@ public class BillingFlagService : ServiceBase, IBillingFlagService
             throw;
         }
     }
-}
-
-public enum UserActionEnum
-{
-    AddBillingLine = 1,
-    DeleteBillingLine = 2,
-    AddBulkDiscount = 3,
-    DeleteBulkDiscount = 4
 }
