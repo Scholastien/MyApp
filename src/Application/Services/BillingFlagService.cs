@@ -1,7 +1,7 @@
 ﻿using MyApp.Application.Core.Services;
+using MyApp.Application.Extensions;
 using MyApp.Application.Interfaces.Services;
 using MyApp.Domain.Core.Repositories;
-using MyApp.Domain.Enums;
 using MyApp.Domain.Specifications.Billings;
 
 namespace MyApp.Application.Services;
@@ -93,35 +93,4 @@ public enum UserActionEnum
     DeleteBillingLine = 2,
     AddBulkDiscount = 3,
     DeleteBulkDiscount = 4
-}
-
-public static class BillingStateFlagExtension
-{
-    public static BillingStateFlag GetFlagForAction(this BillingStateFlag stateFlag, UserActionEnum action)
-    {
-        switch (action)
-        {
-            case UserActionEnum.AddBillingLine:
-                stateFlag |= BillingStateFlag.CanAddBulkDiscounts;
-                stateFlag |= BillingStateFlag.CanDeleteBulkDiscounts;
-                stateFlag |= BillingStateFlag.CanDeleteBillingLines;
-                break;
-            case UserActionEnum.DeleteBillingLine:
-                stateFlag ^= BillingStateFlag.CanAddBulkDiscounts;
-                stateFlag ^= BillingStateFlag.CanDeleteBulkDiscounts;
-                break;
-            case UserActionEnum.AddBulkDiscount:
-                stateFlag ^= BillingStateFlag.CanAddBillingLines;
-                stateFlag ^= BillingStateFlag.CanDeleteBillingLines;
-                break;
-            case UserActionEnum.DeleteBulkDiscount:
-                stateFlag |= BillingStateFlag.CanAddBillingLines;
-                stateFlag |= BillingStateFlag.CanDeleteBillingLines;
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(action), action, null);
-        }
-
-        return stateFlag;
-    }
 }
