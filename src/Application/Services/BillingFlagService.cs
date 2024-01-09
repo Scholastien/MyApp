@@ -104,7 +104,7 @@ public static class BillingStateFlagExtension
             case UserActionEnum.AddBillingLine:
                 stateFlag |= BillingStateFlag.CanAddBulkDiscounts;
                 stateFlag |= BillingStateFlag.CanDeleteBulkDiscounts;
-                stateFlag |= BillingStateFlag.CanModifyBillingLines;
+                stateFlag |= BillingStateFlag.CanDeleteBillingLines;
                 break;
             case UserActionEnum.DeleteBillingLine:
                 stateFlag ^= BillingStateFlag.CanAddBulkDiscounts;
@@ -112,11 +112,11 @@ public static class BillingStateFlagExtension
                 break;
             case UserActionEnum.AddBulkDiscount:
                 stateFlag ^= BillingStateFlag.CanAddBillingLines;
-                stateFlag ^= BillingStateFlag.CanModifyBillingLines;
+                stateFlag ^= BillingStateFlag.CanDeleteBillingLines;
                 break;
             case UserActionEnum.DeleteBulkDiscount:
                 stateFlag |= BillingStateFlag.CanAddBillingLines;
-                stateFlag |= BillingStateFlag.CanModifyBillingLines;
+                stateFlag |= BillingStateFlag.CanDeleteBillingLines;
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(action), action, null);
