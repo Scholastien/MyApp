@@ -35,7 +35,7 @@ tilt down
 ## Structure
 Base de donnée:
 <p align="center">
-<img src="https://raw.githubusercontent.com/Scholastien/MyApp/master/docs/Diagrammes-ERD%20v1.drawio.png">
+<img src="https://raw.githubusercontent.com/Scholastien/MyApp/master/docs/Diagrammes-ERD.drawio.png">
 </p>
 
 Projet:
