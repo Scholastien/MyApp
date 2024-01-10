@@ -1,6 +1,7 @@
 ﻿@using MyApp.Application.Models.Requests.Billings
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using MyApp.Application.Extensions
+@using MyApp.Domain.Enums
 @model BillingEditReq
 
 @{
@@ -48,7 +49,7 @@
                                 <i class="fas fa-cart-arrow-down"></i>
                             </a>
                             <a href="@Url.Action("Delete", "BillingLine", new { id = data.Id })"
-                               class="btn btn-outline-danger @(ViewBag.HasDiscount? "disabled" : "")"
+                               class="btn btn-outline-danger @(Model.StateFlag.HasFlag(BillingStateFlag.CanDeleteBillingLines)? "" : "disabled")"
                                data-toggle="tooltip" data-placement="top" title="Delete Billing Line">
                                 <i class="fas fa-trash"></i>
                             </a>

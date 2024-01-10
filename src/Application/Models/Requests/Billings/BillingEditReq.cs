@@ -2,6 +2,7 @@
 using MyApp.Application.Models.Dtos.BillingLines;
 using MyApp.Application.Models.Dtos.Billings;
 using MyApp.Domain.Entities.Billings;
+using MyApp.Domain.Enums;
 
 namespace MyApp.Application.Models.Requests.Billings;
 
@@ -12,6 +13,8 @@ public class BillingEditReq : BaseEditRequest<BillingDto, Billing>
 
     [Range(1, int.MaxValue)] public uint NewLineQuantity { get; set; } = 1;
     public Guid NewLineProduct { get; set; }
+    public required BillingStateFlag StateFlag { get; set; }
+
 
 
     public IList<BillingLineDto> Lines { get; set; }

@@ -9,19 +9,34 @@ public static class BillingStateFlagExtension
         switch (action)
         {
             case UserActionEnum.AddBillingLine:
+                stateFlag |= BillingStateFlag.CanReadBulkDiscounts;
+                stateFlag |= BillingStateFlag.CanEditBulkDiscounts;
                 stateFlag |= BillingStateFlag.CanAddBulkDiscounts;
                 stateFlag |= BillingStateFlag.CanDeleteBulkDiscounts;
-                stateFlag |= BillingStateFlag.CanDeleteBillingLines;
+                stateFlag |= BillingStateFlag.CanReadPayment;
+                stateFlag |= BillingStateFlag.CanEditPayment;
+                stateFlag |= BillingStateFlag.CanAddPayment;
+                stateFlag |= BillingStateFlag.CanDeletePayment;
                 break;
+            // Happens when last line is deleted
             case UserActionEnum.DeleteBillingLine:
+                stateFlag ^= BillingStateFlag.CanReadBulkDiscounts;
+                stateFlag ^= BillingStateFlag.CanEditBulkDiscounts;
                 stateFlag ^= BillingStateFlag.CanAddBulkDiscounts;
                 stateFlag ^= BillingStateFlag.CanDeleteBulkDiscounts;
+                stateFlag ^= BillingStateFlag.CanReadPayment;
+                stateFlag ^= BillingStateFlag.CanEditPayment;
+                stateFlag ^= BillingStateFlag.CanAddPayment;
+                stateFlag ^= BillingStateFlag.CanDeletePayment;
                 break;
             case UserActionEnum.AddBulkDiscount:
+                stateFlag ^= BillingStateFlag.CanEditBillingLines;
                 stateFlag ^= BillingStateFlag.CanAddBillingLines;
                 stateFlag ^= BillingStateFlag.CanDeleteBillingLines;
                 break;
+            // Happens when last line is deleted
             case UserActionEnum.DeleteBulkDiscount:
+                stateFlag |= BillingStateFlag.CanEditBillingLines;
                 stateFlag |= BillingStateFlag.CanAddBillingLines;
                 stateFlag |= BillingStateFlag.CanDeleteBillingLines;
                 break;

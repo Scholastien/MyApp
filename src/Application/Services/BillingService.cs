@@ -106,9 +106,11 @@ public class BillingService : ServiceBase, IBillingService
         }
     }
 
-    public BillingStateFlag GetBillingState(Guid id, Guid customerId, CancellationToken ctk = default)
+    public async Task<BillingStateFlag> GetBillingState(Guid billingId, CancellationToken ctk = default)
     {
-        throw new NotImplementedException(); // TODO
+        var customerId = await GetCustomerId(billingId, ctk);
+        var billing = await GetEntityByIdAsync<Billing>(new object[] { billingId, customerId }, ctk);
+        return billing.StateFlag;
     }
 
     public async Task<Guid> GetCustomerId(Guid billingId, CancellationToken ctk = default)

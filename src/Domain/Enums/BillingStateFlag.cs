@@ -3,16 +3,34 @@
 [Flags]
 public enum BillingStateFlag
 {
-    CanAddPayment = 1 << 0,
-    CanDeletePayment = 1 << 1,
-    CanAddDueDate = 1 << 2,
-    CanDeleteDueDate = 1 << 3,
-    CanAddBillingLines = 1 << 4,
-    CanDeleteBillingLines = 1 << 5,
-    CanAddBulkDiscounts = 1 << 6,
-    CanDeleteBulkDiscounts = 1 << 7,
-    CanAddTargetedDiscount = 1 << 8,
-    CanDeleteTargetedDiscount = 1 << 9,
-    CanPay = 1 << 10,
-    CanDelete = 1 << 11,
+    CanReadPayment = 1 << 0,
+    CanEditPayment = 1 << 1,
+    CanAddPayment = 1 << 2,
+    CanDeletePayment = 1 << 3,
+
+    CanReadDueDate = 1 << 4,
+    CanEditDueDate = 1 << 5,
+    CanAddDueDate = 1 << 6,
+    CanDeleteDueDate = 1 << 7,
+
+    CanReadBillingLines = 1 << 8,
+    CanEditBillingLines = 1 << 9,
+    CanAddBillingLines = 1 << 10,
+    CanDeleteBillingLines = 1 << 11,
+
+    CanReadBulkDiscounts = 1 << 12,
+    CanEditBulkDiscounts = 1 << 13,
+    CanAddBulkDiscounts = 1 << 14,
+    CanDeleteBulkDiscounts = 1 << 15,
+
+    CanReadTargetedDiscounts = 1 << 16,
+    CanEditTargetedDiscounts = 1 << 17,
+    CanAddTargetedDiscounts = 1 << 18,
+    CanDeleteTargetedDiscounts = 1 << 19,
+
+    CanPay = 1 << 20,
+    CanDelete = 1 << 21,
+    
+    // /!\ max value = 32
+    // need refactoring soon
 }

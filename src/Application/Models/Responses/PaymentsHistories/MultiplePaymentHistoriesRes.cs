@@ -6,6 +6,6 @@ namespace MyApp.Application.Models.Responses.PaymentsHistories;
 
 public class MultiplePaymentHistoriesRes : MultipleBaseResponse<PaymentHistoryDto, PaymentHistory>
 {
-    public PaymentHistoryCreateReq CreateReq { get; set; } 
+    public required PaymentHistoryCreateReq CreateReq { get; set; } 
     public required Guid CustomerId { get; set; }
 }

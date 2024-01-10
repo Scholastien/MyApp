@@ -43,12 +43,10 @@ public class BillingLineController : BaseControllerApp
         
         var billing = await _billingService.GetBillingDtoById(id, customerId);
 
-        if (billing != null)
+        return View(new BillingEditReq(billing)
         {
-            ViewBag.HasDiscount = billing.HasDiscount;
-        }
-
-        return View(new BillingEditReq(billing));
+            StateFlag = billing.StateFlag
+        });
     }
     
     // TODO : utiliser Session and state management pour l'ajout/suppression "dynamique" de ligne pendant la creation de la facture

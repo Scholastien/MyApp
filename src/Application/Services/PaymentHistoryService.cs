@@ -5,6 +5,7 @@ using MyApp.Application.Models.Requests.PaymentsHistories;
 using MyApp.Application.Models.Responses.PaymentsHistories;
 using MyApp.Domain.Core.Repositories;
 using MyApp.Domain.Entities.PaymentHistories;
+using MyApp.Domain.Enums;
 using MyApp.Domain.Specifications.PaymentsHistories;
 
 namespace MyApp.Application.Services;
@@ -119,11 +120,17 @@ public class PaymentHistoryService : ServiceBase, IPaymentHistoryService
         var paymentHistories = await UnitOfWork.Repository<PaymentHistory>().ListAsync(spec, ctk);
 
         var customerId = await _billingService.GetCustomerId(billingId, ctk);
+        var state = await _billingService.GetBillingState(billingId, ctk);
 
         return new MultiplePaymentHistoriesRes
         {
-            Data = paymentHistories.Select(b => new PaymentHistoryDto(b)).ToList(),
-            CustomerId = customerId
+            Data = paymentHistories.Select(b => new PaymentHistoryDto(b))
+                .ToList(),
+            CustomerId = customerId,
+            CreateReq = new PaymentHistoryCreateReq
+            {
+                StateFlag = state
+            }
         };
     }
 }

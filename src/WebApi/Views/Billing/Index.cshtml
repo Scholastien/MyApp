@@ -35,30 +35,27 @@
             <td>@data.TotalNet</td>
             <td>
                 <div class="btn-group" role="group" aria-label="customer-edit-group">
-                    @if (data.StateFlag.HasFlag(BillingStateFlag.CanAddBillingLines)
-                         || data.StateFlag.HasFlag(BillingStateFlag.CanDeleteBillingLines))
+                    @if (data.StateFlag.HasFlag(BillingStateFlag.CanReadBillingLines))
                     {
                         <a class="btn btn-outline-primary" href="@Url.Action("Index", "BillingLine", new { id = data.Id, customerId = data.CustomerId })"
                            data-toggle="tooltip" data-placement="top" title="Edit Billing Lines">
                             <i class="fas fa-list-ol"></i>
                         </a>
                     }
-                    @if (data.StateFlag.HasFlag(BillingStateFlag.CanAddPayment) ||
-                         data.StateFlag.HasFlag(BillingStateFlag.CanDeletePayment))
-                    {
-                        <a class="btn btn-outline-dark" type="button"
-                           href="@Url.Action("Index", "PaymentHistory", new { billingId = data.Id, customerId = data.CustomerId })"
-                           data-toggle="tooltip" data-placement="top" title="Billing history">
-                            <i class="fas fa-history"></i>
-                        </a>
-                    }
-                    @if (data.StateFlag.HasFlag(BillingStateFlag.CanAddBulkDiscounts)
-                         || data.StateFlag.HasFlag(BillingStateFlag.CanAddBulkDiscounts))
+                    @if (data.StateFlag.HasFlag(BillingStateFlag.CanReadBulkDiscounts))
                     {
                         <a class="btn btn-outline-success" type="button"
                            href="@Url.Action("Index", "BillingDiscount", new { billingId = data.Id, customerId = data.CustomerId })"
                            data-toggle="tooltip" data-placement="top" title="Apply Bulk Discount">
                             <i class="fas fa-cart-arrow-down"></i>
+                        </a>
+                    }
+                    @if (data.StateFlag.HasFlag(BillingStateFlag.CanReadPayment))
+                    {
+                        <a class="btn btn-outline-dark" type="button"
+                           href="@Url.Action("Index", "PaymentHistory", new { billingId = data.Id, customerId = data.CustomerId })"
+                           data-toggle="tooltip" data-placement="top" title="Billing history">
+                            <i class="fas fa-history"></i>
                         </a>
                     }
                     @if (data.StateFlag.HasFlag(BillingStateFlag.CanDelete))

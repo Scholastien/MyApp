@@ -177,6 +177,7 @@ public class DiscountPolicyService : ServiceBase, IDiscountPolicyService
                     }))
                 .SelectMany(b => b)
                 .ToList(),
+            StateFlag = billing.StateFlag,
         };
     }
 }

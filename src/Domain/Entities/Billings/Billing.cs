@@ -54,7 +54,8 @@ public class Billing : BaseEntity, IIdentifiableByIdEntity, IAuditableEntity, IS
 
     #endregion
 
-    public BillingStateFlag StateFlag { get; set; } = BillingStateFlag.CanAddPayment 
+    public BillingStateFlag StateFlag { get; set; } = BillingStateFlag.CanReadBillingLines 
+                                                      | BillingStateFlag.CanEditBillingLines
                                                       | BillingStateFlag.CanAddBillingLines 
                                                       | BillingStateFlag.CanDeleteBillingLines 
                                                       | BillingStateFlag.CanDelete;

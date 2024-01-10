@@ -1,9 +1,11 @@
 ﻿@using MyApp.Application.Models.Requests.Billings
+@using MyApp.Domain.Enums
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model BillingEditReq
 
 @Html.ValidationSummary()
 <form asp-action="Add" asp-controller="BillingLine" method="post" enctype="application/x-www-form-urlencoded">
-    <fieldset disabled="@ViewBag.HasDiscount">
+    <fieldset disabled="@(!Model.StateFlag.HasFlag(BillingStateFlag.CanAddBillingLines))">
         @Html.HiddenFor(model => model.Id)
         @Html.HiddenFor(model => model.CustomerId)
         <div class="form-row">

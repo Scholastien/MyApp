@@ -1,4 +1,5 @@
-﻿@model MyApp.Application.Models.Requests.BillingsDiscounts.BillingDiscountCreateReq
+﻿@using MyApp.Domain.Enums
+@model MyApp.Application.Models.Requests.BillingsDiscounts.BillingDiscountCreateReq
 
 @Html.ValidationSummary()
 <form asp-action="Add" asp-controller="BillingDiscount" method="post" enctype="application/x-www-form-urlencoded">
@@ -13,7 +14,7 @@
                     <select asp-for="@Model.NewDiscount" class="form-control" asp-items="ViewBag.AvailableDiscounts" id="ddlDiscountId"></select>
                 </div>
                 <div class="col">
-                    <button type="submit" class="btn btn-primary" disabled="@(!ViewBag.HasAvailableDiscounts)">
+                    <button type="submit" class="btn btn-primary" disabled="@(!Model.StateFlag.HasFlag(BillingStateFlag.CanAddBulkDiscounts))">
                         <i class="fas fa-cart-arrow-down"></i>Add Discount
                     </button>
                 </div>
