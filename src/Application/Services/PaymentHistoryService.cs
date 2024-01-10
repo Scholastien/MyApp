@@ -5,7 +5,6 @@ using MyApp.Application.Models.Requests.PaymentsHistories;
 using MyApp.Application.Models.Responses.PaymentsHistories;
 using MyApp.Domain.Core.Repositories;
 using MyApp.Domain.Entities.PaymentHistories;
-using MyApp.Domain.Enums;
 using MyApp.Domain.Specifications.PaymentsHistories;
 
 namespace MyApp.Application.Services;

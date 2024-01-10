@@ -28,7 +28,7 @@ public class BillingDto : BaseDto<Billing>
         Id = entity.Id;
         StateFlag = entity.StateFlag;
         CustomerId = entity.CustomerId;
-        CustomerType = entity.Customer?.CustomerType;
+        CustomerType = entity.Customer?.CustomerType; // TODO : safe get CustomerType
         Lines = entity.BillingLines.Select(b => new BillingLineDto(b)
         {
             Name = b.Product.Name,
