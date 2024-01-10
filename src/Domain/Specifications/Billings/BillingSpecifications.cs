@@ -5,9 +5,14 @@ namespace MyApp.Domain.Specifications.Billings;
 
 public static class BillingSpecifications
 {
-    public static BaseSpecification<Billing> SingleBillingSpec(Guid id, Guid customerId)
+    public static BaseSpecification<Billing> SingleBillingSpec(Guid billingId)
     {
-        return new BaseSpecification<Billing>(c => c.Id == id && c.CustomerId == customerId);
+        return new BaseSpecification<Billing>(c => c.Id == billingId);
+    }
+    
+    public static BaseSpecification<Billing> SingleBillingSpec(Guid billingId, Guid customerId)
+    {
+        return new BaseSpecification<Billing>(c => c.Id == billingId && c.CustomerId == customerId);
     }
     
     public static BaseSpecification<Billing> MultipleBillingsForCustomerIdSpec(Guid customerId)

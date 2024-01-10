@@ -9,13 +9,11 @@ using MyApp.Application.Models.Responses.DiscountPolicies;
 using MyApp.Application.Models.Responses.Discounts;
 using MyApp.Domain.Core.Repositories;
 using MyApp.Domain.Entities.Billings;
-using MyApp.Domain.Entities.BillingsDiscounts;
 using MyApp.Domain.Entities.DiscountPolicy;
 using MyApp.Domain.Entities.Discounts;
 using MyApp.Domain.Enums;
 using MyApp.Domain.Specifications.Billings;
 using MyApp.Domain.Specifications.DiscountPolicies;
-using MyApp.Domain.Specifications.Discounts;
 
 namespace MyApp.Application.Services;
 
@@ -25,7 +23,7 @@ public class DiscountPolicyService : ServiceBase, IDiscountPolicyService
     {
     }
 
-    private async Task<Billing> getBillingByIds(Guid billingId, Guid customerId, CancellationToken ctk = default)
+    private async Task<Billing> GetBillingByIds(Guid billingId, Guid customerId, CancellationToken ctk = default)
     {
         var billingSpec = BillingSpecifications.SingleBillingWithAllIncludesSpec(billingId, customerId);
         var billing = await UnitOfWork.Repository<Billing>().FirstOrDefaultAsync(billingSpec, ctk);
@@ -38,7 +36,7 @@ public class DiscountPolicyService : ServiceBase, IDiscountPolicyService
         throw new NullReferenceException();
     }
 
-    private async Task<DiscountPolicyBase> getDiscountPolicyById(Guid discountPolicyId, CancellationToken ctk = default)
+    private async Task<DiscountPolicyBase> GetDiscountPolicyById(Guid discountPolicyId, CancellationToken ctk = default)
     {
         var spec = DiscountPolicySpecifications.GetDiscountPolicyByIdSpec(discountPolicyId);
         var discountPolicy = await UnitOfWork.Repository<DiscountPolicyBase>().FirstOrDefaultAsync(spec, ctk);
@@ -68,7 +66,7 @@ public class DiscountPolicyService : ServiceBase, IDiscountPolicyService
     public async Task<DiscountPolicyDto<DiscountPolicyBase>> GetDiscountPolicyDtoById(Guid id,
         CancellationToken ctk = default)
     {
-        var discountPolicy = await getDiscountPolicyById(id, ctk);
+        var discountPolicy = await GetDiscountPolicyById(id, ctk);
 
         return new DiscountPolicyDto<DiscountPolicyBase>(discountPolicy);
     }
@@ -77,7 +75,7 @@ public class DiscountPolicyService : ServiceBase, IDiscountPolicyService
         DiscountPolicyEditReq<DiscountPolicyDto<DiscountPolicyBase>, DiscountPolicyBase> req,
         CancellationToken ctk = default)
     {
-        var discountPolicy = await getDiscountPolicyById(req.Id, ctk);
+        var discountPolicy = await GetDiscountPolicyById(req.Id, ctk);
 
         var discountfound = discountPolicy?.Discounts.FirstOrDefault(d => d.Value == req.NewDiscountValue);
 
@@ -137,7 +135,7 @@ public class DiscountPolicyService : ServiceBase, IDiscountPolicyService
     public async Task<MultipleDiscountRes> GetAllAvailableBulkDiscountsLinkedToBilling(Guid billingId, Guid customerId,
         CancellationToken ctk = default)
     {
-        var billing = await getBillingByIds(billingId, customerId, ctk);
+        var billing = await GetBillingByIds(billingId, customerId, ctk);
 
         var discountPolicySpec =
             DiscountPolicySpecifications.GetAllAvailableDiscountPoliciesByCustomerTypeAndDiscountTypeSpec(
@@ -161,7 +159,7 @@ public class DiscountPolicyService : ServiceBase, IDiscountPolicyService
     public async Task<BillingDiscountCreateReq> AttachDiscountToBilling(Guid billingId, Guid customerId,
         CancellationToken ctk = default)
     {
-        var billing = await getBillingByIds(billingId, customerId, ctk);
+        var billing = await GetBillingByIds(billingId, customerId, ctk);
 
         return new BillingDiscountCreateReq
         {

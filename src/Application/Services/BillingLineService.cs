@@ -6,7 +6,6 @@ using MyApp.Application.Models.Responses.BillingLines;
 using MyApp.Domain.Core.Repositories;
 using MyApp.Domain.Entities.Billings;
 using MyApp.Domain.Entities.Products;
-using MyApp.Domain.Enums;
 using MyApp.Domain.Specifications.BillingLines;
 
 namespace MyApp.Application.Services;

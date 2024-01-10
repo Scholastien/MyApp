@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using MyApp.Application.Interfaces.Services;
 using MyApp.Application.Models.Dtos.Discounts;
 using MyApp.Application.Models.Requests.BillingsDiscounts;
-using MyApp.Application.Models.Responses.BillingsDiscounts;
 using MyApp.Domain.Entities;
 using MyApp.Infrastructure.Data;
 

@@ -1,5 +1,4 @@
-﻿using MyApp.Application.Services;
-using MyApp.Domain.Enums;
+﻿using MyApp.Domain.Enums;
 
 namespace MyApp.Application.Extensions;
 

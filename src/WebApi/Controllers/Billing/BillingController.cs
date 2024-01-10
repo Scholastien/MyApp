@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using MyApp.Application.Interfaces.Services;
 using MyApp.Application.Models.Requests.BillingLines;
 using MyApp.Application.Models.Requests.Billings;
@@ -16,15 +15,12 @@ namespace MyApp.WebApi.Controllers.Billing;
 public class BillingController : BaseControllerApp
 {
     private readonly IBillingService _billingService;
-    private readonly IProductService _productService;
 
     public BillingController(UserManager<IdentityUserBase> userManager, SignInManager<IdentityUserBase> signInManager,
-        ILogger<BillingController> logger, AppDbContext dbContext, IBillingService billingService,
-        IProductService productService)
+        ILogger<BillingController> logger, AppDbContext dbContext, IBillingService billingService)
         : base(userManager, signInManager, logger, dbContext)
     {
         _billingService = billingService;
-        _productService = productService;
     }
 
 

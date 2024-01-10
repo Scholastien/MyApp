@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using MyApp.Application.Interfaces.Services;
 using MyApp.Application.Models.Dtos.DiscountPolicies;
-using MyApp.Application.Models.Dtos.Discounts;
-using MyApp.Application.Models.Requests.BillingsDiscounts;
 using MyApp.Application.Models.Requests.DiscountPolicies;
 using MyApp.Domain.Entities;
 using MyApp.Domain.Entities.DiscountPolicy;

@@ -1,0 +1,25 @@
+﻿@using MyApp.Application.Models.Requests.PaymentsHistories
+@model PaymentHistoryCreateReq
+
+@Html.ValidationSummary()
+<form asp-action="Add" asp-controller="PaymentHistory" method="post" enctype="application/x-www-form-urlencoded">
+    <fieldset disabled="@ViewBag.HasDiscount">
+        @Html.HiddenFor(model => model.BillingId)
+        @Html.HiddenFor(model => model.CustomerId)
+        <div class="form-row">
+            <div class="col-6 col-md-6">
+                <div class="form-group col">
+                    <div class="col">
+                        <label asp-for="@Model.PaymentId" class="control-label">Product</label>
+                        <select asp-for="@Model.PaymentId" class="form-control" asp-items="ViewBag.Payments" id="ddlPaymentId"></select>
+                    </div>
+                    <div class="col">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-cart-plus"></i>Add Payment
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</form>

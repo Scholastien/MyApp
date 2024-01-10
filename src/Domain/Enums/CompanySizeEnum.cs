@@ -2,6 +2,6 @@
 
 public enum CompanySizeEnum
 {
-    TPE = 1,
-    PME = 2,
+    Tpe = 1,
+    Pme = 2,
 }

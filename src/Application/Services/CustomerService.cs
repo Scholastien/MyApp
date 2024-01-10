@@ -1,7 +1,6 @@
 ﻿using MyApp.Application.Core.Services;
 using MyApp.Application.Interfaces.Models.Requests.CustomersDetails;
 using MyApp.Application.Interfaces.Services;
-using MyApp.Domain.Core.Models;
 using MyApp.Domain.Core.Models.Interface;
 using MyApp.Domain.Core.Repositories;
 using MyApp.Domain.Entities.Customers;

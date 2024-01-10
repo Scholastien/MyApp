@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using MyApp.Domain.Core.Models;
 using MyApp.Domain.Core.Models.Interface;
+using MyApp.Domain.Entities.Billings;
+using MyApp.Domain.Entities.Payments;
 
 namespace MyApp.Domain.Entities.PaymentHistories;
 
@@ -22,7 +24,9 @@ public class PaymentHistory : BaseEntity, IIdentifiableByIdEntity, IAuditableEnt
 
     #region Fks
     public required Guid BillingId { get; set; }
+    public Billing Billing { get; set; } = null!;
     public required Guid PaymentId { get; set; }
+    public Payment Payment { get; set; } = null!;
 
     #endregion
 

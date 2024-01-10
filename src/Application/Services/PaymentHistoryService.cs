@@ -5,17 +5,17 @@ using MyApp.Application.Models.Requests.PaymentsHistories;
 using MyApp.Application.Models.Responses.PaymentsHistories;
 using MyApp.Domain.Core.Repositories;
 using MyApp.Domain.Entities.PaymentHistories;
+using MyApp.Domain.Specifications.PaymentsHistories;
 
 namespace MyApp.Application.Services;
 
 public class PaymentHistoryService : ServiceBase, IPaymentHistoryService
 {
-    private readonly IBillingFlagService _billingFlagService;
+    private readonly IBillingService _billingService;
 
-    public PaymentHistoryService(IUnitOfWork unitOfWork, ILoggerService loggerService,
-        IBillingFlagService billingFlagService) : base(unitOfWork, loggerService)
+    public PaymentHistoryService(IUnitOfWork unitOfWork, ILoggerService loggerService, IBillingService billingService) : base(unitOfWork, loggerService)
     {
-        _billingFlagService = billingFlagService;
+        _billingService = billingService;
     }
 
     public async Task<PaymentHistoryRes> CreatePaymentHistory(PaymentHistoryCreateReq createReq,
@@ -27,12 +27,21 @@ public class PaymentHistoryService : ServiceBase, IPaymentHistoryService
             {
                 BillingId = createReq.BillingId,
                 PaymentId = createReq.PaymentId,
+                CreatedOn = DateTimeOffset.Now,
             }, ctk);
 
             await UnitOfWork.SaveChangesAsync(ctk);
             LoggerService.LogInfo("New PaymentHistory created");
 
-            return new PaymentHistoryRes { Data = new PaymentHistoryDto(payment) };
+            var customerId = await _billingService.GetCustomerId(createReq.BillingId, ctk);
+
+            return new PaymentHistoryRes
+            {
+                Data = new PaymentHistoryDto(payment)
+                {
+                    CustomerId = customerId
+                }
+            };
         }
         catch (Exception e)
         {
@@ -62,15 +71,23 @@ public class PaymentHistoryService : ServiceBase, IPaymentHistoryService
         }
     }
 
-    public async Task DeletePaymentHistoryWithId(Guid id, Guid billingId, Guid paymentId,
-        CancellationToken ctk = default)
+    public async Task<Guid> DeletePaymentHistoryWithId(Guid id, CancellationToken ctk = default)
     {
         try
         {
-            var hist = await GetEntityByIdAsync<PaymentHistory>(new object[] { id, billingId, paymentId }, ctk);
+            var spec = PaymentHistorySpecifications.SinglePaymentHistorySpec(id);
+            var hist = await UnitOfWork.Repository<PaymentHistory>().FirstOrDefaultAsync(spec, ctk);
 
-            UnitOfWork.Repository<PaymentHistory>().Delete(hist);
-            await UnitOfWork.SaveChangesAsync(ctk);
+            if (hist != null)
+            {
+                UnitOfWork.Repository<PaymentHistory>().Delete(hist);
+                await UnitOfWork.SaveChangesAsync(ctk);
+                return hist.BillingId;
+            }
+
+            // Log and throw
+            LoggerService.LogError($"Couldn't find PaymentHistory with ID {id}");
+            throw new NullReferenceException();
         }
         catch (Exception e)
         {
@@ -93,5 +110,20 @@ public class PaymentHistoryService : ServiceBase, IPaymentHistoryService
             LoggerService.LogError("A problem during PaymentHistory fetching as Dto occured", e);
             throw;
         }
+    }
+
+    public async Task<MultiplePaymentHistoriesRes> GetAllPaymentHistoriesForBillingId(Guid billingId,
+        CancellationToken ctk = default)
+    {
+        var spec = PaymentHistorySpecifications.MultiplePaymentsHistoriesForBillingIdSpec(billingId);
+        var paymentHistories = await UnitOfWork.Repository<PaymentHistory>().ListAsync(spec, ctk);
+
+        var customerId = await _billingService.GetCustomerId(billingId, ctk);
+
+        return new MultiplePaymentHistoriesRes
+        {
+            Data = paymentHistories.Select(b => new PaymentHistoryDto(b)).ToList(),
+            CustomerId = customerId
+        };
     }
 }

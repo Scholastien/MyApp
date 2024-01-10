@@ -10,6 +10,7 @@ public class PaymentHistoryDto : BaseDto<PaymentHistory>
     public Guid CustomerId { get; set; }
     public DateTimeOffset? DueDate { get; set; }
     public DateTimeOffset? PaidDate { get; set; }
+    public string Name { get; set; }
 
     public PaymentHistoryDto()
     {
@@ -20,9 +21,12 @@ public class PaymentHistoryDto : BaseDto<PaymentHistory>
         Id = entity.Id;
         BillingId = entity.BillingId;
         PaymentId = entity.PaymentId;
-        CustomerId = entity.Billing.CustomerId;
         DueDate = entity.DueDate;
         PaidDate = entity.PaidDate;
+        Name = entity.CreatedOn.ToString();
+
+        if (entity.Billing != null)
+            CustomerId = entity.Billing.CustomerId;
     }
 
     public override void WriteTo(PaymentHistory entity)

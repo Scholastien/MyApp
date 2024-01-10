@@ -1,9 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Domain.Core.Models;
 using MyApp.Domain.Core.Models.Interface;
-using MyApp.Domain.Entities.Billings;
 using MyApp.Domain.Entities.Customers;
 using MyApp.Domain.Entities.PaymentHistories;
 using MyApp.Domain.Enums;
@@ -23,7 +21,7 @@ public class Payment : BaseEntity, IAuditableEntity, IIdentifiableByIdEntity, IS
     #region Fks
 
     public required Guid CustomerId { get; set; }
-    public Customer Customer { get; set; }
+    public Customer? Customer { get; set; }
 
     #endregion
 

@@ -1,5 +1,4 @@
 ﻿@using MyApp.Application.Models.Requests.Billings
-@using Microsoft.AspNetCore.Http
 @model BillingCreateReq
 
 @{
@@ -24,32 +23,11 @@
 
         <div class="form-group">
             <div class="col-sm-12 btn-submit">
-                <input type="submit" asp-action="Save" class="btn btn-success">Add Company</input>
+                <input type="submit" asp-action="Save" class="btn btn-success" value="Add Company" />
             </div>
         </div>
     </form>
 </div>
-
-
-@* @using (Html.BeginForm("Add", "Billing", FormMethod.Post)) *@
-@* { *@
-@*     @Html.HiddenFor(model => model.CustomerId) *@
-@* *@
-@*     @Html.DisplayNameFor(model => model.Name) *@
-@* *@
-@*     @await Html.PartialAsync("BillingLines/_BillingLines", Model.BillingLines) *@
-@*     <p> *@
-@*         <input name="command" type="submit" value="Add BillingLine"/> *@
-@*         <input name="command" type="submit" value="Remove BillingLine"/> *@
-@*         <input name="command" type="submit" value="Cancel/Refresh"/> *@
-@*     </p> *@
-@* *@
-@*     <p> *@
-@*         @Html.ValidationSummary() *@
-@*         <input name="command" type="submit" value="Submit"/> *@
-@*     </p> *@
-@* } *@
-
 
 @section Scripts{
     @{

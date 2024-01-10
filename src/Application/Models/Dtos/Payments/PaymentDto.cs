@@ -9,6 +9,7 @@ public class PaymentDto: BaseDto<Payment>, IPaymentDto
     public Guid Id { get; set; }
     public Guid CustomerId { get; set; }
     public PaymentTypeEnum PaymentType { get; set; }
+    public string Name { get; set; }
     public required string EntityController { get; set; }
 
     public PaymentDto(){}
@@ -18,6 +19,7 @@ public class PaymentDto: BaseDto<Payment>, IPaymentDto
         Id = entity.Id;
         CustomerId = entity.CustomerId;
         PaymentType = entity.PaymentType;
+        Name = $"{entity.PaymentType.ToString()}-{entity.CreatedOn.ToString()}";
     }
 
     public override void WriteTo(Payment entity)

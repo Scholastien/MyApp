@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using MyApp.Domain.Entities.Customers;
 
 namespace MyApp.Domain.Core.Specifications;
 

@@ -1,6 +1,4 @@
 ﻿using MyApp.Application.Models.Dtos.BillingsDiscounts;
-using MyApp.Application.Models.Dtos.Discounts;
-using MyApp.Domain.Entities.BillingsDiscounts;
 
 namespace MyApp.Application.Models.Requests.BillingsDiscounts;
 

@@ -5,7 +5,6 @@ using MyApp.Application.Models.Dtos.Products;
 using MyApp.Application.Models.Requests.Products;
 using MyApp.Application.Models.Responses.Products;
 using MyApp.Domain.Core.Repositories;
-using MyApp.Domain.Entities.Payments;
 using MyApp.Domain.Entities.Products;
 using MyApp.Domain.Specifications.Products;
 

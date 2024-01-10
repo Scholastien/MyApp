@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using MyApp.Domain.Core.Models;
 using MyApp.Domain.Core.Models.Interface;
@@ -33,7 +32,7 @@ public class Billing : BaseEntity, IIdentifiableByIdEntity, IAuditableEntity, IS
     #region Fks
 
     public required Guid CustomerId { get; set; }
-    public Customer Customer { get; set; }
+    public Customer Customer { get; set; } = null!;
 
     #endregion
 

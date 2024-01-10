@@ -5,9 +5,9 @@ using MyApp.Application.Models.Dtos.Payments;
 using MyApp.Application.Models.Requests.Payments;
 using MyApp.Application.Models.Responses.Payments;
 using MyApp.Domain.Core.Repositories;
-using MyApp.Domain.Entities.Customers;
 using MyApp.Domain.Entities.Payments;
 using MyApp.Domain.Enums;
+using MyApp.Domain.Specifications.Payments;
 
 namespace MyApp.Application.Services;
 
@@ -93,5 +93,16 @@ public class PaymentService : ServiceBase, IPaymentService
             LoggerService.LogError("A problem during Payment fetching as Dto occured", e);
             throw;
         }
+    }
+
+    public async Task<MultiplePaymentRes> GetAllPaymentForUserId(Guid customerId, CancellationToken ctk = default)
+    {
+        var spec = PaymentSpecifications.GetPaymentsForCustomer(customerId);
+        var paymentHistories = await UnitOfWork.Repository<Payment>().ListAsync(spec, ctk);
+
+        return new MultiplePaymentRes
+        {
+            Data = paymentHistories.Select(b => new PaymentDto(b) { EntityController = null }).ToList(),
+        };
     }
 }

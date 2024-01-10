@@ -12,4 +12,5 @@ public interface IBillingService
     Task<BillingDto> GetBillingDtoById(Guid id, Guid customerId, CancellationToken ctk = default);
     Task DeleteBillingWithId(Guid id, Guid customerId, CancellationToken ctk = default);
     BillingStateFlag GetBillingState(Guid id, Guid customerId, CancellationToken ctk = default);
+    Task<Guid> GetCustomerId(Guid billingId, CancellationToken ctk = default);
 }

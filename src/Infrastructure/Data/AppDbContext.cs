@@ -18,34 +18,34 @@ namespace MyApp.Infrastructure.Data;
 
 public class AppDbContext : IdentityDbContext<IdentityUserBase>, IDataProtectionKeyContext
 {
-    public DbSet<DataProtectionKey> DataProtectionKeys { get; set; }
-    
+    public DbSet<DataProtectionKey> DataProtectionKeys { get; set; } = null!;
+
     // Customers
-    public DbSet<Customer> Customers { get; set; }
-    public DbSet<Company> Companies { get; set; }
-    public DbSet<Individual> Individuals { get; set; }
+    public DbSet<Customer> Customers { get; set; } = null!;
+    public DbSet<Company> Companies { get; set; } = null!;
+    public DbSet<Individual> Individuals { get; set; } = null!;
 
     // CustomersDetails
-    public DbSet<CustomerDetails> CustomersDetails { get; set; }
+    public DbSet<CustomerDetails> CustomersDetails { get; set; } = null!;
 
-    public DbSet<Payment> Payments { get; set; }
+    public DbSet<Payment> Payments { get; set; } = null!;
 
-    public DbSet<PaymentHistory> PaymentHistories { get; set; }
+    public DbSet<PaymentHistory> PaymentHistories { get; set; } = null!;
 
-    public DbSet<Billing> Billings { get; set; }
+    public DbSet<Billing> Billings { get; set; } = null!;
 
-    public DbSet<BillingLine> BillingLines { get; set; }
+    public DbSet<BillingLine> BillingLines { get; set; } = null!;
 
-    public DbSet<Product> Products { get; set; }
+    public DbSet<Product> Products { get; set; } = null!;
 
-    public DbSet<BillingDiscount> BillingsDiscounts { get; set; }
+    public DbSet<BillingDiscount> BillingsDiscounts { get; set; } = null!;
 
-    public DbSet<Discount> Discounts { get; set; }
+    public DbSet<Discount> Discounts { get; set; } = null!;
 
     // DiscountPolicies
-    public DbSet<DiscountPolicyBase> DiscountPolicies { get; set; }
-    public DbSet<IndividualDiscountPolicy> IndividualDiscountPolicies { get; set; }
-    public DbSet<CompanyDiscountPolicy> CompanyDiscountPolicies { get; set; }
+    public DbSet<DiscountPolicyBase> DiscountPolicies { get; set; } = null!;
+    public DbSet<IndividualDiscountPolicy> IndividualDiscountPolicies { get; set; } = null!;
+    public DbSet<CompanyDiscountPolicy> CompanyDiscountPolicies { get; set; } = null!;
 
     /// <inheritdoc />
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)

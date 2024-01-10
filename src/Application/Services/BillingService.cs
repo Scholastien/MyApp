@@ -110,4 +110,15 @@ public class BillingService : ServiceBase, IBillingService
     {
         throw new NotImplementedException(); // TODO
     }
+
+    public async Task<Guid> GetCustomerId(Guid billingId, CancellationToken ctk = default)
+    {
+        var billingSpec = BillingSpecifications.SingleBillingSpec(billingId);
+        var billing = await UnitOfWork.Repository<Billing>().FirstOrDefaultAsync(billingSpec, ctk);
+
+        if (billing != null) return billing.CustomerId;
+        
+        LoggerService.LogError("A problem during GetCustomerId occured");
+        throw new NullReferenceException();
+    }
 }
