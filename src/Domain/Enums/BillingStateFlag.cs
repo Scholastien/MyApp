@@ -34,10 +34,10 @@ public enum BillingStateFlag
     // /!\ max value = 32
     // need refactoring soon :
     // => 1 State Column per Table linked to Billing containing values:
-    // - CanRead
-    // - CanEdit
-    // - CanAdd
-    // - CanDelete
+    // - CanRead = 1 << 0,
+    // - CanEdit = 1 << 2,
+    // - CanAdd = 1 << 3,
+    // - CanDelete = 1 << 4
     // That State prop should be contained in a interface, that way we can abstract the call and process states regardless of the Object typing
     // A for the values CanPay and CanDelete, it will be a compound of states of the linked entities
 }
